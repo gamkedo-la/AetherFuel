@@ -180,6 +180,12 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
 
             var useImg = trackPix[tileKind];
             canvasContext.drawImage(useImg, drawTileX, drawTileY);
+            
+            if (trackIdx == mouseIdx) 
+            {
+                colorRect(drawTileX, drawTileY, TRACK_W -1, TRACK_H -1, "red" );
+            }
+
             drawTileX += TRACK_W;
         }
     }
