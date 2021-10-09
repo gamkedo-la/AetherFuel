@@ -39,6 +39,12 @@ function editorKey(keyCode)
         case KEY_NUM_ROW_2:
             editorPaintType = TRACK_WALL;
             break;
+
+        case KEY_E:
+            var trackGridExport = trackGrid.slice();
+            trackGridExport[playerStart] = TRACK_START;
+            console.log(trackGridExport);
+            break;
         
         default:
             break;

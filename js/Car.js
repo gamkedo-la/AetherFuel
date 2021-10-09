@@ -49,6 +49,7 @@ function carClass()
                 if (trackGrid[trackIdx] == TRACK_START)
                 {
                     trackGrid[trackIdx] = TRACK_ROAD;
+                    playerStart = trackIdx;
 
                     this.x = j * TRACK_W + TRACK_W / 2;
                     this.y = i * TRACK_H + TRACK_H / 2;
