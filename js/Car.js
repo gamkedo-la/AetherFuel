@@ -10,6 +10,8 @@ function carClass()
 
     this.x;
     this.y;
+    this.rowIdx;
+    this.colIdx;
     this.ang = Math.PI / 2;
     this.speed = 0;
     this.pic;
@@ -89,16 +91,20 @@ function carClass()
 
         this.x += this.speed * Math.cos(this.ang);
         this.y += this.speed * Math.sin(this.ang);
+        this.updateRowColIdx();
+    }
+
+    this.updateRowColIdx = function()
+    {
+        this.colIdx = Math.floor(this.x / TRACK_W);
+        this.rowIdx = Math.floor(this.y / TRACK_H);
     }
 
     this.handleCollisionWithTracksAdvanced = function()
     {
         if (getTrackIdxFromXY(this.x, this.y) < -1) { return; }
 
-        var carTrackJ = Math.floor(this.x / TRACK_W);
-        var carTrackI = Math.floor(this.y / TRACK_H);
-
-        var trackType = returnTrackTypeAtIJ(carTrackI, carTrackJ);
+        var trackType = this.getCurrentTrackType();
 
         if (trackType == TRACK_WALL)
         {
@@ -111,6 +117,11 @@ function carClass()
             console.log(this.name + " wins!!!");
             loadLevel(levelThree, 47, 70);
         }
+    }
+
+    this.getCurrentTrackType = function()
+    {
+        return returnTrackTypeAtIJ(this.rowIdx, this.colIdx);
     }
 
     this.draw = function()
