@@ -4,6 +4,7 @@ var canvas, canvasContext;
 
 var redCar = new carClass();
 var camera = new Camera();
+var miniMap = new MiniMap();
 
 function updateMousePos(evt)
 {
@@ -47,6 +48,8 @@ function loadLevel(whichLevel, numRows, numCols)
 
     trackGrid = whichLevel.slice();
     redCar.reset("Scarlett Witch", car2Pic);
+
+    miniMap.setSizes();
 }
 
 function updateAll()
@@ -76,6 +79,9 @@ function drawAll()
 
     // Restore the context
     canvasContext.restore();
+
+    // Draw the minimap
+    miniMap.draw();
 
     // Editor
     editorDraw();
