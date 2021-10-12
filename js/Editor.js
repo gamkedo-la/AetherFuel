@@ -7,8 +7,6 @@ function editorClick()
     if (!editorMode){ return; }
 
     trackGrid[mouseIdx] = editorPaintType;
-
-    console.log(trackGrid[mouseIdx] + " - " + mouseIdx);
 }
 
 
@@ -16,18 +14,38 @@ function editorDraw()
 {
     if (!editorMode){ return; }
 
-    colorText("Editor", 20, 20, "black");
+    displayEditorLabel();
 
     var useImg = trackPix[editorPaintType];
 
-    colorRect(mouseX - 2, mouseY - 2, useImg.width + 4, useImg.height + 4, "black")
-    canvasContext.drawImage(useImg, mouseX, mouseY);
+    colorRect(mouseX - useImg.width / 2 - 2,
+              mouseY - useImg.height / 2 - 2,
+              useImg.width + 4,
+              useImg.height + 4,
+              "black")
+              
+    canvasContext.drawImage(useImg, mouseX - useImg.width / 2, mouseY - useImg.height / 2);
 }
 
 
+function displayEditorLabel() 
+{
+    canvasContext.globalAlpha = 0.75;
+    colorRect(0, 0, 125, 40, "red");
+    canvasContext.globalAlpha = 1.0;
+    colorText("EDITOR", 5, 30, "black");
+}
+
 function editorKey(keyCode)
 {
-    if (!editorMode){ return; }
+    if (!editorMode)
+    {
+        if (keyCode == KEY_TAB)
+        {
+            editorMode = true;
+        }
+        return;
+    }
 
     switch(keyCode)
     {
@@ -44,6 +62,10 @@ function editorKey(keyCode)
             var trackGridExport = trackGrid.slice();
             trackGridExport[playerStart] = TRACK_START;
             console.log(trackGridExport);
+            break;
+
+        case KEY_TAB:
+            editorMode = false;
             break;
         
         default:

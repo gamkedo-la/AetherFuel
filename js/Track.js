@@ -160,6 +160,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             var drawTileX = j * TRACK_W;
 
             var trackIdx = i * trackNumCols + j;
+            highlightTileIfEditorMode(trackIdx, drawTileX, drawTileY);
 
             var tileKind = trackGrid[trackIdx];
             if (tileKind == TRACK_ROAD)
@@ -167,17 +168,23 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
                 continue;
             }
 
-
             var useImg = trackPix[tileKind];
             canvasContext.drawImage(useImg, drawTileX, drawTileY);
-            
-            if (trackIdx == mouseIdx) 
-            {
-                colorRect(drawTileX, drawTileY, TRACK_W -1, TRACK_H -1, "red" );
-            }
 
             drawTileX += TRACK_W;
         }
+    }
+}
+
+function highlightTileIfEditorMode(trackIdx, drawTileX, drawTileY)
+{
+    if (!editorMode){ return; }
+
+    if (trackIdx == mouseIdx)
+    {
+        colorRect(drawTileX, drawTileY,
+                  TRACK_W - 1, TRACK_H - 1,
+                  "red");
     }
 }
 

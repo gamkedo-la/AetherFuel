@@ -14,6 +14,8 @@ const KEY_NUM_ROW_1 = 49;
 const KEY_NUM_ROW_2 = 50;
 const KEY_NUM_ROW_3 = 51;
 
+const KEY_TAB = 9;
+
 var mouseX, mouseY;
 var mouseIdx = 0;
 
