@@ -17,8 +17,8 @@ function MiniMap()
         this.width = this.percentage * (trackNumCols * TRACK_W);
         this.height = this.percentage * (trackNumRows * TRACK_H);
 
-        this.x = canvas.width - this.width - this.margin_x;
-        this.y = canvas.height - this.height - this.margin_y;
+        // this.x = canvas.width - this.width - this.margin_x;
+        // this.y = canvas.height - this.height - this.margin_y;
     }
 
     this.draw = function()
