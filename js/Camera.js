@@ -20,6 +20,8 @@ function Camera()
     this.numRowsSeen;
     this.numColsSeen;
 
+    this.camAng = 0;
+
     this.initialize = function()
     {
         this.maxCamPanX = trackNumCols * TRACK_W - canvas.width; 
@@ -31,11 +33,18 @@ function Camera()
     
     this.followPlayer = function(player)
     {
-        this.camPanX = player.x - canvas.width / 2; 
-        this.camPanY = player.y - canvas.height / 2; 
+        this.camPanX = player.x; //- canvas.width / 2; 
+        this.camPanY = player.y;// - canvas.height / 2; 
+
+        this.camAng = -player.ang;
     
-        this.checkForCollisions();
-        this.updateTracksSeen();
+        // this.checkForCollisions();
+        // this.updateTracksSeen();
+        this.minTrackSeenJ = 0;
+        this.maxTrackSeenJ = trackNumCols;
+
+        this.minTrackSeenI = 0;
+        this.maxTrackSeenI = trackNumRows;
     }
 
     this.updateTracksSeen = function()
@@ -53,23 +62,28 @@ function Camera()
     this.translate = function()
     {
         canvasContext.save();
+        // canvasContext.translate(-this.camPanX, -this.camPanY);
+        canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
+        canvasContext.rotate(this.camAng - Math.PI / 2);
         canvasContext.translate(-this.camPanX, -this.camPanY);
+
     }
 
-    this.checkForCollisions = function() 
-    {
-        if (this.camPanX < 0) {
-            this.camPanX = 0;
-        }
-        else if (this.camPanX > this.maxCamPanX) {
-            this.camPanX = this.maxCamPanX;
-        }
+    // WAS NOT BUILT FOR ROTATING CAMERA...
+    // this.checkForCollisions = function() 
+    // {
+    //     if (this.camPanX < 0) {
+    //         this.camPanX = 0;
+    //     }
+    //     else if (this.camPanX > this.maxCamPanX) {
+    //         this.camPanX = this.maxCamPanX;
+    //     }
 
-        if (this.camPanY < 0) {
-            this.camPanY = 0;
-        }
-        else if (this.camPanY > this.maxCamPanY) {
-            this.camPanY = this.maxCamPanY;
-        }
-    }
+    //     if (this.camPanY < 0) {
+    //         this.camPanY = 0;
+    //     }
+    //     else if (this.camPanY > this.maxCamPanY) {
+    //         this.camPanY = this.maxCamPanY;
+    //     }
+    // }
 }

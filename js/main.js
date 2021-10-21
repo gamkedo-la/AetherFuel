@@ -21,6 +21,8 @@ window.onload = function()
     canvas = document.getElementById("gameCanvas");
     canvasContext = canvas.getContext("2d");
     
+    canvasContext.imageSmoothingEnabled = true;
+
     colorRect(0, 0, canvas.width, canvas.height, "black");
     colorText("Loading...", canvas.width / 2, canvas.height / 2, "white");
     loadImages();
@@ -68,6 +70,8 @@ function moveAll()
 
 function drawAll()
 {
+    clearScreen();
+
     // Translate the context for camera scrolling
     camera.translate();
 
