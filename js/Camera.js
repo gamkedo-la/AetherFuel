@@ -47,18 +47,6 @@ function Camera()
         this.maxTrackSeenI = trackNumRows;
     }
 
-    this.updateTracksSeen = function()
-    {
-        var panTrackJ = Math.floor(this.panX / TRACK_W);
-        var panTrackI = Math.floor(this.panY / TRACK_H);
-        
-        this.minTrackSeenJ = Math.max(0, panTrackJ - SAFETY_EXTRA_TRACKS_SEEN);
-        this.maxTrackSeenJ = Math.min(trackNumCols, panTrackJ + this.numColsSeen + SAFETY_EXTRA_TRACKS_SEEN);
-
-        this.minTrackSeenI = Math.max(0, panTrackI - SAFETY_EXTRA_TRACKS_SEEN);
-        this.maxTrackSeenI = Math.min(trackNumRows, panTrackI + this.numRowsSeen + SAFETY_EXTRA_TRACKS_SEEN);
-    }
-
     this.translate = function()
     {
         canvasContext.save();
@@ -85,5 +73,17 @@ function Camera()
     //     else if (this.panY > this.maxPanY) {
     //         this.panY = this.maxPanY;
     //     }
+    // }
+
+    // this.updateTracksSeen = function()
+    // {
+    //     var panTrackJ = Math.floor(this.panX / TRACK_W);
+    //     var panTrackI = Math.floor(this.panY / TRACK_H);
+        
+    //     this.minTrackSeenJ = Math.max(0, panTrackJ - SAFETY_EXTRA_TRACKS_SEEN);
+    //     this.maxTrackSeenJ = Math.min(trackNumCols, panTrackJ + this.numColsSeen + SAFETY_EXTRA_TRACKS_SEEN);
+
+    //     this.minTrackSeenI = Math.max(0, panTrackI - SAFETY_EXTRA_TRACKS_SEEN);
+    //     this.maxTrackSeenI = Math.min(trackNumRows, panTrackI + this.numRowsSeen + SAFETY_EXTRA_TRACKS_SEEN);
     // }
 }

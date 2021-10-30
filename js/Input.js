@@ -41,7 +41,7 @@ function keySet(keyEvt, whichCar, setTo)
 
 function keyPressed(evt)
 {
-    keySet(evt, redCar, true);
+    keySet(evt, player, true);
     evt.preventDefault();
     
     // Editor
@@ -50,7 +50,7 @@ function keyPressed(evt)
 
 function keyReleased(evt)
 {
-    keySet(evt, redCar, false);
+    keySet(evt, player, false);
 }
 
 function handleClick(evt)
@@ -66,5 +66,5 @@ function setupInput()
     document.addEventListener("keydown", keyPressed);
     document.addEventListener("keyup", keyReleased);
 
-    redCar.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
+    player.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
 }

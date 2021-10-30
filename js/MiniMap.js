@@ -58,8 +58,8 @@ function MiniMap()
 
     this.drawPlayer = function()
     {
-        var playerXInMap = this.x + redCar.x * this.percentage;
-        var playerYInMap = this.y + redCar.y * this.percentage;
+        var playerXInMap = this.x + player.x * this.percentage;
+        var playerYInMap = this.y + player.y * this.percentage;
 
         colorCircle(playerXInMap, playerYInMap, this.percentage * TRACK_W / 2, "red");
     }

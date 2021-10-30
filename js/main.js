@@ -2,7 +2,7 @@ const FRAME_PER_SECOND = 30
 
 var canvas, canvasContext;
 
-var redCar = new Player();
+var player = new Player();
 var camera = new Camera();
 var miniMap = new MiniMap();
 
@@ -49,7 +49,7 @@ function loadLevel(whichLevel, numRows, numCols)
     camera.initialize();
 
     trackGrid = whichLevel.slice();
-    redCar.reset("Scarlett Witch", car2Pic);
+    player.reset("Scarlett Witch", car2Pic);
 
     miniMap.setSizes();
 }
@@ -62,10 +62,10 @@ function updateAll()
 
 function moveAll()
 {
-    redCar.move();
-    redCar.handleCollisionWithTracksAdvanced();
+    player.move();
+    player.handleCollisionWithTracksAdvanced();
 
-    camera.followPlayer(redCar);
+    camera.followPlayer(player);
 }
 
 function drawAll()
@@ -79,7 +79,7 @@ function drawAll()
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
-    redCar.draw();
+    player.draw();
 
     // Restore the context
     canvasContext.restore();
