@@ -50,11 +50,15 @@ function Camera()
     this.translate = function()
     {
         canvasContext.save();
-        // canvasContext.translate(-this.panX, -this.panY);
+        
         canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
-        canvasContext.rotate(this.angle - Math.PI / 2);
-        canvasContext.translate(-this.panX, -this.panY);
 
+        if (!editorMode)
+        {
+            canvasContext.rotate(this.angle - Math.PI / 2);
+        }
+
+        canvasContext.translate(-this.panX, -this.panY);
     }
 
     // WAS NOT BUILT FOR ROTATING CAMERA...

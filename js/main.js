@@ -13,7 +13,9 @@ function updateMousePos(evt)
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
-    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX, mouseY + camera.panY);
+    
+    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX - canvas.width/2,
+                                 mouseY + camera.panY - canvas.height * 0.95);
 }
 
 window.onload = function()
@@ -79,7 +81,10 @@ function drawAll()
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
-    player.draw();
+    if (!editorMode)
+    {
+        player.draw();
+    }
 
     // Restore the context
     canvasContext.restore();

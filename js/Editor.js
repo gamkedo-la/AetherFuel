@@ -1,4 +1,4 @@
-var editorMode = true;
+var editorMode = false;
 var editorPaintType = 0;
 
 
