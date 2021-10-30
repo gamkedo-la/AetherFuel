@@ -13,7 +13,7 @@ function updateMousePos(evt)
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
-    mouseIdx = getTrackIdxFromXY(mouseX + camera.camPanX, mouseY + camera.camPanY);
+    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX, mouseY + camera.panY);
 }
 
 window.onload = function()
