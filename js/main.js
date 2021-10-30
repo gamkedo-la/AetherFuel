@@ -2,7 +2,7 @@ const FRAME_PER_SECOND = 30
 
 var canvas, canvasContext;
 
-var redCar = new carClass();
+var redCar = new Player();
 var camera = new Camera();
 var miniMap = new MiniMap();
 

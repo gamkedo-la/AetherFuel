@@ -6,11 +6,11 @@ const SAFETY_EXTRA_TRACKS_SEEN = 2;
 
 function Camera()
 {
-    this.camPanX = 0;  // Shift from the top left corner
-    this.camPanY = 0;  // Shift from the top left corner
+    this.panX = 0;  // Shift from the top left corner
+    this.panY = 0;  // Shift from the top left corner
 
-    this.maxCamPanX = 0;
-    this.maxCamPanY = 0;
+    this.maxPanX = 0;
+    this.maxPanY = 0;
 
     this.minTrackSeenX = 0;
     this.maxTrackSeenX = 0;
@@ -20,12 +20,12 @@ function Camera()
     this.numRowsSeen;
     this.numColsSeen;
 
-    this.camAng = 0;
+    this.angle = 0;
 
     this.initialize = function()
     {
-        this.maxCamPanX = trackNumCols * TRACK_W - canvas.width; 
-        this.maxCamPanY = trackNumRows * TRACK_H - canvas.height; 
+        this.maxPanX = trackNumCols * TRACK_W - canvas.width; 
+        this.maxPanY = trackNumRows * TRACK_H - canvas.height; 
 
         this.numColsSeen = Math.floor(canvas.width / TRACK_W);
         this.numRowsSeen = Math.floor(canvas.height / TRACK_H);
@@ -33,10 +33,10 @@ function Camera()
     
     this.followPlayer = function(player)
     {
-        this.camPanX = player.x; //- canvas.width / 2; 
-        this.camPanY = player.y;// - canvas.height / 2; 
+        this.panX = player.x; //- canvas.width / 2; 
+        this.panY = player.y;// - canvas.height / 2; 
 
-        this.camAng = -player.ang;
+        this.angle = -player.ang;
     
         // this.checkForCollisions();
         // this.updateTracksSeen();
@@ -49,8 +49,8 @@ function Camera()
 
     this.updateTracksSeen = function()
     {
-        var panTrackJ = Math.floor(this.camPanX / TRACK_W);
-        var panTrackI = Math.floor(this.camPanY / TRACK_H);
+        var panTrackJ = Math.floor(this.panX / TRACK_W);
+        var panTrackI = Math.floor(this.panY / TRACK_H);
         
         this.minTrackSeenJ = Math.max(0, panTrackJ - SAFETY_EXTRA_TRACKS_SEEN);
         this.maxTrackSeenJ = Math.min(trackNumCols, panTrackJ + this.numColsSeen + SAFETY_EXTRA_TRACKS_SEEN);
@@ -62,28 +62,28 @@ function Camera()
     this.translate = function()
     {
         canvasContext.save();
-        // canvasContext.translate(-this.camPanX, -this.camPanY);
+        // canvasContext.translate(-this.panX, -this.panY);
         canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
-        canvasContext.rotate(this.camAng - Math.PI / 2);
-        canvasContext.translate(-this.camPanX, -this.camPanY);
+        canvasContext.rotate(this.angle - Math.PI / 2);
+        canvasContext.translate(-this.panX, -this.panY);
 
     }
 
     // WAS NOT BUILT FOR ROTATING CAMERA...
     // this.checkForCollisions = function() 
     // {
-    //     if (this.camPanX < 0) {
-    //         this.camPanX = 0;
+    //     if (this.panX < 0) {
+    //         this.panX = 0;
     //     }
-    //     else if (this.camPanX > this.maxCamPanX) {
-    //         this.camPanX = this.maxCamPanX;
+    //     else if (this.panX > this.maxPanX) {
+    //         this.panX = this.maxPanX;
     //     }
 
-    //     if (this.camPanY < 0) {
-    //         this.camPanY = 0;
+    //     if (this.panY < 0) {
+    //         this.panY = 0;
     //     }
-    //     else if (this.camPanY > this.maxCamPanY) {
-    //         this.camPanY = this.maxCamPanY;
+    //     else if (this.panY > this.maxPanY) {
+    //         this.panY = this.maxPanY;
     //     }
     // }
 }

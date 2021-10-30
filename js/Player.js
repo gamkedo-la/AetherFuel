@@ -4,7 +4,7 @@ const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
 const MIN_SPEED_TO_TURN = 0.5;
 
-function carClass()
+function Player()
 {
     this.name = "Unnamed Car";
 
