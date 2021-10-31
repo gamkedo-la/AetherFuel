@@ -19,43 +19,53 @@ const KEY_TAB = 9;
 var mouseX, mouseY;
 var mouseIdx = 0;
 
-function keySet(keyEvt, whichCar, setTo)
+function keySet(keyEvt, player, setTo)
 {
-    if (keyEvt.keyCode == whichCar.controlKeyLeft)
+    if (editorMode){ return; }
+    
+    if (keyEvt.keyCode == player.controlKeyLeft)
     {
-        whichCar.keyHeldTurnLeft = setTo;
+        player.keyHeldTurnLeft = setTo;
     }
-    if (keyEvt.keyCode == whichCar.controlKeyUp)
+    if (keyEvt.keyCode == player.controlKeyUp)
     {
-        whichCar.keyHeldGas = setTo;
+        player.keyHeldGas = setTo;
     }
-    if (keyEvt.keyCode == whichCar.controlKeyRight)
+    if (keyEvt.keyCode == player.controlKeyRight)
     {
-        whichCar.keyHeldTurnRight = setTo;
+        player.keyHeldTurnRight = setTo;
     }
-    if (keyEvt.keyCode == whichCar.controlKeyDown)
+    if (keyEvt.keyCode == player.controlKeyDown)
     {
-        whichCar.keyHeldReverse = setTo;
+        player.keyHeldReverse = setTo;
     }
 }
 
 function keyPressed(evt)
 {
     keySet(evt, player, true);
-    evt.preventDefault();
-    
+
     // Editor
-    editorKey(evt.keyCode);
+    editor.editorKey(evt.keyCode);
+
+    evt.preventDefault();
 }
 
 function keyReleased(evt)
-{
-    keySet(evt, player, false);
+{   
+    if (!editorMode)
+    {
+        keySet(evt, player, false);
+    }
+    else
+    {
+        editor.releaseKey(evt.keyCode);
+    }
 }
 
 function handleClick(evt)
 {
-    editorClick();
+    editor.editorClick();
 }
 
 function setupInput()

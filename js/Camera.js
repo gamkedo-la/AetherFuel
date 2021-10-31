@@ -31,12 +31,12 @@ function Camera()
         this.numRowsSeen = Math.floor(canvas.height / TRACK_H);
     }
     
-    this.followPlayer = function(player)
+    this.followPlayer = function(target)
     {
-        this.panX = player.x; //- canvas.width / 2; 
-        this.panY = player.y;// - canvas.height / 2; 
+        this.panX = target.x; //- canvas.width / 2; 
+        this.panY = target.y;// - canvas.height / 2; 
 
-        this.angle = -player.ang;
+        this.angle = -target.ang;
     
         // this.checkForCollisions();
         // this.updateTracksSeen();
@@ -50,7 +50,7 @@ function Camera()
     this.translate = function()
     {
         canvasContext.save();
-        
+
         canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
 
         if (!editorMode)

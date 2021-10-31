@@ -5,6 +5,7 @@ var canvas, canvasContext;
 var player = new Player();
 var camera = new Camera();
 var miniMap = new MiniMap();
+var editor = new Editor();
 
 function updateMousePos(evt)
 {
@@ -36,6 +37,7 @@ function imageLoadingDoneSoStartGame()
 
     setupInput();
     camera.initialize();
+    editor.initialize();
 
     loadLevel(levelOne, 15, 40);
     // loadLevel(levelTwo, 47, 70);
@@ -58,19 +60,25 @@ function loadLevel(whichLevel, numRows, numCols)
 
 function updateAll()
 {
-    moveAll();
-    drawAll();    
+    if (!editorMode)
+    {
+        gameMoveAll();
+        gameDrawAll();    
+    }
+    else
+    {
+        editorMoveAll()
+        editorDrawAll();
+    }
 }
 
-function moveAll()
+function editorMoveAll()
 {
-    player.move();
-    player.handleCollisionWithTracksAdvanced();
-
-    camera.followPlayer(player);
+    editor.move();
+    camera.followPlayer(editor);
 }
 
-function drawAll()
+function editorDrawAll()
 {
     clearScreen();
 
@@ -81,11 +89,6 @@ function drawAll()
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
-    if (!editorMode)
-    {
-        player.draw();
-    }
-
     // Restore the context
     canvasContext.restore();
 
@@ -93,7 +96,35 @@ function drawAll()
     miniMap.draw();
 
     // Editor
-    editorDraw();
+    editor.editorDraw();
+}
+
+function gameMoveAll()
+{
+    player.move();
+    player.handleCollisionWithTracksAdvanced();
+
+    camera.followPlayer(player);
+}
+
+function gameDrawAll()
+{
+    clearScreen();
+
+    // Translate the context for camera scrolling
+    camera.translate();
+
+    // Draw all images
+    drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
+               camera.minTrackSeenI, camera.maxTrackSeenI);
+
+    player.draw();
+
+    // Restore the context
+    canvasContext.restore();
+
+    // Draw the minimap
+    miniMap.draw();
 }
 
 function clearScreen()
