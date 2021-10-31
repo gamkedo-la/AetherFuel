@@ -49,6 +49,12 @@ function Editor()
         if (!editorMode){ return; }
 
         trackGrid[mouseIdx] = editorPaintType;
+
+        if (editorPaintType == TRACK_START)
+        {
+            trackGrid[playerStart] == TRACK_ROAD;
+            playerStart = mouseIdx;
+        }
     }
 
     this.draw = function()
@@ -57,17 +63,30 @@ function Editor()
 
         this.displayEditorLabel();
 
-        var useImg = trackPix[editorPaintType];
+        if (editorPaintType == TRACK_START)
+        {
+            var useImg = playerPic
+            canvasContext.globalAlpha = 0.5;
+            drawBitmapCenteredWithRotation(useImg,
+                                           mouseX,
+                                           mouseY,
+                                           -Math.PI / 2);
+            canvasContext.globalAlpha = 1.0;
+        }
+        else
+        {
+            var useImg = trackPix[editorPaintType];
+            
+            colorRect(mouseX - useImg.width / 2 - 2,
+                      mouseY - useImg.height / 2 - 2,
+                      useImg.width + 4,
+                      useImg.height + 4,
+                      "black")
 
-        colorRect(mouseX - useImg.width / 2 - 2,
-                  mouseY - useImg.height / 2 - 2,
-                  useImg.width + 4,
-                  useImg.height + 4,
-                  "black")
-                
-        canvasContext.drawImage(useImg,
-                                mouseX - useImg.width / 2,
-                                mouseY - useImg.height / 2);
+            canvasContext.drawImage(useImg,
+                                    mouseX - useImg.width / 2,
+                                    mouseY - useImg.height / 2);
+        }
     }
     
     this.displayEditorLabel = function() 
@@ -85,12 +104,17 @@ function Editor()
             if (keyCode == KEY_TAB)
             {
                 editorMode = true;
+                trackGrid[playerStart] = TRACK_START;
             }
             return;
         }
 
         switch(keyCode)
         {
+            case KEY_NUM_ROW_0:
+                editorPaintType = TRACK_START;
+                break;
+
             case KEY_NUM_ROW_1:
                 editorPaintType = TRACK_ROAD;
                 break;
@@ -111,6 +135,7 @@ function Editor()
 
             case KEY_TAB:
                 editorMode = false;
+                player.reset("Player", playerPic);
                 break;
 
             case KEY_W:

@@ -10,6 +10,7 @@ const KEY_S = 83;
 
 const KEY_E = 69;
 
+const KEY_NUM_ROW_0 = 48;
 const KEY_NUM_ROW_1 = 49;
 const KEY_NUM_ROW_2 = 50;
 const KEY_NUM_ROW_3 = 51;
