@@ -6,7 +6,7 @@ const MIN_SPEED_TO_TURN = 0.5;
 
 function Player()
 {
-    this.name = "Unnamed Car";
+    this.name = "Unnamed";
 
     this.x;
     this.y;
@@ -34,9 +34,9 @@ function Player()
         this.controlKeyLeft = leftKey;        
     }
 
-    this.reset = function(carName, whichPic)
+    this.reset = function(name, whichPic)
     {
-        this.name = carName;
+        this.name = name;
         this.pic = whichPic;
 
         this.ang = -Math.PI / 2;

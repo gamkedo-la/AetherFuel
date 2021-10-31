@@ -8,7 +8,7 @@ function Editor()
     this.y = 0;
     this.ang = 0;
 
-    this.speed = 10.0;
+    this.speed = 20.0;
 
     this.isMovingUp = false;
     this.isMovingLeft = false;
@@ -44,14 +44,14 @@ function Editor()
         }
     }
 
-    this.editorClick = function()
+    this.click = function()
     {
         if (!editorMode){ return; }
 
         trackGrid[mouseIdx] = editorPaintType;
     }
 
-    this.editorDraw = function()
+    this.draw = function()
     {
         if (!editorMode){ return; }
 
@@ -78,7 +78,7 @@ function Editor()
         colorText("EDITOR", 5, 30, "black");
     }
 
-    this.editorKey = function(keyCode)
+    this.setKey = function(keyCode)
     {
         if (!editorMode)
         {

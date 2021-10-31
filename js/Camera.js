@@ -31,7 +31,7 @@ function Camera()
         this.numRowsSeen = Math.floor(canvas.height / TRACK_H);
     }
     
-    this.followPlayer = function(target)
+    this.follow = function(target)
     {
         this.panX = target.x; //- canvas.width / 2; 
         this.panY = target.y;// - canvas.height / 2; 

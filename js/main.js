@@ -4,8 +4,8 @@ var canvas, canvasContext;
 
 var player = new Player();
 var camera = new Camera();
-var miniMap = new MiniMap();
 var editor = new Editor();
+var miniMap = new MiniMap();
 
 function updateMousePos(evt)
 {
@@ -53,7 +53,7 @@ function loadLevel(whichLevel, numRows, numCols)
     camera.initialize();
 
     trackGrid = whichLevel.slice();
-    player.reset("Scarlett Witch", car2Pic);
+    player.reset("Player", playerPic);
 
     miniMap.setSizes();
 }
@@ -75,7 +75,7 @@ function updateAll()
 function editorMoveAll()
 {
     editor.move();
-    camera.followPlayer(editor);
+    camera.follow(editor);
 }
 
 function editorDrawAll()
@@ -96,7 +96,7 @@ function editorDrawAll()
     miniMap.draw();
 
     // Editor
-    editor.editorDraw();
+    editor.draw();
 }
 
 function gameMoveAll()
@@ -104,7 +104,7 @@ function gameMoveAll()
     player.move();
     player.handleCollisionWithTracksAdvanced();
 
-    camera.followPlayer(player);
+    camera.follow(player);
 }
 
 function gameDrawAll()

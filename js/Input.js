@@ -46,7 +46,7 @@ function keyPressed(evt)
     keySet(evt, player, true);
 
     // Editor
-    editor.editorKey(evt.keyCode);
+    editor.setKey(evt.keyCode);
 
     evt.preventDefault();
 }
@@ -65,7 +65,7 @@ function keyReleased(evt)
 
 function handleClick(evt)
 {
-    editor.editorClick();
+    editor.click();
 }
 
 function setupInput()
