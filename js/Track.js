@@ -162,10 +162,32 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             highlightTileIfEditorMode(trackIdx, drawTileX, drawTileY);
 
             var tileKind = trackGrid[trackIdx];
+
+            if (editorMode)
+            {
+                if (trackIdx == playerStart)
+                {
+                    tileKind = TRACK_START;
+                }
+            }
+
             if (tileKind == TRACK_ROAD){ continue; }
 
-            var useImg = trackPix[tileKind];
-            canvasContext.drawImage(useImg, drawTileX, drawTileY);
+            if (tileKind != TRACK_START)
+            {
+                var useImg = trackPix[tileKind];
+                canvasContext.drawImage(useImg, drawTileX, drawTileY);
+            }
+            else
+            {
+                var useImg = playerPic
+                canvasContext.globalAlpha = 0.5;
+                drawBitmapCenteredWithRotation(useImg,
+                                               drawTileX + useImg.width/2,
+                                               drawTileY + useImg.height/2,
+                                               -Math.PI / 2);
+                canvasContext.globalAlpha = 1.0;
+            }
 
             drawTileX += TRACK_W;
         }
