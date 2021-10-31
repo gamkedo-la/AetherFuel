@@ -162,10 +162,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             highlightTileIfEditorMode(trackIdx, drawTileX, drawTileY);
 
             var tileKind = trackGrid[trackIdx];
-            if (tileKind == TRACK_ROAD)
-            {
-                continue;
-            }
+            if (tileKind == TRACK_ROAD){ continue; }
 
             var useImg = trackPix[tileKind];
             canvasContext.drawImage(useImg, drawTileX, drawTileY);
@@ -196,8 +193,6 @@ function drawBackGround(trackStartJ, trackEndJ, trackStartI, trackEndI)
         for (var j = trackStartJ; j < trackEndJ; j++)
         {
             var drawTileX = j * TRACK_W;
-
-            var trackIdx = i * trackNumCols + j;
 
             var useImg = trackPix[TRACK_ROAD];
 

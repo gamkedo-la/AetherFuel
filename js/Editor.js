@@ -93,11 +93,14 @@ function Editor()
         {
             case KEY_NUM_ROW_1:
                 editorPaintType = TRACK_ROAD;
-                
                 break;
             
             case KEY_NUM_ROW_2:
                 editorPaintType = TRACK_WALL;
+                break;
+
+            case KEY_NUM_ROW_3:
+                editorPaintType = TRACK_GOAL;
                 break;
 
             case KEY_E:
