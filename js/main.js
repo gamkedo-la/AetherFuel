@@ -7,17 +7,6 @@ var camera = new Camera();
 var editor = new Editor();
 var miniMap = new MiniMap();
 
-function updateMousePos(evt)
-{
-    var rect = canvas.getBoundingClientRect();
-    var root = document.documentElement;
-
-    mouseX = evt.clientX - rect.left - root.scrollLeft;
-    mouseY = evt.clientY - rect.top - root.scrollTop;
-    
-    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX - canvas.width/2,
-                                 mouseY + camera.panY - canvas.height * 0.95);
-}
 
 window.onload = function()
 {

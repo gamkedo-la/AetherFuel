@@ -66,13 +66,33 @@ function keyReleased(evt)
 
 function handleClick(evt)
 {
+    if (!editorMode){ return; }
     editor.click();
+}
+
+function handleClickReleased(evt)
+{
+    if (!editorMode){ return; }
+    editor.releaseClick();
+}
+
+function updateMousePos(evt)
+{
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+
+    mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseY = evt.clientY - rect.top - root.scrollTop;
+    
+    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX - canvas.width/2,
+                                 mouseY + camera.panY - canvas.height * 0.95);
 }
 
 function setupInput()
 {
     canvas.addEventListener("mousemove", updateMousePos);
     canvas.addEventListener("mousedown", handleClick);
+    canvas.addEventListener("mouseup", handleClickReleased);
 
     document.addEventListener("keydown", keyPressed);
     document.addEventListener("keyup", keyReleased);

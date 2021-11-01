@@ -15,6 +15,9 @@ function Editor()
     this.isMovingDown = false;
     this.isMovingRight = false;
 
+    this.isSelectingMultipleTiles = false;
+    this.firstTileSelected = 0;
+
     this.initialize = function()
     {
         this.x = 0;
@@ -46,8 +49,6 @@ function Editor()
 
     this.click = function()
     {
-        if (!editorMode){ return; }
-
         trackGrid[mouseIdx] = editorPaintType;
 
         if (editorPaintType == TRACK_START)
@@ -55,6 +56,44 @@ function Editor()
             trackGrid[playerStart] == TRACK_ROAD;
             playerStart = mouseIdx;
         }
+        else
+        {
+            this.isSelectingMultipleTiles = true;
+            this.firstTileSelected = mouseIdx;
+        }
+    }
+
+    this.releaseClick = function()
+    {
+        console.log("released");
+
+        var lastTileSelectedI = Math.floor(mouseIdx / trackNumCols);
+        var lastTileSelectedJ = mouseIdx % trackNumCols;
+
+        var firstTileSelectedI = Math.floor(this.firstTileSelected / trackNumCols);
+        var firstTileSelectedJ = this.firstTileSelected % trackNumCols;
+
+        // trackI * trackNumCols + trackJ
+        var selectedTileMinI = Math.min(trackNumRows - 1, Math.max(0, Math.min(lastTileSelectedI, firstTileSelectedI)));
+        var selectedTileMaxI = Math.min(trackNumRows - 1, Math.max(0, Math.max(lastTileSelectedI, firstTileSelectedI))) + 1;
+
+        var selectedTileMinJ = Math.min(trackNumCols - 1, Math.max(0, Math.min(lastTileSelectedJ, firstTileSelectedJ)));
+        var selectedTileMaxJ = Math.min(trackNumCols - 1, Math.max(0, Math.max(lastTileSelectedJ, firstTileSelectedJ))) + 1;
+
+        console.log("[ " + selectedTileMinI + " , " + selectedTileMaxI + " ]");
+        console.log("[ " + selectedTileMinJ + " , " + selectedTileMaxJ + " ]");
+
+        // Update all the tracks in between
+        for (var trackI = selectedTileMinI; trackI < selectedTileMaxI; trackI++)
+        {
+            for (var trackJ = selectedTileMinJ; trackJ < selectedTileMaxJ; trackJ++)
+            {
+                var trackIdx = trackI * trackNumCols + trackJ;
+                trackGrid[trackIdx] = editorPaintType;
+            }
+        }
+
+        this.isSelectingMultipleTiles = false;
     }
 
     this.draw = function()
