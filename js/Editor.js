@@ -16,7 +16,10 @@ function Editor()
     this.isMovingRight = false;
 
     this.isSelectingMultipleTiles = false;
+
     this.firstTileSelected = 0;
+    this.firstTileSelectedI = 0;
+    this.firstTileSelectedJ = 0;
 
     this.initialize = function()
     {
@@ -60,25 +63,23 @@ function Editor()
         {
             this.isSelectingMultipleTiles = true;
             this.firstTileSelected = mouseIdx;
+            
+            this.firstTileSelectedI = mouseTileI;
+            this.firstTileSelectedJ = mouseTileJ;
         }
     }
 
     this.releaseClick = function()
     {
-        console.log("released");
-
-        var lastTileSelectedI = Math.floor(mouseIdx / trackNumCols);
-        var lastTileSelectedJ = mouseIdx % trackNumCols;
-
-        var firstTileSelectedI = Math.floor(this.firstTileSelected / trackNumCols);
-        var firstTileSelectedJ = this.firstTileSelected % trackNumCols;
+        var lastTileSelectedI = mouseTileI;
+        var lastTileSelectedJ = mouseTileJ;
 
         // trackI * trackNumCols + trackJ
-        var selectedTileMinI = clipBetween(Math.min(lastTileSelectedI, firstTileSelectedI), 0, trackNumRows - 1);
-        var selectedTileMaxI = clipBetween(Math.max(lastTileSelectedI, firstTileSelectedI), 0, trackNumRows - 1) + 1;
+        var selectedTileMinI = clipBetween(Math.min(lastTileSelectedI, this.firstTileSelectedI), 0, trackNumRows - 1);
+        var selectedTileMaxI = clipBetween(Math.max(lastTileSelectedI, this.firstTileSelectedI), 0, trackNumRows - 1) + 1;
 
-        var selectedTileMinJ = clipBetween(Math.min(lastTileSelectedJ, firstTileSelectedJ), 0, trackNumCols - 1);
-        var selectedTileMaxJ = clipBetween(Math.max(lastTileSelectedJ, firstTileSelectedJ), 0, trackNumCols - 1) + 1;
+        var selectedTileMinJ = clipBetween(Math.min(lastTileSelectedJ, this.firstTileSelectedJ), 0, trackNumCols - 1);
+        var selectedTileMaxJ = clipBetween(Math.max(lastTileSelectedJ, this.firstTileSelectedJ), 0, trackNumCols - 1) + 1;
 
         // Update all the tracks in between
         for (var trackI = selectedTileMinI; trackI < selectedTileMaxI; trackI++)
@@ -112,16 +113,41 @@ function Editor()
         else
         {
             var useImg = trackPix[editorPaintType];
-            
-            colorRect(mouseX - useImg.width / 2 - 2,
-                      mouseY - useImg.height / 2 - 2,
-                      useImg.width + 4,
-                      useImg.height + 4,
-                      "black")
 
-            canvasContext.drawImage(useImg,
-                                    mouseX - useImg.width / 2,
-                                    mouseY - useImg.height / 2);
+            if (!this.isSelectingMultipleTiles)
+            {
+                colorRect(mouseTileJ * TRACK_W,
+                          mouseTileI * TRACK_H,
+                          useImg.width,
+                          useImg.height,
+                          "black")
+    
+                canvasContext.drawImage(useImg,
+                                        mouseTileJ * TRACK_W + 2,
+                                        mouseTileI * TRACK_H + 2,
+                                        useImg.width - 4,
+                                        useImg.height - 4);
+            }
+            else
+            {
+                for (var tileJ = this.firstTileSelectedJ; tileJ < mouseTileJ + 1; tileJ++)
+                {
+                    for (var tileI = this.firstTileSelectedI; tileI < mouseTileI + 1; tileI++)
+                    {
+                        colorRect(tileJ * TRACK_W,
+                            tileI * TRACK_H,
+                            useImg.width + 2,
+                            useImg.height + 2,
+                            "black")
+      
+                        canvasContext.drawImage(useImg,
+                                                tileJ * TRACK_W + 2,
+                                                tileI * TRACK_H + 2,
+                                                useImg.width - 2,
+                                                useImg.height - 2);
+                    }
+                }
+            }
         }
     }
     

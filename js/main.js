@@ -78,14 +78,14 @@ function editorDrawAll()
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
+    // Editor
+    editor.draw();
+
     // Restore the context
     canvasContext.restore();
 
     // Draw the minimap
     miniMap.draw();
-
-    // Editor
-    editor.draw();
 }
 
 function gameMoveAll()

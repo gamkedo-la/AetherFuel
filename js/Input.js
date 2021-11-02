@@ -18,6 +18,8 @@ const KEY_NUM_ROW_3 = 51;
 const KEY_TAB = 9;
 
 var mouseX, mouseY;
+var mouseTileI = 0;
+var mouseTileJ = 0;
 var mouseIdx = 0;
 
 function keySet(keyEvt, player, setTo)
@@ -86,6 +88,9 @@ function updateMousePos(evt)
     
     mouseIdx = getTrackIdxFromXY(mouseX + camera.panX - canvas.width/2,
                                  mouseY + camera.panY - canvas.height * 0.95);
+    
+    mouseTileI = Math.floor(mouseIdx / trackNumCols);
+    mouseTileJ = mouseIdx % trackNumCols;
 }
 
 function setupInput()
