@@ -21,6 +21,7 @@ function Camera()
     this.numColsSeen;
 
     this.angle = 0;
+    this.rotationSpeed = 0.1;
 
     this.initialize = function()
     {
@@ -36,7 +37,7 @@ function Camera()
         this.panX = target.x; //- canvas.width / 2; 
         this.panY = target.y;// - canvas.height / 2; 
 
-        this.angle = -target.ang;
+        this.angle = lerp(this.angle, -target.ang, this.rotationSpeed);
     
         // this.checkForCollisions();
         // this.updateTracksSeen();
