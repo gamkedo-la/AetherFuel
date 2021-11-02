@@ -74,14 +74,11 @@ function Editor()
         var firstTileSelectedJ = this.firstTileSelected % trackNumCols;
 
         // trackI * trackNumCols + trackJ
-        var selectedTileMinI = Math.min(trackNumRows - 1, Math.max(0, Math.min(lastTileSelectedI, firstTileSelectedI)));
-        var selectedTileMaxI = Math.min(trackNumRows - 1, Math.max(0, Math.max(lastTileSelectedI, firstTileSelectedI))) + 1;
+        var selectedTileMinI = clipBetween(Math.min(lastTileSelectedI, firstTileSelectedI), 0, trackNumRows - 1);
+        var selectedTileMaxI = clipBetween(Math.max(lastTileSelectedI, firstTileSelectedI), 0, trackNumRows - 1) + 1;
 
-        var selectedTileMinJ = Math.min(trackNumCols - 1, Math.max(0, Math.min(lastTileSelectedJ, firstTileSelectedJ)));
-        var selectedTileMaxJ = Math.min(trackNumCols - 1, Math.max(0, Math.max(lastTileSelectedJ, firstTileSelectedJ))) + 1;
-
-        console.log("[ " + selectedTileMinI + " , " + selectedTileMaxI + " ]");
-        console.log("[ " + selectedTileMinJ + " , " + selectedTileMaxJ + " ]");
+        var selectedTileMinJ = clipBetween(Math.min(lastTileSelectedJ, firstTileSelectedJ), 0, trackNumCols - 1);
+        var selectedTileMaxJ = clipBetween(Math.max(lastTileSelectedJ, firstTileSelectedJ), 0, trackNumCols - 1) + 1;
 
         // Update all the tracks in between
         for (var trackI = selectedTileMinI; trackI < selectedTileMaxI; trackI++)
