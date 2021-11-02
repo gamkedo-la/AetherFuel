@@ -157,6 +157,16 @@ function Editor()
         colorRect(0, 0, 125, 40, "red");
         canvasContext.globalAlpha = 1.0;
         colorText("EDITOR", 5, 30, "black");
+
+        // and some edit mode help because I keep forgetting
+        var hx=5,hy=40,hs=17;
+        colorRect(0, hy, 125, hs*6+5, "rgba(0,0,0,0.33)");
+        colorText("TAB to Return", hx, hy+=hs, "white", 16);
+        colorText("0 - Start", hx, hy+=hs, "white", 16);
+        colorText("1 - Road", hx, hy+=hs, "white", 16);
+        colorText("2 - Wall", hx, hy+=hs, "white", 16);
+        colorText("3 - Finish", hx, hy+=hs, "white", 16);
+        colorText("E - Export", hx, hy+=hs, "white", 16);
     }
 
     this.setKey = function(keyCode)

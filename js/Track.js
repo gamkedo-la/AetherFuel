@@ -1,4 +1,4 @@
-const TRACK_W = 40
+const TRACK_W = 40;
 const TRACK_H = 40;
 // const TRACK_COUNT = trackNumCols * trackNumRows;
 
