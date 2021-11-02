@@ -160,14 +160,68 @@ function Editor()
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 125, hs*6+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 125, hs*9+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
-        colorText("0 - Start", hx, hy+=hs, "white", 16);
+        colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
-        colorText("3 - Finish", hx, hy+=hs, "white", 16);
+        colorText("3 - Finish line", hx, hy+=hs, "white", 16);
+        colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
+        colorText("X - Fill Map", hx, hy+=hs, "white", 16);
+        colorText("C - Corners", hx, hy+=hs, "white", 16);
         colorText("E - Export", hx, hy+=hs, "white", 16);
     }
+
+    // erases the entire map and fills it with a single tile
+    this.fillMap = function() {
+        for (let i=0; i<trackGrid.length; i++) {
+            trackGrid[i] = editorPaintType;
+        }
+    }        
+
+    // adds smooth curves on the four corners of the map
+    this.curvyCorners = function(radius) {
+        var curveTemplate = [
+            [1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,0],
+            [1,1,1,1,1,0,0,0],
+            [1,1,1,1,0,0,0,0],
+            [1,1,1,0,0,0,0,0],
+            [1,1,0,0,0,0,0,0],
+            [1,1,0,0,0,0,0,0],
+            [1,0,0,0,0,0,0,0]
+        ];
+        
+        // top left curve
+        for (let r=0; r<8; r++) {
+            for (let c=0; c<8; c++) {
+                let val = curveTemplate[r][c];
+                if (val) setTrackTypeAtIJ(r,c,val);
+            }
+        }
+
+        this.mirrorSymmetry(); // the other three
+
+    }        
+
+    // copies the top left corner 3x on map
+    this.mirrorSymmetry = function() {
+        var rows = Math.floor(trackNumRows/2);
+        var cols = Math.floor(trackNumCols/2);
+        var val;
+        for (let r=0; r<rows; r++) {
+            for (let c=0; c<cols; c++) {
+                // get top left
+                val = returnTrackTypeAtIJ(r,c);
+                // set bottom right
+                setTrackTypeAtIJ(trackNumRows-r,trackNumCols-c,val);
+                // set top right
+                setTrackTypeAtIJ(r,trackNumCols-c,val);
+                // set bottom left
+                setTrackTypeAtIJ(trackNumRows-r,c,val);
+            }
+        }
+    }        
 
     this.setKey = function(keyCode)
     {
@@ -197,6 +251,18 @@ function Editor()
 
             case KEY_NUM_ROW_3:
                 editorPaintType = TRACK_GOAL;
+                break;
+
+            case KEY_X:
+                this.fillMap();
+                break;
+
+            case KEY_C:
+                this.curvyCorners();
+                break;
+
+            case KEY_Z:
+                this.mirrorSymmetry();
                 break;
 
             case KEY_E:

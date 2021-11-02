@@ -8,6 +8,11 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 
+// used by editor
+const KEY_Z = 90;
+const KEY_X = 88;
+const KEY_C = 67;
+
 const KEY_E = 69;
 
 const KEY_NUM_ROW_0 = 48;

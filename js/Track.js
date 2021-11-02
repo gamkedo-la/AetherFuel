@@ -145,6 +145,15 @@ function returnTrackTypeAtIJ(trackI, trackJ)
     return TRACK_WALL;
 }
 
+function setTrackTypeAtIJ(trackI, trackJ, value)
+{
+    if (trackI >= 0 && trackI < trackNumRows &&
+        trackJ >= 0 && trackJ < trackNumCols)
+    {
+        trackGrid[trackI * trackNumCols + trackJ] = value;
+    }
+}
+
 // Draws all track tile from trackStartX to trackEndX and from trackStartY to trackEndY
 function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
 {
