@@ -56,7 +56,7 @@ function Editor()
 
         if (editorPaintType == TRACK_START)
         {
-            trackGrid[playerStart] == TRACK_ROAD;
+            trackGrid[playerStart] = TRACK_ROAD;
             playerStart = mouseIdx;
         }
         else
@@ -71,6 +71,8 @@ function Editor()
 
     this.releaseClick = function()
     {
+        if (!this.isSelectingMultipleTiles){ return; }
+
         var lastTileSelectedI = mouseTileI;
         var lastTileSelectedJ = mouseTileJ;
 
@@ -105,8 +107,8 @@ function Editor()
             var useImg = playerPic
             canvasContext.globalAlpha = 0.5;
             drawBitmapCenteredWithRotation(useImg,
-                                           mouseX,
-                                           mouseY,
+                                           mouseTileJ * TRACK_W + useImg.width / 2,
+                                           mouseTileI * TRACK_H  + useImg.height / 2,
                                            -Math.PI / 2);
             canvasContext.globalAlpha = 1.0;
         }
