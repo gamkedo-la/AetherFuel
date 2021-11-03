@@ -36,6 +36,8 @@ function Player()
 
     this.reset = function(name, whichPic)
     {
+        console.log(trackGrid);
+
         this.name = name;
         this.pic = whichPic;
 
@@ -115,7 +117,17 @@ function Player()
         else if (trackType == TRACK_GOAL)
         {
             console.log(this.name + " wins!!!");
-            loadLevel(levelThree, 47, 70);
+
+            if (currentLevel == levels.length - 1)
+            {
+                currentLevel = 0;
+            }
+            else
+            {
+                currentLevel++;
+            }
+            
+            loadLevel(currentLevel);
         }
     }
 

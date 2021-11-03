@@ -7,6 +7,12 @@ var camera = new Camera();
 var editor = new Editor();
 var miniMap = new MiniMap();
 
+var levels = [
+    new ErimiaPlanet(15, 40),
+    new DasimPlanet(47, 70),
+];
+
+var currentLevel = 0;
 
 window.onload = function()
 {
@@ -28,20 +34,25 @@ function imageLoadingDoneSoStartGame()
     camera.initialize();
     editor.initialize();
 
-    loadLevel(levelOne, 15, 40);
-    // loadLevel(levelTwo, 47, 70);
-    // loadLevel(levelThree, 47, 70);
+    loadLevel(currentLevel);
 }
 
 
-function loadLevel(whichLevel, numRows, numCols)
+function loadLevel(whichLevel)
 {
-    trackNumRows = numRows;
-    trackNumCols = numCols;
+    level = levels[whichLevel];
+
+    trackNumRows = level.numRows;
+    trackNumCols = level.numCols;
+
+    console.log(trackNumRows);
+    console.log(trackNumCols);
 
     camera.initialize();
 
-    trackGrid = whichLevel.slice();
+    trackGrid = level.track.slice();
+    console.log(trackGrid);
+
     player.reset("Player", playerPic);
 
     miniMap.setSizes();
