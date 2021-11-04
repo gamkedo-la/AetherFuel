@@ -81,16 +81,22 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             if (tileKind != TRACK_START)
             {
                 var useImg = trackPix[tileKind];
-                canvasContext.drawImage(useImg, drawTileX, drawTileY);
+                canvasContext.drawImage(useImg,
+                                        drawTileX,
+                                        drawTileY, 
+                                        useImg.width,
+                                        useImg.height);
             }
             else
             {
                 var useImg = playerPic
                 canvasContext.globalAlpha = 0.5;
                 drawBitmapCenteredWithRotation(useImg,
-                                               drawTileX + useImg.width/2,
-                                               drawTileY + useImg.height/2,
-                                               -Math.PI / 2);
+                                               (drawTileX + useImg.width/2),
+                                               (drawTileY + useImg.height/2),
+                                               -Math.PI / 2, 
+                                               useImg.width,
+                                               useImg.height);
                 canvasContext.globalAlpha = 1.0;
             }
 
@@ -111,7 +117,9 @@ function drawBackGround(trackStartJ, trackEndJ, trackStartI, trackEndI)
 
             var useImg = trackPix[TRACK_ROAD];
 
-            canvasContext.drawImage(useImg, drawTileX, drawTileY);
+            canvasContext.drawImage(useImg, drawTileX, drawTileY, 
+                                    useImg.width,
+                                    useImg.height);
             drawTileX += TRACK_W;
         }
     }

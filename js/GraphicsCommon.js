@@ -1,9 +1,9 @@
-function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle)
+function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle, width, height)
 {
     canvasContext.save();
     canvasContext.translate(xPos, yPos);
     canvasContext.rotate(angle);
-    canvasContext.drawImage(bitmap, -bitmap.width/2, -bitmap.height/2);
+    canvasContext.drawImage(bitmap, -bitmap.width/2, -bitmap.height/2, width, height);
     canvasContext.restore();
 }
 

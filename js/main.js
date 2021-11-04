@@ -2,8 +2,8 @@ const FRAME_PER_SECOND = 30
 
 var canvas, canvasContext;
 
-var player = new Player();
 var camera = new Camera();
+var player = new Player();
 var editor = new Editor();
 var miniMap = new MiniMap();
 

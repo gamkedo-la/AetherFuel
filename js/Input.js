@@ -91,11 +91,18 @@ function updateMousePos(evt)
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
     
-    mouseIdx = getTrackIdxFromXY(mouseX + camera.panX - canvas.width/2,
-                                 mouseY + camera.panY - canvas.height * 0.95);
+    mouseIdx = getTrackIdxFromXY(mouseX / camera.zoom + camera.panX,
+                                 mouseY / camera.zoom + camera.panY);
     
     mouseTileI = Math.floor(mouseIdx / trackNumCols);
     mouseTileJ = mouseIdx % trackNumCols;
+}
+
+function handleWheel(evt)
+{
+    console.log(evt.deltaY);
+
+    camera.zoom += evt.deltaY / 6000.0;
 }
 
 function setupInput()
@@ -103,6 +110,7 @@ function setupInput()
     canvas.addEventListener("mousemove", updateMousePos);
     canvas.addEventListener("mousedown", handleClick);
     canvas.addEventListener("mouseup", handleClickReleased);
+    canvas.addEventListener("wheel", handleWheel);
 
     document.addEventListener("keydown", keyPressed);
     document.addEventListener("keyup", keyReleased);

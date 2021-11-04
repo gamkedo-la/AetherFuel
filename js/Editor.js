@@ -24,7 +24,7 @@ function Editor()
     this.initialize = function()
     {
         this.x = 0;
-        this.y = canvas.height;
+        this.y = 0;
     }
 
     this.move = function()
@@ -109,7 +109,9 @@ function Editor()
             drawBitmapCenteredWithRotation(useImg,
                                            mouseTileJ * TRACK_W + useImg.width / 2,
                                            mouseTileI * TRACK_H  + useImg.height / 2,
-                                           -Math.PI / 2);
+                                           -Math.PI / 2,
+                                           useImg.width,
+                                           useImg.height);
             canvasContext.globalAlpha = 1.0;
         }
         else
@@ -127,8 +129,8 @@ function Editor()
                 canvasContext.drawImage(useImg,
                                         mouseTileJ * TRACK_W + 2,
                                         mouseTileI * TRACK_H + 2,
-                                        useImg.width - 4,
-                                        useImg.height - 4);
+                                        (useImg.width - 4),
+                                        (useImg.height - 4));
             }
             else
             {
@@ -143,10 +145,10 @@ function Editor()
                     for (var tileI = minTileI; tileI < maxTileI + 1; tileI++)
                     {
                         colorRect(tileJ * TRACK_W,
-                            tileI * TRACK_H,
-                            useImg.width + 2,
-                            useImg.height + 2,
-                            "black")
+                                  tileI * TRACK_H,
+                                  useImg.width + 2,
+                                  useImg.height + 2,
+                                  "black")
       
                         canvasContext.drawImage(useImg,
                                                 tileJ * TRACK_W + 2,

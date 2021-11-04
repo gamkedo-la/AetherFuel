@@ -138,6 +138,8 @@ function Player()
 
     this.draw = function()
     {
-        drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang);
+        drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang,
+                                       this.pic.width,
+                                       this.pic.height);
     }
 }

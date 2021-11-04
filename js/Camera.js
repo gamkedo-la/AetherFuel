@@ -23,6 +23,8 @@ function Camera()
     this.angle = 0;
     this.rotationSpeed = 0.1;
 
+    this.zoom = 1.0;
+
     this.initialize = function(panX, panY, angle)
     {
         this.maxPanX = trackNumCols * TRACK_W - canvas.width; 
@@ -56,7 +58,12 @@ function Camera()
     {
         canvasContext.save();
 
-        canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
+        if (!editorMode)
+        {
+            canvasContext.translate(canvas.width / 2, canvas.height * 0.95);
+        }
+        
+        canvasContext.scale(this.zoom, this.zoom);
 
         if (!editorMode)
         {
