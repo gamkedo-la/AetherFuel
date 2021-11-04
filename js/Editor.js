@@ -132,9 +132,15 @@ function Editor()
             }
             else
             {
-                for (var tileJ = this.firstTileSelectedJ; tileJ < mouseTileJ + 1; tileJ++)
+                var minTileJ = Math.min(this.firstTileSelectedJ, mouseTileJ);
+                var maxTileJ = Math.max(this.firstTileSelectedJ, mouseTileJ);
+
+                var minTileI = Math.min(this.firstTileSelectedI, mouseTileI);
+                var maxTileI = Math.max(this.firstTileSelectedI, mouseTileI);
+
+                for (var tileJ = minTileJ; tileJ < maxTileJ + 1; tileJ++)
                 {
-                    for (var tileI = this.firstTileSelectedI; tileI < mouseTileI + 1; tileI++)
+                    for (var tileI = minTileI; tileI < maxTileI + 1; tileI++)
                     {
                         colorRect(tileJ * TRACK_W,
                             tileI * TRACK_H,
