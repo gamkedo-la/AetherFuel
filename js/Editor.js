@@ -164,13 +164,13 @@ function Editor()
     this.displayEditorLabel = function() 
     {
         canvasContext.globalAlpha = 0.75;
-        colorRect(0, 0, 125, 40, "red");
+        colorRect(0, 0, 175, 40, "red");
         canvasContext.globalAlpha = 1.0;
         colorText("EDITOR", 5, 30, "black");
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 125, hs*9+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 175, hs*10+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
@@ -180,6 +180,7 @@ function Editor()
         colorText("X - Fill Map", hx, hy+=hs, "white", 16);
         colorText("C - Corners", hx, hy+=hs, "white", 16);
         colorText("E - Export", hx, hy+=hs, "white", 16);
+        colorText("Mouse Wheel - Zoom", hx, hy+=hs, "white", 16);
     }
 
     // erases the entire map and fills it with a single tile
