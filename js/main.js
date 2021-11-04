@@ -31,7 +31,6 @@ function imageLoadingDoneSoStartGame()
     setInterval(updateAll, 1000 / FRAME_PER_SECOND);
 
     setupInput();
-    camera.initialize();
     editor.initialize();
 
     loadLevel(currentLevel);
@@ -45,13 +44,7 @@ function loadLevel(whichLevel)
     trackNumRows = level.numRows;
     trackNumCols = level.numCols;
 
-    console.log(trackNumRows);
-    console.log(trackNumCols);
-
-    camera.initialize();
-
     trackGrid = level.track.slice();
-    console.log(trackGrid);
 
     player.reset("Player", playerPic);
 

@@ -23,13 +23,17 @@ function Camera()
     this.angle = 0;
     this.rotationSpeed = 0.1;
 
-    this.initialize = function()
+    this.initialize = function(panX, panY, angle)
     {
         this.maxPanX = trackNumCols * TRACK_W - canvas.width; 
         this.maxPanY = trackNumRows * TRACK_H - canvas.height; 
 
         this.numColsSeen = Math.floor(canvas.width / TRACK_W);
         this.numRowsSeen = Math.floor(canvas.height / TRACK_H);
+
+        this.panX = panX;
+        this.panY = panY;
+        this.angle = angle;
     }
     
     this.follow = function(target)

@@ -36,13 +36,13 @@ function Player()
 
     this.reset = function(name, whichPic)
     {
-        console.log(trackGrid);
-
         this.name = name;
         this.pic = whichPic;
 
         this.ang = -Math.PI / 2;
         this.speed = 0;
+
+        camera.initialize(this.x, this.y, -this.ang);
 
         for (var i = 0; i < trackNumRows ; i++)
         {
