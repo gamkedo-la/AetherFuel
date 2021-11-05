@@ -118,16 +118,16 @@ function Player()
         {
             console.log(this.name + " wins!!!");
 
-            if (currentLevel == levels.length - 1)
+            if (currentLevelIdx == levels.length - 1)
             {
-                currentLevel = 0;
+                currentLevelIdx = 0;
             }
             else
             {
-                currentLevel++;
+                currentLevelIdx++;
             }
             
-            loadLevel(currentLevel);
+            loadLevel(currentLevelIdx);
         }
     }
 
