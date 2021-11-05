@@ -277,9 +277,10 @@ function Editor()
                 break;
 
             case KEY_E:
-                var trackGridExport = trackGrid.slice();
-                trackGridExport[playerStart] = TRACK_START;
-                console.log(trackGridExport);
+                currentLevel.track = trackGrid.slice();
+                currentLevel.track[playerStart] = TRACK_START;
+                console.log(JSON.stringify(currentLevel));
+                
                 break;
 
             case KEY_TAB:
