@@ -1,4 +1,5 @@
-const Audio = functionAudioManager() {
+var AudioMan = new AudioManager();
+function AudioManager() {
 //--//Constants---------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
 	const DROPOFF_MIN = 60;
@@ -33,16 +34,23 @@ const Audio = functionAudioManager() {
 		masterBus.connect(audioCtx.destination);
 
 		this.initialized = true;
+		console.log("Initialized Audio");
 	};
 
 	this.reset = function() {
 		if (!initialized) return;
+		console.log("Reset Audio");
 
+		for (var i = currentSoundSources.length-1; i <=0; i--) {
+			currentSoundSources[i].stop();
+		}
+		currentSoundSources.length = 0
 
 	};
 
 	this.update = function() {
 		if (!initialized) return;
+		console.log("Update Audio");
 
 		for (var i = currentSoundSources.Length-1; i <=0; i--) {
 			currentSoundSources[i].update();
@@ -112,10 +120,13 @@ const Audio = functionAudioManager() {
 
 //--//sound objects-----------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1) {
+		if (!initialized) return;
+		console.log("Create Sound3D");
+
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate);
 		currentSoundSources.push(newSound);
+		console.log(currentSoundSources);
 		return newSound;
-
 	}
 
 	function Sound3D(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1) {
@@ -131,25 +142,25 @@ const Audio = functionAudioManager() {
 		audioFile.rate = this.rate;
 		audioFile.loop = looping;
 
+
 		//Setup nodes
-		var source = audioCtx.createMediaElementSource(audioFile);
+		//var source = audioCtx.createMediaElementSource(audioFile);
 		var gainNode = audioCtx.createGain();
 		var panNode = audioCtx.createStereoPanner();
 
-		source.connect(gainNode);
+		//source.connect(gainNode);
 		gainNode.connect(panNode);
 		panNode.connect(soundEffectsBus);
 
 
 		//Calculate volume and panning
 		gainNode.gain.value = calcuateVolumeDropoff(location);
+		gainNode.gain.value *= Math.pow(this.mixVolume, 2);
 		panNode.pan.value = calcuatePan(location);
 
-		//Set audio buffer and play
-		gainNode.gain.value *= Math.pow(this.mixVolume, 2);
-		audioFile.play();
 
 		this.update = function() {
+			console.log("Update Sound");
 			gainNode.gain.value = calcuateVolumeDropoff(location);
 			gainNode.gain.value *= Math.pow(this.mixVolume, 2);
 
@@ -161,6 +172,16 @@ const Audio = functionAudioManager() {
 			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
 			audioFile.rate *= Math.pow(2, (dopler/12));
 			lastDistance = newDistance;
+
+			console.log(dopler + " " + lastDistance + " " + audioFile.rate);
+		}
+
+		this.play = function() {
+			return audioFile.play();
+		}
+
+		this.stop = function() {
+			return audioFile.pause();
 		}
 	}
 
@@ -168,7 +189,7 @@ const Audio = functionAudioManager() {
 
 //--//Sound spatialization functions------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(player.ang + angle(player, location));
+		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
 		while (direction >= 360) {
 			direction -= 360;
 		}
@@ -189,7 +210,7 @@ const Audio = functionAudioManager() {
 		}
 
 		//Proximity
-		var distance = distance(player, location);
+		var distance = distanceBetweenTwoPoints(player, location);
 		if (distance <=  DROPOFF_MIN) {
 			var panReduction = distance/DROPOFF_MIN;
 			pan *= panReduction;
@@ -199,7 +220,7 @@ const Audio = functionAudioManager() {
 	}
 
 	function calcuateVolumeDropoff(location) {
-		var distance = distance(player, location);
+		var distance = distanceBetweenTwoPoints(player, location);
 
 		//Distance attenuation
 		var newVolume = 1;
@@ -209,7 +230,7 @@ const Audio = functionAudioManager() {
 			newVolume = 0;
 		}
 
-		var direction = radToDeg(player.ang + angle(player, location));
+		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
 		while (direction <= 0) {
 			direction += 360;
 		}

@@ -26,6 +26,9 @@ function Player()
     this.controlKeyDown;
     this.controlKeyLeft;
 
+    this.engineSoundFile = "Audio/temp_engine1.ogg"
+    var engineSound = null;
+
     this.setupInput = function(upKey, rightKey, downKey, leftKey)
     {
         this.controlKeyUp = upKey;
@@ -43,6 +46,10 @@ function Player()
         this.speed = 0;
 
         camera.initialize(this.x, this.y, -this.ang);
+
+        if (engineSound != null) engineSound.stop();
+        engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
+        if (engineSound != null) engineSound.play();
 
         for (var i = 0; i < trackNumRows ; i++)
         {

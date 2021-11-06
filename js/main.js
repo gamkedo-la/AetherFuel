@@ -20,6 +20,7 @@ window.onload = function()
     colorRect(0, 0, canvas.width, canvas.height, "black");
     colorText("Loading...", canvas.width / 2, canvas.height / 2, "white");
     loadImages();
+    AudioMan.init();
 }
 
 function imageLoadingDoneSoStartGame()
@@ -35,6 +36,8 @@ function imageLoadingDoneSoStartGame()
 
 function loadLevel(whichLevel)
 {
+    AudioMan.reset();
+    
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
 
@@ -45,6 +48,7 @@ function loadLevel(whichLevel)
 
     player.reset("Player", playerPic);
 
+
     miniMap.setSizes();
 }
 
@@ -53,7 +57,8 @@ function updateAll()
     if (!editorMode)
     {
         gameMoveAll();
-        gameDrawAll();    
+        gameDrawAll(); 
+        AudioMan.update();
     }
     else
     {
