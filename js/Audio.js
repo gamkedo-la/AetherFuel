@@ -4,6 +4,7 @@ const Audio = functionAudioManager() {
 	const DROPOFF_MIN = 60;
 	const DROPOFF_MAX = 1000;
 	const HEADSHADOW_REDUCTION = 0.5;
+	const DOPLER_SCALE = 10;
 
 //--//Properties--------------------------------------------------------------
 	var initialized = false;
@@ -43,7 +44,9 @@ const Audio = functionAudioManager() {
 	this.update = function() {
 		if (!initialized) return;
 
-
+		for (var i = currentSoundSources.Length-1; i <=0; i--) {
+			currentSoundSources[i].update();
+		}
 	};
 
 //--//volume handling functions-----------------------------------------------
@@ -107,14 +110,26 @@ const Audio = functionAudioManager() {
 		this.setSoundEffectsVolume(soundEffectsVolume - VOLUME_INCREMENT);
 	};
 
-//--//create sound objects-----------------------------------------------------
-	this.create3DSoundAttatched = function(fileNameWithPath, parent,  mixVolume = 1) {
+//--//sound objects-----------------------------------------------------
+	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1) {
+		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate);
+		currentSoundSources.push(newSound);
+		return newSound;
+
+	}
+
+	function Sound3D(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1) {
+		this.mixVolume = mixVolume;
+		this.rate = rate;
+		var lastDistance = 0;
 
 		//Setup HTMLElement
 		var audioFile = new Audio(fileNameWithPath);
 		audioFile.preservesPitch = false;
 		audioFile.mozPreservesPitch = false;
 		audioFile.webkitPreservesPitch = false;
+		audioFile.rate = this.rate;
+		audioFile.loop = looping;
 
 		//Setup nodes
 		var source = audioCtx.createMediaElementSource(audioFile);
@@ -131,17 +146,21 @@ const Audio = functionAudioManager() {
 		panNode.pan.value = calcuatePan(location);
 
 		//Set audio buffer and play
-		gainNode.gain.value *= Math.pow(mixVolume, 2);
+		gainNode.gain.value *= Math.pow(this.mixVolume, 2);
 		audioFile.play();
-
-		//Return sound object referance and push to list
-		referance = {source: source, volume: gainNode, pan: panNode, pos: location, endTime: audioCtx.currentTime+source.buffer.duration};
-		currentSoundSources.push(referance);
-		return referance;
 
 		this.update = function() {
 			gainNode.gain.value = calcuateVolumeDropoff(location);
+			gainNode.gain.value *= Math.pow(this.mixVolume, 2);
+
 			panNode.pan.value = calcuatePan(location);
+
+			//dopler
+			audioFile.rate = this.rate;
+			var newDistance = distance(player, parent);
+			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
+			audioFile.rate *= Math.pow(2, (dopler/12));
+			lastDistance = newDistance;
 		}
 	}
 
@@ -191,11 +210,11 @@ const Audio = functionAudioManager() {
 		}
 
 		var direction = radToDeg(player.ang + angle(player, location));
+		while (direction <= 0) {
+			direction += 360;
+		}
 		while (direction >= 360) {
 			direction -= 360;
-		}
-		while (direction < 0) {
-			direction += 360;
 		}
 
 		//Back of head attenuation
