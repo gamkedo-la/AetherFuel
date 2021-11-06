@@ -125,7 +125,6 @@ function AudioManager() {
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate);
 		currentSoundSources.push(newSound);
-		console.log(currentSoundSources);
 		return newSound;
 	}
 

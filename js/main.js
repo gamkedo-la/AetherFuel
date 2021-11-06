@@ -10,6 +10,8 @@ var miniMap = new MiniMap();
 var currentLevelIdx = 0;
 var currentLevel;
 
+var backgroundMusic = document.createElement("AUDIO");
+
 window.onload = function()
 {
     canvas = document.getElementById("gameCanvas");
@@ -21,6 +23,10 @@ window.onload = function()
     colorText("Loading...", canvas.width / 2, canvas.height / 2, "white");
     loadImages();
     AudioMan.init();
+
+    document.addEventListener("mouseup", function() {backgroundMusic.play();});
+    backgroundMusic.src = "Audio/synthwaveExperiment1V2(2).wav";
+    backgroundMusic.looping = true;
 }
 
 function imageLoadingDoneSoStartGame()
@@ -31,12 +37,20 @@ function imageLoadingDoneSoStartGame()
     editor.initialize();
 
     loadLevel(currentLevelIdx);
+    
 }
 
 
 function loadLevel(whichLevel)
 {
     AudioMan.reset();
+
+    //console.log("AudioMan.currentSoundSources: " + AudioMan.currentSoundSources);
+    // if (whichLevel == 0)
+    // {
+    //     AudioMan.createSound3D("Audio/synthwaveExperiment1V2(2).wav", null, true, 1, 1);
+    //     AudioMan.currentSoundSources[0].play();
+    // }
     
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
