@@ -14,6 +14,8 @@ function Player()
     this.colIdx;
     this.ang = Math.PI / 2;
     this.speed = 0;
+    this.lapsPassed = 0;
+    this.isLap = false;
     this.pic;
 
     this.keyHeldGas = false;
@@ -44,6 +46,8 @@ function Player()
 
         this.ang = -Math.PI / 2;
         this.speed = 0;
+        this.lapsPassed = 0;
+        this.isLap = false
 
         camera.initialize(this.x, this.y, -this.ang);
 
@@ -124,10 +128,19 @@ function Player()
         {
             this.x -= 1.5 * this.speed * Math.cos(this.ang);
             this.y -= 1.5 * this.speed * Math.sin(this.ang);
-            this.speed *= -0.5;
+            this.speed *= -0.5;            
         }
         else if (trackType == TRACK_GOAL)
         {
+            if (!this.isLap) {
+                this.lapsPassed++;
+                this.isLap = true;
+            }
+
+            if (this.lapsPassed < currentLevel.laps) {
+                return;
+            }
+
             console.log(this.name + " wins!!!");
 
             if (currentLevelIdx == levels.length - 1)
@@ -140,6 +153,10 @@ function Player()
             }
             
             loadLevel(currentLevelIdx);
+        }
+        else 
+        {
+            this.isLap = false;
         }
     }
 
