@@ -18,7 +18,8 @@ function AudioManager() {
 	this.init = function() {
 		if (initialized) return;
 
-		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		var AudioContext = window.AudioContext || window.webkitAudioContext;
+		audioCtx = new AudioContext();
 		this.context = audioCtx;
 		soundEffectsBus = audioCtx.createGain();
 		musicBus = audioCtx.createGain();
@@ -33,16 +34,16 @@ function AudioManager() {
 		musicBus.connect(masterBus);
 		masterBus.connect(audioCtx.destination);
 
-		this.initialized = true;
+		initialized = true;
 		console.log("Initialized Audio");
 	};
 
 	this.reset = function() {
 		if (!initialized) return;
-		console.log("Reset Audio");
+		//console.log("Reset Audio");
 
-		for (var i = currentSoundSources.length-1; i <=0; i--) {
-			currentSoundSources[i].stop();
+		for (var i = currentSoundSources.length-1; i >= 0; i--) {
+		 	currentSoundSources[i].stop();
 		}
 		currentSoundSources.length = 0
 
@@ -50,9 +51,9 @@ function AudioManager() {
 
 	this.update = function() {
 		if (!initialized) return;
-		console.log("Update Audio");
+		//console.log("Update Audio");
 
-		for (var i = currentSoundSources.Length-1; i <=0; i--) {
+		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
 		}
 	};
@@ -121,10 +122,11 @@ function AudioManager() {
 //--//sound objects-----------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1) {
 		if (!initialized) return;
-		console.log("Create Sound3D");
+		//console.log("Create Sound3D");
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate);
 		currentSoundSources.push(newSound);
+		//console.log(currentSoundSources);
 		return newSound;
 	}
 
@@ -138,8 +140,9 @@ function AudioManager() {
 		audioFile.preservesPitch = false;
 		audioFile.mozPreservesPitch = false;
 		audioFile.webkitPreservesPitch = false;
-		audioFile.rate = this.rate;
+		audioFile.playbackRate = this.rate;
 		audioFile.loop = looping;
+		audioFile.volume = mixVolume;
 
 
 		//Setup nodes
@@ -159,17 +162,17 @@ function AudioManager() {
 
 
 		this.update = function() {
-			console.log("Update Sound");
+			//console.log("Update Sound");
 			gainNode.gain.value = calcuateVolumeDropoff(location);
 			gainNode.gain.value *= Math.pow(this.mixVolume, 2);
 
 			panNode.pan.value = calcuatePan(location);
 
 			//dopler
-			audioFile.rate = this.rate;
-			var newDistance = distance(player, parent);
+			audioFile.playbackRate = this.rate;
+			var newDistance = distanceBetweenTwoPoints(player, parent);
 			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
-			audioFile.rate *= Math.pow(2, (dopler/12));
+			audioFile.playbackRate *= Math.pow(2, (dopler/12));
 			lastDistance = newDistance;
 
 			console.log(dopler + " " + lastDistance + " " + audioFile.rate);

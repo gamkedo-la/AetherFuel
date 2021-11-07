@@ -53,7 +53,7 @@ function Player()
 
         if (engineSound != null) engineSound.stop();
         engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
-        if (engineSound != null) engineSound.play();
+        //engineSound.play();
 
 
         let didWeFindTrackStart = false;
@@ -94,6 +94,8 @@ function Player()
         {
             this.speed -= REVERSE_POWER;
         }
+
+        if (engineSound != null) engineSound.rate = lerp(0.75, 2, this.speed/16);
 
         if (Math.abs(this.speed) > MIN_SPEED_TO_TURN)
         {   
