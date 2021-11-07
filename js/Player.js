@@ -51,6 +51,8 @@ function Player()
         engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
         if (engineSound != null) engineSound.play();
 
+
+        let didWeFindTrackStart = false;
         for (var i = 0; i < trackNumRows ; i++)
         {
             for (var j = 0; j < trackNumCols; j++)
@@ -59,18 +61,21 @@ function Player()
 
                 if (trackGrid[trackIdx] == TRACK_START)
                 {
+                    didWeFindTrackStart = true;
+                    console.log("didWeFindTrackStart: " + didWeFindTrackStart);
                     trackGrid[trackIdx] = TRACK_ROAD;
                     playerStart = trackIdx;
 
                     this.x = j * TRACK_W + TRACK_W / 2;
                     this.y = i * TRACK_H + TRACK_H / 2;
-
-                    return;
-                }  // end if track_start found
+                }  // end if track_start found  
             }  // end for j
         }  // end for i
 
-        console.log("NO PLAYER START FOUND")
+        if (!didWeFindTrackStart)
+        {
+            console.log("NO PLAYER START FOUND");
+        } 
     }
 
     this.move = function()
@@ -150,3 +155,53 @@ function Player()
                                        this.pic.height);
     }
 }
+
+function SmokeManager()
+{
+    let arrayOfSmokePuffs = [];
+
+    this.createAPuffOfSmoke = function()
+    {
+        let puffOfSmoke = new PuffOfSmoke(player.x, player.y);
+        arrayOfSmokePuffs.push(puffOfSmoke);
+    }
+
+    this.createPuffsOfSmokeOverTime = function()
+    {
+        setTimeout(function() 
+            { 
+                smokeManager.createAPuffOfSmoke(); 
+                smokeManager.createPuffsOfSmokeOverTime();
+            }, 50);
+    }
+
+    this.updatePuffsOfSmoke = function()
+    {
+        for (let i = 0; i < arrayOfSmokePuffs.length; i++)
+        {
+            arrayOfSmokePuffs[i].update();
+        }
+
+        this.garbageCollectPuffsOfSmoke();
+    }
+
+    this.drawPuffsOfSmoke = function()
+    {
+        for (let i = 0; i < arrayOfSmokePuffs.length; i++)
+        {
+            arrayOfSmokePuffs[i].draw();
+        }
+    }
+
+    this.garbageCollectPuffsOfSmoke = function()
+    {
+        for (let i = 0; i < arrayOfSmokePuffs.length; i++)
+        {
+            if (arrayOfSmokePuffs[i].alpha < 0.05)
+            {
+                arrayOfSmokePuffs.splice(i,1);
+            }
+        }
+    }
+}
+

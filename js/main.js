@@ -12,6 +12,9 @@ var currentLevel;
 
 var backgroundMusic = document.createElement("AUDIO");
 
+let puffOfSmoke;
+let smokeManager;
+
 window.onload = function()
 {
     canvas = document.getElementById("gameCanvas");
@@ -44,13 +47,6 @@ function imageLoadingDoneSoStartGame()
 function loadLevel(whichLevel)
 {
     AudioMan.reset();
-
-    //console.log("AudioMan.currentSoundSources: " + AudioMan.currentSoundSources);
-    // if (whichLevel == 0)
-    // {
-    //     AudioMan.createSound3D("Audio/synthwaveExperiment1V2(2).wav", null, true, 1, 1);
-    //     AudioMan.currentSoundSources[0].play();
-    // }
     
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
@@ -62,6 +58,9 @@ function loadLevel(whichLevel)
 
     player.reset("Player", playerPic);
 
+    smokeManager = new SmokeManager();
+    smokeManager.createPuffsOfSmokeOverTime();
+    //puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
 
     miniMap.setSizes();
 }
@@ -70,6 +69,7 @@ function updateAll()
 {
     if (!editorMode)
     {
+
         gameMoveAll();
         gameDrawAll(); 
         AudioMan.update();
@@ -111,8 +111,8 @@ function editorDrawAll()
 function gameMoveAll()
 {
     player.move();
+    smokeManager.updatePuffsOfSmoke();
     player.handleCollisionWithTracksAdvanced();
-
     camera.follow(player);
 }
 
@@ -128,7 +128,7 @@ function gameDrawAll()
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
     player.draw();
-
+    smokeManager.drawPuffsOfSmoke();
     // Restore the context
     canvasContext.restore();
 
