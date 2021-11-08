@@ -343,6 +343,9 @@ function Editor()
         var nrows = parseInt(window.prompt("How Many Rows? - Current = " + trackNumRows));
         var ncols = parseInt(window.prompt("How Many cols? - Current = " + trackNumCols));
 
+        currentLevel.numRows = nrows;
+        currentLevel.numCols = ncols;
+
         var newTrack = new Array(nrows * ncols);
 
         this.initializeNewTrack(nrows, ncols, newTrack);
