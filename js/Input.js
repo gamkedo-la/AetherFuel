@@ -22,6 +22,8 @@ const KEY_NUM_ROW_3 = 51;
 
 const KEY_TAB = 9;
 
+const KEY_R = 82;
+
 var mouseX, mouseY;
 var mouseTileI = 0;
 var mouseTileJ = 0;

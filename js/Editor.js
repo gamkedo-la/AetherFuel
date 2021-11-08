@@ -170,12 +170,13 @@ function Editor()
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 175, hs*10+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 175, hs*11+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
         colorText("3 - Finish line", hx, hy+=hs, "white", 16);
+        colorText("R - Resize", hx, hy+=hs, "white", 16);
         colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
         colorText("X - Fill Map", hx, hy+=hs, "white", 16);
         colorText("C - Corners", hx, hy+=hs, "white", 16);
@@ -280,7 +281,6 @@ function Editor()
                 currentLevel.track = trackGrid.slice();
                 currentLevel.track[playerStart] = TRACK_START;
                 console.log(JSON.stringify(currentLevel));
-                
                 break;
 
             case KEY_TAB:
@@ -302,6 +302,10 @@ function Editor()
 
             case KEY_D:
                 this.isMovingRight = true;
+                break;
+
+            case KEY_R:
+                this.resizeTrackGrid();
                 break;
                                                     
             default:
@@ -332,5 +336,59 @@ function Editor()
             default:
                 break;
         }
+    }
+
+    this.resizeTrackGrid = function()
+    {
+        var nrows = parseInt(window.prompt("How Many Rows? - Current = " + trackNumRows));
+        var ncols = parseInt(window.prompt("How Many cols? - Current = " + trackNumCols));
+
+        var newTrack = new Array(nrows * ncols);
+
+        this.initializeNewTrack(nrows, ncols, newTrack);
+
+        trackNumRows = nrows;
+        trackNumCols = ncols;
+        trackGrid = newTrack.slice();
+    }
+
+    this.initializeNewTrack = function(nrows, ncols, newTrack)
+    {
+        var isTrackStartFound = false;
+        var firstRoadIdx = -1;
+
+        for (var i = 0; i < nrows; i++)
+        {
+            for (var j = 0; j < ncols; j++)
+            {
+                var newTrackIdx = i * ncols + j;
+
+                // If the newtrack overlap the old track, copy the old track
+                if (i < trackNumRows && j < trackNumCols)
+                {
+                    var oldTrackIdx = i * trackNumCols + j;
+                    newTrack[newTrackIdx] = trackGrid[oldTrackIdx];
+
+                    if (newTrack[newTrackIdx] == TRACK_START) { isTrackStartFound = true; }
+                }
+                // Else initialize with road
+                else
+                {
+                    newTrack[newTrackIdx] = TRACK_ROAD;
+                }
+                
+                // If no TRACK_START found, will put the player start at the first
+                // TRACK_ROAD found
+                if (newTrack[newTrackIdx] == TRACK_ROAD && firstRoadIdx < 0) 
+                {
+                    firstRoadIdx = newTrackIdx;
+                }
+
+            }  // end for j
+        }  // end for i
+
+        // Make sure we keep a TRACK_START in the trackGrid - avoid weird bugs if
+        // we exit the editor mode without it
+        if (!isTrackStartFound) { newTrack[firstRoadIdx] = TRACK_START; }
     }
 }
