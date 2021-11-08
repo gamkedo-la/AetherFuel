@@ -95,7 +95,7 @@ function Player()
             this.speed -= REVERSE_POWER;
         }
 
-        if (engineSound != null) engineSound.rate = lerp(0.75, 2, this.speed/16);
+        if (engineSound != null) engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
 
         if (Math.abs(this.speed) > MIN_SPEED_TO_TURN)
         {   
