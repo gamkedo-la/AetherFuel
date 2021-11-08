@@ -1,4 +1,5 @@
 var playerPic = document.createElement("img");
+var tireTrackPic = document.createElement("img");
 
 var trackPix = new Array();
 
@@ -29,6 +30,7 @@ function loadImages()
 {
     var imageList = [
         {varName: playerPic, theFile: "spaceship_40x40.png"},
+        {varName: tireTrackPic, theFile: "tireTracks.png"},
         {trackType: TRACK_ROAD, theFile: "sand.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
         {trackType: TRACK_TREE, theFile: "Tree.png"},

@@ -11,9 +11,11 @@ var currentLevelIdx = 0;
 var currentLevel;
 
 var backgroundMusic = document.createElement("AUDIO");
+var tireTracks;
 
 let puffOfSmoke;
 let smokeManager;
+
 
 window.onload = function()
 {
@@ -38,6 +40,8 @@ function imageLoadingDoneSoStartGame()
     editor.initialize();
 
     loadLevel(currentLevelIdx);
+
+    tireTracks = new decalManager(canvas);
     
 }
 
@@ -45,7 +49,7 @@ function imageLoadingDoneSoStartGame()
 function loadLevel(whichLevel)
 {
     AudioMan.reset();
-    
+
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
 
@@ -61,6 +65,9 @@ function loadLevel(whichLevel)
     //puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
 
     miniMap.setSizes();
+
+    if (tireTracks) tireTracks.reset();
+
 }
 
 function updateAll()
@@ -124,6 +131,8 @@ function gameDrawAll()
     // Draw all images
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
+
+    if (tireTracks) tireTracks.draw(canvasContext);
 
     player.draw();
     smokeManager.drawPuffsOfSmoke();

@@ -111,6 +111,12 @@ function Player()
         this.x += this.speed * Math.cos(this.ang);
         this.y += this.speed * Math.sin(this.ang);
         this.updateRowColIdx();
+
+        if (tireTracks) {
+            // FIXME track alpha could check accel/turn state for skids
+            let tireTrackAlpha = 0.1;  // barely visible
+            tireTracks.add(this.x, this.y, this.ang, tireTrackAlpha);
+        }
     }
 
     this.updateRowColIdx = function()
