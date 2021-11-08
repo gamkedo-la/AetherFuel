@@ -51,11 +51,6 @@ function Player()
 
         camera.initialize(this.x, this.y, -this.ang);
 
-        if (engineSound != null) engineSound.stop();
-        engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
-        //engineSound.play();
-
-
         let didWeFindTrackStart = false;
         for (var i = 0; i < trackNumRows ; i++)
         {
@@ -79,7 +74,11 @@ function Player()
         if (!didWeFindTrackStart)
         {
             console.log("NO PLAYER START FOUND");
-        } 
+        }
+
+        if (engineSound != null) engineSound.stop();
+        engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
+        //engineSound.play();
     }
 
     this.move = function()
