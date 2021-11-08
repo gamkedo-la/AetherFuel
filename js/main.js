@@ -27,9 +27,7 @@ window.onload = function()
     loadImages();
     AudioMan.init();
 
-    document.addEventListener("mouseup", function() {backgroundMusic.play();});
-    backgroundMusic.src = "Audio/synthwaveExperiment1V2(2).wav";
-    backgroundMusic.looping = true;
+    document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/synthwaveExperiment1V2(2).wav")});
 }
 
 function imageLoadingDoneSoStartGame()

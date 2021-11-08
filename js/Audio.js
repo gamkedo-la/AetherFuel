@@ -2,19 +2,19 @@ var isServer = window.location.protocol == 'file:' ? false : true;
 
 var AudioMan = new AudioManager();
 function AudioManager() {
-//--//Constants---------------------------------------------------------------
+//--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
 	const DROPOFF_MIN = 60;
 	const DROPOFF_MAX = 1000;
 	const HEADSHADOW_REDUCTION = 0.5;
 	const DOPLER_SCALE = 10;
 
-//--//Properties--------------------------------------------------------------
+//--//Properties----------------------------------------------------------------
 	var initialized = false;
 	var audioCtx;
 	var soundEffectsBus, musicBus, masterBus;
 	var musicVolume, soundEffectsVolume;
-	var currentMusicTrack;
+	var currentMusicTrack = null;
 	var currentSoundSources = [];
 
 	this.init = function() {
@@ -50,7 +50,6 @@ function AudioManager() {
 		 	currentSoundSources[i].stop();
 		}
 		currentSoundSources.length = 0
-
 	};
 
 	this.update = function() {
@@ -62,7 +61,7 @@ function AudioManager() {
 		}
 	};
 
-//--//volume handling functions-----------------------------------------------
+//--//volume handling functions-------------------------------------------------
 	this.toggleMute = function() {
 		if (!initialized) return;
 
@@ -123,7 +122,47 @@ function AudioManager() {
 		this.setSoundEffectsVolume(soundEffectsVolume - VOLUME_INCREMENT);
 	};
 
-//--//sound objects-----------------------------------------------------
+//--//music---------------------------------------------------------------------
+	this.playMusic = function(fileNameWithPath, mixVolume = 1) {
+		if (currentMusicTrack != null) {
+			if (fileNameWithPath != currentMusicTrack.fileNameWithPath) {
+				currentMusicTrack.stop();
+				currentMusicTrack = new musicTrack(fileNameWithPath, mixVolume);
+			}
+		} else {
+			currentMusicTrack = new musicTrack(fileNameWithPath, mixVolume);
+		}
+	};
+
+	function musicTrack(fileNameWithPath, mixVolume = 1) {
+		this.fileNameWithPath = fileNameWithPath;
+		var audioFile = new Audio(fileNameWithPath);
+		var mixVolume = mixVolume;
+
+		audioFile.volume = mixVolume;
+		audioFile.loop = true;
+
+		if (isServer) {
+			//Setup nodes
+			var source = audioCtx.createMediaElementSource(audioFile);
+			var gainNode = audioCtx.createGain();
+
+			source.connect(gainNode);
+			gainNode.connect(musicBus);
+
+
+			//Calculate volume and panning
+			gainNode.gain.value = calcuateVolumeDropoff(location);
+		}
+
+		audioFile.play();
+
+		this.stop = function() {
+			audioFile.pause();
+		}
+	}
+
+//--//sound objects-------------------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
 		if (!initialized) return;
 		//console.log("Create Sound3D");
@@ -131,7 +170,7 @@ function AudioManager() {
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate, preservesPitch);
 		currentSoundSources.push(newSound);
 		return newSound;
-	}
+	};
 
 	function Sound3D(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
 		this.mixVolume = mixVolume;
@@ -145,7 +184,7 @@ function AudioManager() {
 		audioFile.webkitPreservesPitch = preservesPitch;
 		audioFile.playbackRate = this.rate;
 		audioFile.loop = looping;
-		audioFile.volume = mixVolume;
+		audioFile.volume = Math.pow(this.mixVolume, 2);
 
 		if (isServer) {
 			//Setup nodes
@@ -160,21 +199,19 @@ function AudioManager() {
 
 			//Calculate volume and panning
 			gainNode.gain.value = calcuateVolumeDropoff(location);
-			gainNode.gain.value *= Math.pow(this.mixVolume, 2);
 			panNode.pan.value = calcuatePan(location);
 		}
 
 
 		this.update = function() {
 			//console.log("Update Sound");
+
+			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
 				gainNode.gain.value = calcuateVolumeDropoff(location);
-				gainNode.gain.value *= Math.pow(this.mixVolume, 2);
-
 				panNode.pan.value = calcuatePan(location);
 			} else {
-				audioFile.volume = calcuateVolumeDropoff(location);
-				audioFile.volume *= Math.pow(this.mixVolume, 2);
+				audioFile.volume *= calcuateVolumeDropoff(location);
 			}
 
 			//dopler
@@ -194,11 +231,11 @@ function AudioManager() {
 		this.stop = function() {
 			return audioFile.pause();
 		}
-	}
+	};
 
 
 
-//--//Sound spatialization functions------------------------------------------
+//--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
 		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
 		while (direction >= 360) {
@@ -228,7 +265,7 @@ function AudioManager() {
 		}
 
 		return pan;
-	}
+	};
 
 	function calcuateVolumeDropoff(location) {
 		var distance = distanceBetweenTwoPoints(player, location);
@@ -257,6 +294,6 @@ function AudioManager() {
 		}
 
 		return Math.pow(newVolume, 2);
-	}
+	};
 
 }
