@@ -3,9 +3,11 @@ const FRAME_PER_SECOND = 30
 var canvas, canvasContext;
 
 var camera = new Camera();
-var player = new Player();
+var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
+
+var opponents = [new Opponent("Opponent 1")];
 
 var currentLevelIdx = 0;
 var currentLevel;
@@ -58,7 +60,12 @@ function loadLevel(whichLevel)
 
     trackGrid = currentLevel.track.slice();
 
-    player.reset("Player", playerPic);
+    player.reset(playerPic);
+    camera.initialize(player.x, player.y, -player.ang);
+
+    opponents.forEach(function(opponent) {
+        opponent.reset(playerPic);
+    });
 
     smokeManager = new SmokeManager();
     smokeManager.createPuffsOfSmokeOverTime();
@@ -116,6 +123,10 @@ function editorDrawAll()
 function gameMoveAll()
 {
     player.move();
+    opponents.forEach(function(opponent) {
+        opponent.move();
+    });
+
     smokeManager.updatePuffsOfSmoke();
     player.handleCollisionWithTracksAdvanced();
     camera.follow(player);
@@ -135,6 +146,10 @@ function gameDrawAll()
     if (tireTracks) tireTracks.draw(canvasContext);
 
     player.draw();
+    opponents.forEach(function(opponent) {
+        opponent.draw();
+    });
+
     smokeManager.drawPuffsOfSmoke();
     // Restore the context
     canvasContext.restore();

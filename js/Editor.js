@@ -56,7 +56,7 @@ function Editor()
 
         if (editorPaintType == TRACK_START)
         {
-            trackGrid[playerStart] = TRACK_ROAD;
+            // trackGrid[playerStart] = TRACK_ROAD;
             playerStart = mouseIdx;
         }
         else
@@ -242,7 +242,7 @@ function Editor()
             if (keyCode == KEY_TAB)
             {
                 editorMode = true;
-                trackGrid[playerStart] = TRACK_START;
+                trackGrid[player.startIdx] = TRACK_START;
             }
             return;
         }
@@ -279,13 +279,18 @@ function Editor()
 
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
-                currentLevel.track[playerStart] = TRACK_START;
+                // currentLevel.track[playerStart] = TRACK_START;
                 console.log(JSON.stringify(currentLevel));
                 break;
 
             case KEY_TAB:
                 editorMode = false;
-                player.reset("Player", playerPic);
+                player.reset(playerPic);
+                camera.initialize(player.x, player.y, -player.ang);
+                
+                opponents.forEach(function(opponent) {
+                    opponent.reset(playerPic);
+                });
                 break;
 
             case KEY_W:
