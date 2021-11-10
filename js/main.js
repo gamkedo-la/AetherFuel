@@ -64,7 +64,7 @@ function loadLevel(whichLevel)
     camera.initialize(player.x, player.y, -player.ang);
 
     opponents.forEach(function(opponent) {
-        opponent.reset(playerPic);
+        opponent.reset(darkTravelerPic);
     });
 
     smokeManager = new SmokeManager();

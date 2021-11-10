@@ -289,7 +289,7 @@ function Editor()
                 camera.initialize(player.x, player.y, -player.ang);
                 
                 opponents.forEach(function(opponent) {
-                    opponent.reset(playerPic);
+                    opponent.reset(darkTravelerPic);
                 });
                 break;
 
