@@ -19,6 +19,12 @@ const KEY_NUM_ROW_0 = 48;
 const KEY_NUM_ROW_1 = 49;
 const KEY_NUM_ROW_2 = 50;
 const KEY_NUM_ROW_3 = 51;
+const KEY_NUM_ROW_4 = 52;
+const KEY_NUM_ROW_5 = 53;
+const KEY_NUM_ROW_6 = 54;
+const KEY_NUM_ROW_7 = 55;
+const KEY_NUM_ROW_8 = 56;
+const KEY_NUM_ROW_9 = 57;
 
 const KEY_TAB = 9;
 

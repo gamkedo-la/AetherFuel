@@ -52,6 +52,12 @@ function Editor()
 
     this.click = function()
     {
+        if (editorPaintType == TRACK_WAYPOINT)
+        {
+            waypoints.push(new Waypoint(mouseTileI, mouseTileJ));
+            return;
+        }
+
         trackGrid[mouseIdx] = editorPaintType;
 
         if (editorPaintType == TRACK_START)
@@ -72,6 +78,7 @@ function Editor()
     this.releaseClick = function()
     {
         if (!this.isSelectingMultipleTiles){ return; }
+        if (editorPaintType == TRACK_WAYPOINT){ return; }
 
         var lastTileSelectedI = mouseTileI;
         var lastTileSelectedJ = mouseTileJ;
@@ -113,6 +120,12 @@ function Editor()
                                            useImg.width,
                                            useImg.height);
             canvasContext.globalAlpha = 1.0;
+        }
+        else if (editorPaintType == TRACK_WAYPOINT)
+        {
+            canvasContext.drawImage(waypointPic,
+                mouseTileJ * TRACK_W,
+                mouseTileI * TRACK_H);
         }
         else
         {
@@ -170,12 +183,13 @@ function Editor()
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 175, hs*11+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 175, hs*12+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
         colorText("3 - Finish line", hx, hy+=hs, "white", 16);
+        colorText("9 - Waypoint", hx, hy+=hs, "white", 16);
         colorText("R - Resize", hx, hy+=hs, "white", 16);
         colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
         colorText("X - Fill Map", hx, hy+=hs, "white", 16);
@@ -263,6 +277,10 @@ function Editor()
 
             case KEY_NUM_ROW_3:
                 editorPaintType = TRACK_GOAL;
+                break;
+
+            case KEY_NUM_ROW_9:
+                editorPaintType = TRACK_WAYPOINT;
                 break;
 
             case KEY_X:

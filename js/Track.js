@@ -9,6 +9,8 @@ const TRACK_GOAL = 3;
 const TRACK_TREE = 4;
 const TRACK_FLAG = 5;
 
+const TRACK_WAYPOINT = 9;
+
 var trackNumRows;
 var trackNumCols;
 
@@ -64,17 +66,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             var drawTileX = j * TRACK_W;
 
             var trackIdx = i * trackNumCols + j;
-            // highlightTileIfEditorMode(trackIdx, drawTileX, drawTileY);
-
             var tileKind = trackGrid[trackIdx];
-
-            // if (editorMode)
-            // {
-            //     if (trackIdx == playerStart)
-            //     {
-            //         tileKind = TRACK_START;
-            //     }
-            // }
 
             if (tileKind == TRACK_ROAD){ continue; }
 
@@ -102,6 +94,11 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
 
             drawTileX += TRACK_W;
         }
+    }
+
+    if (editorMode)
+    {
+        drawAllWaypoints();
     }
 }
 
