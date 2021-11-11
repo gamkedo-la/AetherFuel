@@ -54,8 +54,7 @@ function Editor()
     {
         if (editorPaintType == TRACK_WAYPOINT)
         {
-            
-            
+            this.createWaypoint();
             return;
         }
 
@@ -101,11 +100,12 @@ function Editor()
     this.createNewWaypoint = function()
     {
         var newWaypoint = new Waypoint(mouseTileI, mouseTileJ);
-        if (currentWaypoint != null) {
+        if (currentWaypoint != null)
+        {
             currentWaypoint.addWaypoint(newWaypoint);
         }
-
-        else {
+        else
+        {
             currentWaypoint = newWaypoint;
         }
     }
@@ -113,7 +113,8 @@ function Editor()
     this.closeWaypointsLoop = function(existingWaypoint)
     {
         var wantsToCloseLoop = -1;
-        while (wantsToCloseLoop != 0 && wantsToCloseLoop != 1) {
+        while (wantsToCloseLoop != 0 && wantsToCloseLoop != 1)
+        {
             wantsToCloseLoop = parseInt(window.prompt("Are you sure you want to close the loop here? (0 for no, 1 for yes)"));
         }
 
@@ -158,21 +159,11 @@ function Editor()
 
         if (editorPaintType == TRACK_START)
         {
-            var useImg = playerPic
-            canvasContext.globalAlpha = 0.5;
-            drawBitmapCenteredWithRotation(useImg,
-                                           mouseTileJ * TRACK_W + useImg.width / 2,
-                                           mouseTileI * TRACK_H  + useImg.height / 2,
-                                           -Math.PI / 2,
-                                           useImg.width,
-                                           useImg.height);
-            canvasContext.globalAlpha = 1.0;
+            this.drawTrackStartAtMousePosition();
         }
         else if (editorPaintType == TRACK_WAYPOINT)
         {
-            canvasContext.drawImage(waypointPic,
-                mouseTileJ * TRACK_W,
-                mouseTileI * TRACK_H);
+            this.drawWaypointAtMousePosition();
         }
         else
         {
@@ -180,43 +171,71 @@ function Editor()
 
             if (!this.isSelectingMultipleTiles)
             {
-                colorRect(mouseTileJ * TRACK_W,
-                          mouseTileI * TRACK_H,
-                          useImg.width,
-                          useImg.height,
-                          "black")
-    
-                canvasContext.drawImage(useImg,
-                                        mouseTileJ * TRACK_W + 2,
-                                        mouseTileI * TRACK_H + 2,
-                                        (useImg.width - 4),
-                                        (useImg.height - 4));
+                this.drawSingleTrackTypeAtMousePosition(useImg);
             }
             else
             {
-                var minTileJ = Math.min(this.firstTileSelectedJ, mouseTileJ);
-                var maxTileJ = Math.max(this.firstTileSelectedJ, mouseTileJ);
+                this.drawMultipleTiles(useImg);
+            }
+        }
+    }
 
-                var minTileI = Math.min(this.firstTileSelectedI, mouseTileI);
-                var maxTileI = Math.max(this.firstTileSelectedI, mouseTileI);
+    this.drawTrackStartAtMousePosition = function()
+    {
+        var useImg = playerPic;
+        canvasContext.globalAlpha = 0.5;
+        drawBitmapCenteredWithRotation(useImg,
+            mouseTileJ * TRACK_W + useImg.width / 2,
+            mouseTileI * TRACK_H + useImg.height / 2,
+            -Math.PI / 2,
+            useImg.width,
+            useImg.height);
+        canvasContext.globalAlpha = 1.0;
+    }
 
-                for (var tileJ = minTileJ; tileJ < maxTileJ + 1; tileJ++)
-                {
-                    for (var tileI = minTileI; tileI < maxTileI + 1; tileI++)
-                    {
-                        colorRect(tileJ * TRACK_W,
-                                  tileI * TRACK_H,
-                                  useImg.width + 2,
-                                  useImg.height + 2,
-                                  "black")
-      
-                        canvasContext.drawImage(useImg,
-                                                tileJ * TRACK_W + 2,
-                                                tileI * TRACK_H + 2,
-                                                useImg.width - 2,
-                                                useImg.height - 2);
-                    }
-                }
+    this.drawWaypointAtMousePosition = function()
+    {
+        canvasContext.drawImage(waypointPic,
+            mouseTileJ * TRACK_W,
+            mouseTileI * TRACK_H);
+    }
+
+    this.drawSingleTrackTypeAtMousePosition = function(useImg)
+    {
+        colorRect(mouseTileJ * TRACK_W,
+            mouseTileI * TRACK_H,
+            useImg.width,
+            useImg.height,
+            "black");
+
+        canvasContext.drawImage(useImg,
+            mouseTileJ * TRACK_W + 2,
+            mouseTileI * TRACK_H + 2,
+            (useImg.width - 4),
+            (useImg.height - 4));
+    }
+
+    this.drawMultipleTiles = function(useImg)
+    {
+        var minTileJ = Math.min(this.firstTileSelectedJ, mouseTileJ);
+        var maxTileJ = Math.max(this.firstTileSelectedJ, mouseTileJ);
+
+        var minTileI = Math.min(this.firstTileSelectedI, mouseTileI);
+        var maxTileI = Math.max(this.firstTileSelectedI, mouseTileI);
+
+        for (var tileJ = minTileJ; tileJ < maxTileJ + 1; tileJ++) {
+            for (var tileI = minTileI; tileI < maxTileI + 1; tileI++) {
+                colorRect(tileJ * TRACK_W,
+                    tileI * TRACK_H,
+                    useImg.width + 2,
+                    useImg.height + 2,
+                    "black");
+
+                canvasContext.drawImage(useImg,
+                    tileJ * TRACK_W + 2,
+                    tileI * TRACK_H + 2,
+                    useImg.width - 2,
+                    useImg.height - 2);
             }
         }
     }
