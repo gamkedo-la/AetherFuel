@@ -71,7 +71,7 @@ function Editor()
                     waypoints[waypoints.length - 1].setNextWaypoint(newWaypoint);
                 }
     
-                waypoints.push(new Waypoint(mouseTileI, mouseTileJ));
+                waypoints.push(newWaypoint);
             }
             else
             {
@@ -331,7 +331,7 @@ function Editor()
 
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
-                // currentLevel.track[playerStart] = TRACK_START;
+                // currentLevel.waypoints = waypoints.slice(); // ---> not working yet due to loop closure
                 console.log(JSON.stringify(currentLevel));
                 break;
 

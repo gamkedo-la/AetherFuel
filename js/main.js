@@ -59,6 +59,7 @@ function loadLevel(whichLevel)
     trackNumCols = currentLevel.numCols;
 
     trackGrid = currentLevel.track.slice();
+    waypoints = currentLevel.waypoints.slice();
 
     player.reset(playerPic);
     camera.initialize(player.x, player.y, -player.ang);
