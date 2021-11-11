@@ -54,40 +54,7 @@ function Editor()
     {
         if (editorPaintType == TRACK_WAYPOINT)
         {
-            if (isWaypointsLoopClosed)
-            {
-                console.log("Waypoint loop is closed, cannot add new");
-                return;
-            }
-
-            var existingWaypoint = getExistingWaypointAtIJ(mouseTileI, mouseTileJ);
-
-            if (existingWaypoint == null)
-            {
-                // If there is not already a waypoint at (mouseTileI, mouseTileJ), create one
-                var newWaypoint = new Waypoint(mouseTileI, mouseTileJ);
-                if (waypoints.length > 0)
-                {
-                    waypoints[waypoints.length - 1].setNextWaypoint(newWaypoint);
-                }
-    
-                waypoints.push(newWaypoint);
-            }
-            else
-            {
-                // If there is already a waypoint, close the loop
-                var wantsToCloseLoop = -1;
-                while(wantsToCloseLoop != 0 && wantsToCloseLoop != 1)
-                {
-                    wantsToCloseLoop = parseInt(window.prompt("Are you sure you want to close the loop here? (0 for no, 1 for yes)"));
-                }
-                
-                if (wantsToCloseLoop)
-                {
-                    waypoints[waypoints.length - 1].setNextWaypoint(existingWaypoint);
-                    isWaypointsLoopClosed = true;
-                }
-            }
+            
             
             return;
         }
@@ -107,6 +74,52 @@ function Editor()
             this.firstTileSelectedI = mouseTileI;
             this.firstTileSelectedJ = mouseTileJ;
         }
+    }
+
+    this.createWaypoint = function()
+    {
+        if (isWaypointsLoopClosed)
+        {
+            console.log("Waypoint loop is closed, cannot add new");
+            return;
+        }
+
+        var existingWaypoint = getExistingWaypointAtIJ(mouseTileI, mouseTileJ);
+
+        if (existingWaypoint == null)
+        {
+            // If there is not already a waypoint at (mouseTileI, mouseTileJ), create one
+            this.createNewWaypoint();
+        }
+        else
+        {
+            // If there is already a waypoint, close the loop
+            this.closeWaypointsLoop(existingWaypoint);
+        }
+    }
+
+    this.createNewWaypoint = function()
+    {
+        var newWaypoint = new Waypoint(mouseTileI, mouseTileJ);
+        if (currentWaypoint != null) {
+            currentWaypoint.addWaypoint(newWaypoint);
+        }
+
+        else {
+            currentWaypoint = newWaypoint;
+        }
+    }
+
+    this.closeWaypointsLoop = function(existingWaypoint)
+    {
+        var wantsToCloseLoop = -1;
+        while (wantsToCloseLoop != 0 && wantsToCloseLoop != 1) {
+            wantsToCloseLoop = parseInt(window.prompt("Are you sure you want to close the loop here? (0 for no, 1 for yes)"));
+        }
+
+        if (!wantsToCloseLoop){ return; };
+
+        setLoopClosure(existingWaypoint);
     }
 
     this.releaseClick = function()
@@ -261,7 +274,6 @@ function Editor()
         }
 
         this.mirrorSymmetry(); // the other three
-
     }        
 
     // copies the top left corner 3x on map
@@ -331,7 +343,7 @@ function Editor()
 
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
-                // currentLevel.waypoints = waypoints.slice(); // ---> not working yet due to loop closure
+                // currentLevel.waypoints = currentWaypoint; // ---> not working yet due to loop closure
                 console.log(JSON.stringify(currentLevel));
                 break;
 

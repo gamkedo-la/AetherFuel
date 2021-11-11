@@ -1,4 +1,4 @@
-var waypoints = [];
+var currentWaypoint = null;
 var isWaypointsLoopClosed = false;
 
 function Waypoint(tileI, tileJ)
@@ -7,9 +7,16 @@ function Waypoint(tileI, tileJ)
     this.tileJ = tileJ;
 
     this.next = null;
+    this.isLoopClosure = false;
 
-    this.setNextWaypoint = function(waypoint)
+    this.addWaypoint = function(waypoint)
     {
+        if (this.next != null)
+        {
+            this.next.addWaypoint(waypoint);
+            return;
+        }
+
         this.next = waypoint;
     }
 
@@ -34,19 +41,49 @@ function Waypoint(tileI, tileJ)
     }
 }
 
+function setLoopClosure(waypoint)
+{
+    var tempWaypoint = currentWaypoint;
+
+    while (tempWaypoint.next != null)
+    {
+        tempWaypoint = tempWaypoint.next;
+    }
+
+    tempWaypoint.isLoopClosure = true;
+    tempWaypoint.next = waypoint;
+    isWaypointsLoopClosed = true;
+}
+
 function drawAllWaypoints()
 {
-    waypoints.forEach(function(waypoint){ waypoint.draw();});
+    var tempWaypoint = currentWaypoint;
+
+    while (tempWaypoint != null)
+    {
+        tempWaypoint.draw();
+
+        if (tempWaypoint.isLoopClosure)
+        {
+            break;
+        }
+
+        tempWaypoint = tempWaypoint.next;
+    }
 }
 
 function getExistingWaypointAtIJ(tileI, tileJ)
 {
-    for(var i = 0; i < waypoints.length; i++)
+    var tempWaypoint = currentWaypoint;
+
+    while (tempWaypoint != null)
     {
-        if(waypoints[i].checkIfExistsAtIJ(tileI, tileJ))
+        if(tempWaypoint.checkIfExistsAtIJ(tileI, tileJ))
         {
-            return waypoints[i];
+            return tempWaypoint;
         }
+
+        tempWaypoint = tempWaypoint.next;
     }
 
     return null;  // Waypoint does not exist at tile (tileI, tileJ)
