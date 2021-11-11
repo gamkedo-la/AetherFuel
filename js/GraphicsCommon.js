@@ -28,6 +28,14 @@ function colorText(showWords, textX, textY, fillColor, size=30)
     canvasContext.fillText(showWords, textX, textY, 1000);
 }
 
+function lineBetweenTwoPoints(x1, y1, x2, y2)
+{
+    canvasContext.beginPath();
+    canvasContext.moveTo(x1, y1);
+    canvasContext.lineTo(x2, y2);
+    canvasContext.stroke();
+}
+
 class PuffOfSmoke
 {
     constructor(x,y)

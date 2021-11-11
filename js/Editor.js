@@ -54,7 +54,41 @@ function Editor()
     {
         if (editorPaintType == TRACK_WAYPOINT)
         {
-            waypoints.push(new Waypoint(mouseTileI, mouseTileJ));
+            if (isWaypointsLoopClosed)
+            {
+                console.log("Waypoint loop is closed, cannot add new");
+                return;
+            }
+
+            var existingWaypoint = getExistingWaypointAtIJ(mouseTileI, mouseTileJ);
+
+            if (existingWaypoint == null)
+            {
+                // If there is not already a waypoint at (mouseTileI, mouseTileJ), create one
+                var newWaypoint = new Waypoint(mouseTileI, mouseTileJ);
+                if (waypoints.length > 0)
+                {
+                    waypoints[waypoints.length - 1].setNextWaypoint(newWaypoint);
+                }
+    
+                waypoints.push(new Waypoint(mouseTileI, mouseTileJ));
+            }
+            else
+            {
+                // If there is already a waypoint, close the loop
+                var wantsToCloseLoop = -1;
+                while(wantsToCloseLoop != 0 && wantsToCloseLoop != 1)
+                {
+                    wantsToCloseLoop = parseInt(window.prompt("Are you sure you want to close the loop here? (0 for no, 1 for yes)"));
+                }
+                
+                if (wantsToCloseLoop)
+                {
+                    waypoints[waypoints.length - 1].setNextWaypoint(existingWaypoint);
+                    isWaypointsLoopClosed = true;
+                }
+            }
+            
             return;
         }
 
