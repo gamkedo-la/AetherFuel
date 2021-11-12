@@ -6,6 +6,9 @@ function Waypoint(tileI, tileJ)
     this.tileI = tileI;
     this.tileJ = tileJ;
 
+    this.x = tileJ * TRACK_W;
+    this.y = tileI * TRACK_H;
+
     this.next = null;
     this.isLoopClosure = false;
 

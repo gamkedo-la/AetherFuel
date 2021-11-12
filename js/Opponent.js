@@ -4,13 +4,21 @@ function Opponent(name)
 
     this.move = function()
     {
-        this.speed = player.speed;
-        this.ang = player.ang;
+        if (currentWaypoint == null){ return; }
+
+        this.speed = 10.0;
+        this.ang = Math.atan2(currentWaypoint.y - this.y + TRACK_H/2, currentWaypoint.x - this.x + TRACK_W/2);
 
         if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
 
         this.x += this.speed * Math.cos(this.ang);
         this.y += this.speed * Math.sin(this.ang);
+
+        if (distanceBetweenTwoPoints(this, currentWaypoint) < TRACK_W)
+        {
+            currentWaypoint = currentWaypoint.next;
+        }
+
         this.updateRowColIdx();
 
         if (tireTracks)
