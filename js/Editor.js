@@ -77,12 +77,6 @@ function Editor()
 
     this.createWaypoint = function()
     {
-        if (isWaypointsLoopClosed)
-        {
-            console.log("Waypoint loop is closed, cannot add new");
-            return;
-        }
-
         var existingWaypoint = getExistingWaypointAtIJ(mouseTileI, mouseTileJ);
 
         if (existingWaypoint == null)
@@ -107,6 +101,7 @@ function Editor()
         else
         {
             currentWaypoint = newWaypoint;
+            firstWaypoint = newWaypoint;
         }
     }
 
@@ -362,7 +357,7 @@ function Editor()
 
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
-                // currentLevel.waypoints = currentWaypoint; // ---> not working yet due to loop closure
+                currentLevel.firstWaypoint = firstWaypoint; // ---> not working yet due to loop closure
                 console.log(JSON.stringify(currentLevel));
                 break;
 

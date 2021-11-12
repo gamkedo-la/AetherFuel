@@ -2,6 +2,11 @@ function Opponent(name)
 {
     Spaceship.call(this, name);
 
+    // this.pushOther(other)
+    // {
+    //     other.slideX += 1;
+    // }
+
     this.move = function()
     {
         if (currentWaypoint == null){ return; }
@@ -11,12 +16,22 @@ function Opponent(name)
 
         if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
 
-        this.x += this.speed * Math.cos(this.ang);
-        this.y += this.speed * Math.sin(this.ang);
+        this.x += this.speed * Math.cos(this.ang); // + slideX
+        this.y += this.speed * Math.sin(this.ang); // + slideY --> push in the opposite direction
+
+        // slideX *= 0.95; 
+        // slideY *= 0.95; decay
 
         if (distanceBetweenTwoPoints(this, currentWaypoint) < TRACK_W)
         {
-            currentWaypoint = currentWaypoint.next;
+            if (currentWaypoint.next == null)
+            {
+                currentWaypoint = firstWaypoint;
+            }
+            else
+            {
+                currentWaypoint = currentWaypoint.next;
+            }
         }
 
         this.updateRowColIdx();
