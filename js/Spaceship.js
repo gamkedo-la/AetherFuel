@@ -64,7 +64,7 @@ Spaceship.prototype.reset = function(whichPic)
 
     if (this.engineSound != null) this.engineSound.stop();
     this.engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
-    //engineSound.play();
+    this.engineSound.play();
 }
 
 Spaceship.prototype.updateRowColIdx = function()

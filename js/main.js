@@ -32,7 +32,7 @@ window.onload = function()
     loadImages();
     AudioMan.init();
 
-    document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/synthwaveExperiment1V2(2).wav")});
+    // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/synthwaveExperiment1V2(2).wav")});
 }
 
 function imageLoadingDoneSoStartGame()
