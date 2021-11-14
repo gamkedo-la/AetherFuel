@@ -1,6 +1,6 @@
 const FRAME_PER_SECOND = 30
 
-var canvas, canvasContext;
+var canvas, canvasContext, deltaTime;
 
 var camera = new Camera();
 var player = new Player("Player");
@@ -11,6 +11,7 @@ var opponents = [new Opponent("Opponent 1")];
 
 var currentLevelIdx = 0;
 var currentLevel;
+var currentLevelCountDown = 0;
 
 var backgroundMusic = document.createElement("AUDIO");
 var tireTracks;
@@ -36,7 +37,8 @@ window.onload = function()
 
 function imageLoadingDoneSoStartGame()
 {
-    setInterval(updateAll, 1000 / FRAME_PER_SECOND);
+    deltaTime = 1000 / FRAME_PER_SECOND;
+    setInterval(updateAll, deltaTime);
 
     setupInput();
     editor.initialize();
@@ -78,13 +80,23 @@ function loadLevel(whichLevel)
 
     if (tireTracks) tireTracks.reset();
 
+    countDown(true); // reset
+}
+
+function countDown(reset=false)
+{
+    currentLevelCountDown--;    
+    if (reset) {
+        currentLevelCountDown = deltaTime * 3;
+    }
+
+    return currentLevelCountDown < 0;
 }
 
 function updateAll()
 {
     if (!editorMode)
     {
-
         gameMoveAll();
         gameDrawAll(); 
         AudioMan.update();
@@ -125,6 +137,11 @@ function editorDrawAll()
 
 function gameMoveAll()
 {
+    if (!countDown()) {
+        camera.follow(player);        
+        return;
+    }
+    
     player.move();
     opponents.forEach(function(opponent) {
         opponent.move();
@@ -159,6 +176,13 @@ function gameDrawAll()
 
     // Draw the minimap
     miniMap.draw();
+
+    if (currentLevelCountDown > -deltaTime) {
+        var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "GO!";        
+        var countDownTextXPos = canvas.width / 2 + (currentLevelCountDown > 0 ? 0 : -35);
+        var countDownTextYPos = canvas.height / 2;
+        colorText(countDownText, countDownTextXPos, countDownTextYPos, 'red', 70);
+    }
 }
 
 function clearScreen()
