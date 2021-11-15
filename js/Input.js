@@ -98,9 +98,11 @@ function updateMousePos(evt)
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
+
+    mouseX = mouseX / camera.zoom + camera.panX;
+    mouseY = mouseY / camera.zoom + camera.panY;
     
-    mouseIdx = getTrackIdxFromXY(mouseX / camera.zoom + camera.panX,
-                                 mouseY / camera.zoom + camera.panY);
+    mouseIdx = getTrackIdxFromXY(mouseX, mouseY);
     
     mouseTileI = Math.floor(mouseIdx / trackNumCols);
     mouseTileJ = mouseIdx % trackNumCols;

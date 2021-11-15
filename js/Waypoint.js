@@ -1,15 +1,12 @@
 var currentWaypoint = null;
 var firstWaypoint = null;
 
-function Waypoint(tileI, tileJ)
+function Waypoint(data)
 {
-    this.tileI = tileI; // don't have to be tile locked - maybe just use x, y
-    this.tileJ = tileJ;
+    this.x = data.x;
+    this.y = data.y;
 
-    this.x = tileJ * TRACK_W;
-    this.y = tileI * TRACK_H;
-
-    this.next = null;
+    this.next = data.next == null? null : new Waypoint(data.next);
 
     // add waypoint thickness
     this.thickness;  // in pixels 
@@ -25,45 +22,24 @@ function Waypoint(tileI, tileJ)
         this.next = waypoint;
     }
 
-    this.checkIfExistsAtIJ = function(tileI, tileJ)
+    this.checkIfExistsAtIJ = function(x, y)
     {
         // replace with a distance check if not tile locked
-        return this.tileI == tileI && this.tileJ == tileJ;
+        return this.x == x && this.y == y;
     }
 
     this.draw = function()
     {
-        canvasContext.drawImage(waypointPic,
-                                this.tileJ * TRACK_W,
-                                this.tileI * TRACK_H);
+        canvasContext.drawImage(waypointPic, this.x, this.y);
+        var nextWaypoint = this.next != null ? this.next : firstWaypoint;
+        var lineColor = this.next != null ? "black" : "red"
 
-        if (this.next != null)
-        {
-            lineBetweenTwoPoints((this.tileJ + 1 / 2) * TRACK_W,
-                                 (this.tileI + 1 / 2) * TRACK_H,
-                                 (this.next.tileJ + 1 / 2) * TRACK_W,
-                                 (this.next.tileI + 1 / 2) * TRACK_H, "black");
-        }
-        else
-        {
-            lineBetweenTwoPoints((this.tileJ + 1 / 2) * TRACK_W,
-                                 (this.tileI + 1 / 2) * TRACK_H,
-                                 (firstWaypoint.tileJ + 1 / 2) * TRACK_W,
-                                 (firstWaypoint.tileI + 1 / 2) * TRACK_H, "red");
-        }
+        lineBetweenTwoPoints(this.x + waypointPic.width / 2,
+                             this.y + waypointPic.height / 2,
+                             nextWaypoint.x + waypointPic.width / 2,
+                             nextWaypoint.y + waypointPic.height / 2,
+                             lineColor);
     }
-}
-
-function setLoopClosure(waypoint)
-{
-    var tempWaypoint = currentWaypoint;
-
-    while (tempWaypoint.next != null)
-    {
-        tempWaypoint = tempWaypoint.next;
-    }
-
-    tempWaypoint.next = waypoint;
 }
 
 function drawAllWaypoints()
@@ -77,13 +53,13 @@ function drawAllWaypoints()
     }
 }
 
-function getExistingWaypointAtIJ(tileI, tileJ)
+function getExistingWaypointAtIJ(x, y)
 {
     var tempWaypoint = currentWaypoint;
 
     while (tempWaypoint != null)
     {
-        if(tempWaypoint.checkIfExistsAtIJ(tileI, tileJ))
+        if(tempWaypoint.checkIfExistsAtIJ(x, y))
         {
             return tempWaypoint;
         }

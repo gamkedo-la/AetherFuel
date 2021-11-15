@@ -46,7 +46,6 @@ function imageLoadingDoneSoStartGame()
     loadLevel(currentLevelIdx);
 
     tireTracks = new decalManager(canvas);
-    
 }
 
 
@@ -62,7 +61,7 @@ function loadLevel(whichLevel)
 
     trackGrid = currentLevel.track.slice();
     
-    firstWaypoint = currentLevel.firstWaypoint;
+    firstWaypoint = currentLevel.firstWaypoint == null ? null : new Waypoint(currentLevel.firstWaypoint);
     currentWaypoint = firstWaypoint;
 
     player.reset(playerPic);

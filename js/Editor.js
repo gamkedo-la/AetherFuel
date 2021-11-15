@@ -77,23 +77,21 @@ function Editor()
 
     this.createWaypoint = function()
     {
-        var existingWaypoint = getExistingWaypointAtIJ(mouseTileI, mouseTileJ);
+        var existingWaypoint = getExistingWaypointAtIJ(mouseX, mouseY);
 
-        if (existingWaypoint == null)
-        {
-            // If there is not already a waypoint at (mouseTileI, mouseTileJ), create one
-            this.createNewWaypoint();
-        }
-        else
-        {
-            // If there is already a waypoint, close the loop
-            this.closeWaypointsLoop(existingWaypoint);
-        }
+        if (existingWaypoint != null){ return; }
+        this.createNewWaypoint();
     }
 
     this.createNewWaypoint = function()
     {
-        var newWaypoint = new Waypoint(mouseTileI, mouseTileJ);
+        var waypointData = {
+            "x": mouseX - waypointPic.width / 2,
+            "y": mouseY - waypointPic.height / 2,
+            "next": null
+        }
+        var newWaypoint = new Waypoint(waypointData);
+
         if (currentWaypoint != null)
         {
             currentWaypoint.addWaypoint(newWaypoint);
@@ -103,19 +101,6 @@ function Editor()
             currentWaypoint = newWaypoint;
             firstWaypoint = newWaypoint;
         }
-    }
-
-    this.closeWaypointsLoop = function(existingWaypoint)
-    {
-        var wantsToCloseLoop = -1;
-        while (wantsToCloseLoop != 0 && wantsToCloseLoop != 1)
-        {
-            wantsToCloseLoop = parseInt(window.prompt("Are you sure you want to close the loop here? (0 for no, 1 for yes)"));
-        }
-
-        if (!wantsToCloseLoop){ return; };
-
-        setLoopClosure(existingWaypoint);
     }
 
     this.releaseClick = function()
@@ -191,8 +176,8 @@ function Editor()
     this.drawWaypointAtMousePosition = function()
     {
         canvasContext.drawImage(waypointPic,
-            mouseTileJ * TRACK_W,
-            mouseTileI * TRACK_H);
+                                mouseX - waypointPic.width / 2,
+                                mouseY - waypointPic.height / 2);
     }
 
     this.drawSingleTrackTypeAtMousePosition = function(useImg)
@@ -357,7 +342,7 @@ function Editor()
 
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
-                currentLevel.firstWaypoint = firstWaypoint; // ---> not working yet due to loop closure
+                currentLevel.firstWaypoint = firstWaypoint;
                 console.log(JSON.stringify(currentLevel));
                 break;
 
