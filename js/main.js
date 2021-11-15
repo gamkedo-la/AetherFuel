@@ -136,18 +136,20 @@ function editorDrawAll()
 
 function gameMoveAll()
 {
-    if (!countDown()) {
+    if(!countDown())
+    {
         camera.follow(player);        
         return;
     }
     
     player.move();
     opponents.forEach(function(opponent) {
+        opponent.activateGas();
+        opponent.steerWheels();
         opponent.move();
     });
 
     smokeManager.updatePuffsOfSmoke();
-    player.handleCollisionWithTracksAdvanced();
     camera.follow(player);
 }
 

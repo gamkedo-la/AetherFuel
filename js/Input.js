@@ -41,19 +41,19 @@ function keySet(keyEvt, player, setTo)
     
     if (keyEvt.keyCode == player.controlKeyLeft)
     {
-        player.keyHeldTurnLeft = setTo;
+        player.holdTurnLeft = setTo;
     }
     if (keyEvt.keyCode == player.controlKeyUp)
     {
-        player.keyHeldGas = setTo;
+        player.holdGas = setTo;
     }
     if (keyEvt.keyCode == player.controlKeyRight)
     {
-        player.keyHeldTurnRight = setTo;
+        player.holdTurnRight = setTo;
     }
     if (keyEvt.keyCode == player.controlKeyDown)
     {
-        player.keyHeldReverse = setTo;
+        player.holdReverse = setTo;
     }
 }
 
