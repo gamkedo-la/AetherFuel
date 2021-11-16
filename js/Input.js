@@ -106,6 +106,11 @@ function updateMousePos(evt)
     
     mouseTileI = Math.floor(mouseIdx / trackNumCols);
     mouseTileJ = mouseIdx % trackNumCols;
+
+    if (editorMode)
+    {
+        editor.updateWaypointAngle();
+    }
 }
 
 function handleWheel(evt)

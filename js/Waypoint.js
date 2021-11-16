@@ -5,6 +5,7 @@ function Waypoint(data)
 {
     this.x = data.x;
     this.y = data.y;
+    this.angle = 0.0;
 
     this.next = data.next == null? null : new Waypoint(data.next);
 
@@ -30,21 +31,23 @@ function Waypoint(data)
 
     this.draw = function()
     {
-        canvasContext.drawImage(waypointPic, this.x, this.y);
+        drawBitmapCenteredWithRotation(waypointPic, this.x, this.y, 
+                                       this.angle, waypointPic.width, waypointPic.height);
+    
         var nextWaypoint = this.next != null ? this.next : firstWaypoint;
         var lineColor = this.next != null ? "black" : "red"
 
-        lineBetweenTwoPoints(this.x + waypointPic.width / 2,
-                             this.y + waypointPic.height / 2,
-                             nextWaypoint.x + waypointPic.width / 2,
-                             nextWaypoint.y + waypointPic.height / 2,
+        lineBetweenTwoPoints(this.x,
+                             this.y,
+                             nextWaypoint.x,
+                             nextWaypoint.y,
                              lineColor);
     }
 }
 
 function drawAllWaypoints()
 {
-    var tempWaypoint = currentWaypoint;
+    var tempWaypoint = firstWaypoint;
 
     while (tempWaypoint != null)
     {

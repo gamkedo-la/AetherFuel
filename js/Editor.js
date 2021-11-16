@@ -21,6 +21,8 @@ function Editor()
     this.firstTileSelectedI = 0;
     this.firstTileSelectedJ = 0;
 
+    this.isPlacingWaypoint = false;
+
     this.initialize = function()
     {
         this.x = 0;
@@ -29,6 +31,8 @@ function Editor()
 
     this.move = function()
     {
+        if (this.isPlacingWaypoint) return;
+
         if(this.isMovingUp)
         {
             this.y -= this.speed;
@@ -54,7 +58,14 @@ function Editor()
     {
         if (editorPaintType == TRACK_WAYPOINT)
         {
-            this.createWaypoint();
+            if (!this.isPlacingWaypoint)
+            {
+                this.createWaypoint();
+            }
+            else
+            {
+                this.isPlacingWaypoint = false;
+            }
             return;
         }
 
@@ -62,7 +73,6 @@ function Editor()
 
         if (editorPaintType == TRACK_START)
         {
-            // trackGrid[playerStart] = TRACK_ROAD;
             playerStart = mouseIdx;
         }
         else
@@ -86,8 +96,8 @@ function Editor()
     this.createNewWaypoint = function()
     {
         var waypointData = {
-            "x": mouseX - waypointPic.width / 2,
-            "y": mouseY - waypointPic.height / 2,
+            "x": mouseX,
+            "y": mouseY,
             "next": null
         }
         var newWaypoint = new Waypoint(waypointData);
@@ -95,12 +105,21 @@ function Editor()
         if (currentWaypoint != null)
         {
             currentWaypoint.addWaypoint(newWaypoint);
+            currentWaypoint = newWaypoint;
         }
         else
         {
             currentWaypoint = newWaypoint;
             firstWaypoint = newWaypoint;
         }
+
+        this.isPlacingWaypoint = true;
+    }
+
+    this.updateWaypointAngle = function()
+    {
+        if (!this.isPlacingWaypoint) return;
+        currentWaypoint.angle = Math.atan2(mouseY - currentWaypoint.y, mouseX - currentWaypoint.x);
     }
 
     this.releaseClick = function()
@@ -143,7 +162,10 @@ function Editor()
         }
         else if (editorPaintType == TRACK_WAYPOINT)
         {
-            this.drawWaypointAtMousePosition();
+            if (!this.isPlacingWaypoint)
+            {
+                this.drawWaypointAtMousePosition();
+            }
         }
         else
         {
@@ -175,9 +197,8 @@ function Editor()
 
     this.drawWaypointAtMousePosition = function()
     {
-        canvasContext.drawImage(waypointPic,
-                                mouseX - waypointPic.width / 2,
-                                mouseY - waypointPic.height / 2);
+        drawBitmapCenteredWithRotation(waypointPic, mouseX, mouseY, 
+            0.0, waypointPic.width, waypointPic.height);
     }
 
     this.drawSingleTrackTypeAtMousePosition = function(useImg)
@@ -296,6 +317,8 @@ function Editor()
 
     this.setKey = function(keyCode)
     {
+        if (this.isPlacingWaypoint) return;
+
         if (!editorMode)
         {
             if (keyCode == KEY_TAB)
