@@ -31,7 +31,7 @@ function Opponent(name)
 
         var dotProd = rightDir.x * dirToWaypoint.x + rightDir.y * dirToWaypoint.y;
 
-        if (Math.abs(dotProd) < 0.01)
+        if (Math.abs(dotProd) < 0.2)
         {
             this.holdTurnRight = 0;
             this.holdTurnLeft = 0;

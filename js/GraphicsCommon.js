@@ -37,6 +37,20 @@ function lineBetweenTwoPoints(x1, y1, x2, y2, color)
     canvasContext.stroke();
 }
 
+function areaWithinPolygon(x1, y1, x2, y2, x3, y3, x4, y4, color)
+{
+    canvasContext.fillStyle = color;
+    canvasContext.globalAlpha = 0.25;
+    canvasContext.beginPath();
+    canvasContext.moveTo(x1, y1);
+    canvasContext.lineTo(x2, y2);
+    canvasContext.lineTo(x3, y3);
+    canvasContext.lineTo(x4, y4);
+    canvasContext.closePath();
+    canvasContext.fill();
+    canvasContext.globalAlpha = 1.0;
+}
+
 class PuffOfSmoke
 {
     constructor(x,y)

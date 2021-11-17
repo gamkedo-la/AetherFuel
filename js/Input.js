@@ -115,9 +115,14 @@ function updateMousePos(evt)
 
 function handleWheel(evt)
 {
-    console.log(evt.deltaY);
-
-    camera.zoom += evt.deltaY / 6000.0;
+    if (editor.isPlacingWaypoint)
+    {
+        currentWaypoint.thickness += evt.deltaY / 50;
+    }
+    else
+    {
+        camera.zoom += evt.deltaY / 6000.0;
+    }
 }
 
 function setupInput()

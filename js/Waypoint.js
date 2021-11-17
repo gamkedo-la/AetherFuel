@@ -10,7 +10,7 @@ function Waypoint(data)
     this.next = data.next == null? null : new Waypoint(data.next);
 
     // add waypoint thickness
-    this.thickness;  // in pixels 
+    this.thickness = 100.0;  // in pixels 
 
     this.addWaypoint = function(waypoint)
     {
@@ -31,17 +31,50 @@ function Waypoint(data)
 
     this.draw = function()
     {
-        drawBitmapCenteredWithRotation(waypointPic, this.x, this.y, 
-                                       this.angle, waypointPic.width, waypointPic.height);
-    
-        var nextWaypoint = this.next != null ? this.next : firstWaypoint;
-        var lineColor = this.next != null ? "black" : "red"
+        this.drawThickness();
+        this.drawConnectionToNextWaypoint();
+        this.drawWaypointImage();
+    }
 
-        lineBetweenTwoPoints(this.x,
-                             this.y,
-                             nextWaypoint.x,
-                             nextWaypoint.y,
-                             lineColor);
+    this.drawConnectionToNextWaypoint = function()
+    {
+        var nextWaypoint = this.next != null ? this.next : firstWaypoint;
+        var lineColor = this.next != null ? "black" : "red";
+
+        canvasContext.lineWidth = 5;
+
+        areaWithinPolygon(this.x - this.thickness / 2 * Math.sin(this.angle),
+                          this.y + this.thickness / 2 * Math.cos(this.angle),
+                          nextWaypoint.x - nextWaypoint.thickness / 2 * Math.sin(nextWaypoint.angle),
+                          nextWaypoint.y + nextWaypoint.thickness / 2 * Math.cos(nextWaypoint.angle),
+                          nextWaypoint.x + nextWaypoint.thickness / 2 * Math.sin(nextWaypoint.angle),
+                          nextWaypoint.y - nextWaypoint.thickness / 2 * Math.cos(nextWaypoint.angle),
+                          this.x + this.thickness / 2 * Math.sin(this.angle),
+                          this.y - this.thickness / 2 * Math.cos(this.angle),
+                          "red")
+    }
+
+    this.drawWaypointImage = function()
+    {
+        drawBitmapCenteredWithRotation(waypointPic, this.x, this.y,
+            this.angle, waypointPic.width, waypointPic.height);
+    }
+
+    this.drawThickness = function()
+    {
+        canvasContext.lineWidth = 5;
+
+        lineBetweenTwoPoints(this.x - this.thickness / 2 * Math.sin(this.angle),
+                             this.y + this.thickness / 2 * Math.cos(this.angle),
+                             this.x + this.thickness / 2 * Math.sin(this.angle),
+                             this.y - this.thickness / 2 * Math.cos(this.angle),
+                             "green");
+
+        colorCircle(this.x + this.thickness / 2 * Math.sin(this.angle),
+                    this.y - this.thickness / 2 * Math.cos(this.angle), 5, "magenta");
+                    
+        colorCircle(this.x - this.thickness / 2 * Math.sin(this.angle),
+                    this.y + this.thickness / 2 * Math.cos(this.angle), 5, "white");
     }
 }
 
