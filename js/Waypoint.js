@@ -7,6 +7,11 @@ function Waypoint(data)
     this.y = data.y;
     this.angle = 0.0;
 
+    this.percentageGasAppliedTime = 0.8;
+    // this.targetSpeedToCrossItAt ([0, 1] - when close enough to pixel - percentage)
+    // percentage of time at which I hold gas
+    // 
+
     this.next = data.next == null? null : new Waypoint(data.next);
 
     // add waypoint thickness

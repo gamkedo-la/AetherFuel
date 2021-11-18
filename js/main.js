@@ -19,6 +19,8 @@ var tireTracks;
 let puffOfSmoke;
 let smokeManager;
 
+var debugAIMode = true;
+
 
 window.onload = function()
 {

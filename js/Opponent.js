@@ -2,10 +2,15 @@ function Opponent(name)
 {
     Spaceship.call(this, name);
 
+    // this.targetSpeed; 
+
     this.activateGas = function()
     {
         if (currentWaypoint == null) return ;
-        this.holdGas = 1;
+        this.holdGas = Math.random() < currentWaypoint.percentageGasAppliedTime;
+
+        // Random reevaluaiton of gas holding
+        // frequency of reevaluation
     }
 
     this.steerWheels = function()
@@ -15,9 +20,16 @@ function Opponent(name)
         var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
         if (distToWaypoint < 10)
         {
-            currentWaypoint = currentWaypoint.next;
+            if (debugAIMode)
+            {
+                console.log("Changing waypoints : " + distToWaypoint);
+            }
+
+            currentWaypoint = currentWaypoint.next == null ? firstWaypoint : currentWaypoint.next;
             return
         }
+
+        console.log("Driving");
 
         var rightDir = {
             "x": -Math.sin(this.ang),
@@ -26,12 +38,12 @@ function Opponent(name)
 
         var dirToWaypoint = {
             "x": (currentWaypoint.x - this.x) / distToWaypoint,
-            "y": (currentWaypoint.x - this.y) / distToWaypoint,
+            "y": (currentWaypoint.y - this.y) / distToWaypoint,
         }
 
         var dotProd = rightDir.x * dirToWaypoint.x + rightDir.y * dirToWaypoint.y;
 
-        if (Math.abs(dotProd) < 0.2)
+        if (Math.abs(dotProd) < 0.1)
         {
             this.holdTurnRight = 0;
             this.holdTurnLeft = 0;
@@ -44,7 +56,18 @@ function Opponent(name)
         else
         {
             this.holdTurnRight = 0;
-            this.holdTurnLeft = 1;        }
+            this.holdTurnLeft = 1; 
+        }
+    }
+
+    this.superdraw = this.draw;
+    this.draw = function()
+    {
+        this.superdraw();
+
+        if (currentWaypoint == null) return;
+
+        lineBetweenTwoPoints(this.x, this.y, currentWaypoint.x, currentWaypoint.y, "red");
     }
 
     // this.pushOther(other)

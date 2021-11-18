@@ -96,7 +96,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
         }
     }
 
-    if (editorMode)
+    if (editorMode || debugAIMode)
     {
         drawAllWaypoints();
     }

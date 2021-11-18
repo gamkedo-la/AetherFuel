@@ -371,6 +371,8 @@ function Editor()
 
             case KEY_TAB:
                 editorMode = false;
+                currentWaypoint = firstWaypoint;
+                
                 player.reset(playerPic);
                 camera.initialize(player.x, player.y, -player.ang);
                 
