@@ -324,7 +324,7 @@ function Editor()
             if (keyCode == KEY_TAB)
             {
                 editorMode = true;
-                trackGrid[player.startIdx] = TRACK_START;
+                trackGrid = currentLevel.track.slice();
             }
             return;
         }

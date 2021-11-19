@@ -18,7 +18,7 @@ function Opponent(name)
         if (currentWaypoint == null) return ;
 
         var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
-        if (distToWaypoint < 10)
+        if (distToWaypoint < 80)
         {
             if (debugAIMode)
             {
