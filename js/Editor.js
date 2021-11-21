@@ -98,6 +98,8 @@ function Editor()
         var waypointData = {
             "x": mouseX,
             "y": mouseY,
+            "angle": 0,
+            "thickness": 100,
             "next": null
         }
         var newWaypoint = new Waypoint(waypointData);
