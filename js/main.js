@@ -179,6 +179,7 @@ function gameDrawAll()
 
     // Draw the minimap
     miniMap.draw();
+    colorText(`Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`, miniMap.x + 2, miniMap.y + miniMap.height / 2 + 20, 'red', 20);
 
     if (currentLevelCountDown > -deltaTime) {
         var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "GO!";        
