@@ -35,6 +35,11 @@ Spaceship.prototype.move = function()
     {
         this.speed -= REVERSE_POWER;
     }
+    if (this.fire)
+    {
+        //console.log("anything");
+        this.launchAttack();
+    }
 
     if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
 
@@ -62,6 +67,11 @@ Spaceship.prototype.move = function()
         let tireTrackAlpha = 0.1;  // barely visible
         tireTracks.add(this.x, this.y, this.ang, tireTrackAlpha);
     }
+}
+
+Spaceship.prototype.launchAttack = function()
+{
+    bulletManager.createABullet();
 }
 
 Spaceship.prototype.reset = function(whichPic)

@@ -8,6 +8,8 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 
+const KEY_SPACE = 32;
+
 // used by editor
 const KEY_Z = 90;
 const KEY_X = 88;
@@ -54,6 +56,10 @@ function keySet(keyEvt, player, setTo)
     if (keyEvt.keyCode == player.controlKeyDown)
     {
         player.holdReverse = setTo;
+    }
+    if (keyEvt.keyCode == player.controlKeySpace)
+    {
+        player.fire = setTo;
     }
 }
 
@@ -135,5 +141,5 @@ function setupInput()
     document.addEventListener("keydown", keyPressed);
     document.addEventListener("keyup", keyReleased);
 
-    player.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
+    player.setupInput(KEY_W, KEY_D, KEY_S, KEY_A, KEY_SPACE);
 }

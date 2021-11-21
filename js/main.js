@@ -18,6 +18,7 @@ var tireTracks;
 
 let puffOfSmoke;
 let smokeManager;
+let bulletManager;
 
 var debugAIMode = true;
 
@@ -74,6 +75,7 @@ function loadLevel(whichLevel)
     });
 
     smokeManager = new SmokeManager();
+    bulletManager = new BulletManager();
     smokeManager.createPuffsOfSmokeOverTime();
     //puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
 
@@ -152,6 +154,7 @@ function gameMoveAll()
     });
 
     smokeManager.updatePuffsOfSmoke();
+    bulletManager.updateBullets();
     camera.follow(player);
 }
 
@@ -174,6 +177,7 @@ function gameDrawAll()
     });
 
     smokeManager.drawPuffsOfSmoke();
+    bulletManager.drawBullets();
     // Restore the context
     canvasContext.restore();
 
