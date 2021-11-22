@@ -50,36 +50,3 @@ function areaWithinPolygon(x1, y1, x2, y2, x3, y3, x4, y4, color)
     canvasContext.fill();
     canvasContext.globalAlpha = 1.0;
 }
-
-class PuffOfSmoke
-{
-    constructor(x,y)
-    {
-        this.x = x;
-        this.y = y;
-        this.alpha = 1;
-        
-        this.maxSize = 5;
-        this.size = 3;
-    }
-
-    update()
-    {
-        this.size += 0.5;
-        this.alpha -= 0.05;
-    }
-
-    draw()
-    {
-        if (this.size < this.maxSize)
-        {
-            if (this.alpha < 0.05)
-            {
-                return;
-            }
-            canvasContext.globalAlpha = this.alpha;
-            colorCircle(this.x, this.y, this.size, "gray");
-            canvasContext.globalAlpha = 1;
-        }
-    }
-}

@@ -19,12 +19,20 @@ function Spaceship(name)
     this.pic;
     this.startIdx = 0;
 
+    this.currentWeaponState = 'E_Bomb';
+    this.stunned = false;
+
     this.engineSoundFile = "Audio/temp_engine1.ogg"
     this.engineSound = null;
 }
 
 Spaceship.prototype.move = function()
 {
+    if (this.stunned)
+    {
+        return;
+    }
+    
     this.speed *= GROUND_SPEED_DECAY_MULT;
 
     if (this.holdGas) 
@@ -71,7 +79,24 @@ Spaceship.prototype.move = function()
 
 Spaceship.prototype.launchAttack = function()
 {
-    bulletManager.createABullet();
+    switch(this.currentWeaponState) 
+    {
+        case 'Bullet':
+            bulletManager.createABullet();
+            break;
+        case 'E_Bomb':
+            if (testE_Bomb)
+            {
+                return;
+            }
+            let xSpeed = Math.cos(player.ang) * 15;
+            let ySpeed = Math.sin(player.ang) * 15;
+            testE_Bomb = new E_Bomb(player.x,player.y, xSpeed,ySpeed);
+            break;
+        case 'none':
+            return;
+            break;
+    }   
 }
 
 Spaceship.prototype.reset = function(whichPic)

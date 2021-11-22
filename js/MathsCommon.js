@@ -24,3 +24,7 @@ function distanceBetweenTwoPoints(p1, p2) {
 function angleBetweenTwoPoints(p1, p2) {
     return Math.atan((p2.x-p1.x)/(p2.y-p1.y));
 }
+
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}

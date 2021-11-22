@@ -19,6 +19,7 @@ var tireTracks;
 let puffOfSmoke;
 let smokeManager;
 let bulletManager;
+let testE_Bomb;
 
 var debugAIMode = true;
 
@@ -163,6 +164,10 @@ function gameMoveAll()
     }
     
     player.move();
+    if (testE_Bomb != undefined)
+    {
+        testE_Bomb.update();
+    }
     opponents.forEach(function(opponent) {
         opponent.activateGas();
         opponent.steerWheels();
@@ -194,6 +199,11 @@ function gameDrawAll()
 
     smokeManager.drawPuffsOfSmoke();
     bulletManager.drawBullets();
+    if (testE_Bomb != undefined)
+    {
+        testE_Bomb.draw();
+    }
+    
     // Restore the context
     canvasContext.restore();
 

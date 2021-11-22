@@ -7,6 +7,7 @@ function Opponent(name)
     this.activateGas = function()
     {
         if (currentWaypoint == null) return ;
+        
         this.holdGas = Math.random() < currentWaypoint.percentageGasAppliedTime;
 
         // Random reevaluaiton of gas holding
