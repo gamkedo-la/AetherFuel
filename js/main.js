@@ -22,6 +22,7 @@ let bulletManager;
 
 var debugAIMode = true;
 
+let tempBackgroundMusicTag;
 
 window.onload = function()
 {
@@ -35,7 +36,22 @@ window.onload = function()
     loadImages();
     AudioMan.init();
 
-    // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/synthwaveExperiment1V2(2).wav")});
+    tempBackgroundMusicTag = new Audio("Audio/aetherFuel140bpm.wav");
+    tempBackgroundMusicTag.loop = true;
+    tempBackgroundMusicTag.currentTime = 35;
+    tempBackgroundMusicTag.addEventListener('timeupdate', function()
+    {
+        var buffer = .2;
+        if(this.currentTime > this.duration - buffer)
+        {
+            this.currentTime = 0;
+            this.play();
+        }
+    });
+    tempBackgroundMusicTag.volume = 0.35;
+
+    //document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav")});
+    document.addEventListener("mouseup", function() {tempBackgroundMusicTag.play()});
 }
 
 function imageLoadingDoneSoStartGame()

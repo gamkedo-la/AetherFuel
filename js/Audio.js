@@ -59,6 +59,7 @@ function AudioManager() {
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
 		}
+
 	};
 
 //--//volume handling functions-------------------------------------------------
