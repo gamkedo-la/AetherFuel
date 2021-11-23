@@ -16,6 +16,9 @@ function E_Bomb(x,y, xSpeed,ySpeed)
 
 	this.size = 8;	
 
+    this.e_Bomb_Collision_Stun_Sound_File = "Audio/E_Bomb_Collision_Stun_2.wav";
+    this.e_Bomb_Sound_Sound = null;
+
 	this.draw = function()
     {    
         colorCircle(this.x, this.y, this.size, this.color);
@@ -48,6 +51,10 @@ function E_Bomb(x,y, xSpeed,ySpeed)
         if (E_BombTrackIndex == opponentTrackIndex)
         {
         	opponents[0].stunned = true;
+
+            this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
+            this.e_Bomb_Collision_Stun_Sound.play();
+
             opponents[0].pic = stunnedOpponentSpriteSheet;
         	setTimeout(function()
                 {
