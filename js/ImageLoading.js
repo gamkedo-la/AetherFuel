@@ -2,6 +2,7 @@ var playerPic = document.createElement("img");
 var darkTravelerPic = document.createElement("img");
 var tireTrackPic = document.createElement("img");
 var waypointPic = document.createElement("img");
+var bombCraterPic = document.createElement("img");
 
 var trackPix = new Array();
 
@@ -35,6 +36,7 @@ function loadImages()
         {varName: darkTravelerPic, theFile: "spaceship_40x40-red.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},
+        {varName: bombCraterPic, theFile: "bombCrater.png"},
         {trackType: TRACK_ROAD, theFile: "sand.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
         {trackType: TRACK_TREE, theFile: "Tree.png"},

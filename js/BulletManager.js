@@ -47,6 +47,8 @@ function BulletManager()
         
         let bullet = new Bullet(player.x, player.y, xSpeed,ySpeed);
         arrayOfBullets.push(bullet);
+
+        console.log("new bullet!");
     }
 
     this.updateBullets = function()
@@ -73,9 +75,13 @@ function BulletManager()
     {
         for (let i = 0; i < arrayOfBullets.length; i++)
         {
+            let exploded = false;
+
             if (arrayOfBullets[i].currentTrackType == TRACK_WALL)
             {
                 arrayOfBullets.splice(i,1);
+                exploded = true;
+                console.log("bullet hit a wall!");
             }
 
             let bulletTrackIndex = getTrackIdxFromXY(arrayOfBullets[i].x, arrayOfBullets[i].y);
@@ -83,6 +89,8 @@ function BulletManager()
             if (bulletTrackIndex == opponentTrackIndex)
             {
                 arrayOfBullets.splice(i,1);
+                exploded = true;
+                console.log("bullet hit an opponent!");
             }
             // if (arrayOfBullets[i].x > opponents[0].x && arrayOfBullets[i].x < opponents[0].x + TRACK_W
             //     && arrayOfBullets[i].y < opponents[0].y && arrayOfBullets[i].y > opponents[0].y + TRACK_H)
@@ -99,6 +107,12 @@ function BulletManager()
             //         arrayOfBullets.splice(i,1);
             //     }  
             // }//end of checking bullets colliding with opponents          
+        
+        if (exploded) {
+            console.log("bullet exploded: leaving a scroch mark on the ground");
+            tireTracks.add(arrayOfBullets[i].x, arrayOfBullets[i].y, Math.random(Math.PI*2), 0.25, bombCraterPic);
+        }
+        
         }//end of all bullet collision checks
     }//end of 'garbage collection'
 }//end of bullet manager

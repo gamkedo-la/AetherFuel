@@ -12,19 +12,19 @@ function decalManager(canvas) {
 	
     console.log("Initializing tire tracks...");
 
-	this.add = function(x,y,rot,alpha,color) {
+	this.add = function(x,y,rot,alpha,img) {
 		this.decalCount++;
 		if (alpha === undefined) alpha = 0.1;
 		if (alpha > 1) alpha = 1;
 		if (alpha < 0) alpha = 0;
-		if (color==undefined) color = 'black';
+        if (img==undefined) img = tireTrackPic;
 		
 		//console.log('addTireTracks:'+x+','+y+','+rot+' alpha:'+alpha);
 		this.tireTrackCTX.save();
 		this.tireTrackCTX.translate(x,y);
 		this.tireTrackCTX.rotate(rot);
 		this.tireTrackCTX.globalAlpha = alpha;
-		this.tireTrackCTX.drawImage(tireTrackPic, -9, -9);
+		this.tireTrackCTX.drawImage(img, -9, -9); // FIXME
 		
 		this.tireTrackCTX.restore()
 
