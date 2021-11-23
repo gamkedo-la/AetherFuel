@@ -35,6 +35,9 @@ function Spaceship(name)
 
     this.e_Bomb_Fire_SoundFile = "Audio/E_Bomb_Fire.wav";
     this.e_Bomb_Sound = null;
+
+    this.pickupSoundFile = "Audio/Pickup.wav";
+    this.pickupSound = null;
 }
 
 Spaceship.prototype.getCurrentTrackType = function()
@@ -87,11 +90,10 @@ Spaceship.prototype.move = function()
     if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
     {
         let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
-        //console.log("currentLevel.track[currentTrackIndex]: " + currentLevel.track[currentTrackIndex]);
         this.currentWeaponState = "E_Bomb";
         this.e_Bomb_Sound = AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, this, false, 0.75);
-        //setTrackTypeAtIJ(this.x, this.y, TRACK_ROAD);
-        console.log("picked up e_bomb");
+        this.pickupSound = AudioMan.createSound3D(this.pickupSoundFile, this, false, 0.75);
+        this.pickupSound.play();
         trackGrid[currentTrackIndex] = TRACK_ROAD;
     }
 
