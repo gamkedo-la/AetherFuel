@@ -2,6 +2,7 @@ function Opponent(name)
 {
     Spaceship.call(this, name);
 
+    this.target = null;
     // this.targetSpeed; 
 
     this.activateGas = function()
@@ -16,7 +17,7 @@ function Opponent(name)
 
     this.steerWheels = function()
     {
-        if (currentWaypoint == null) return ;
+        if (this.target == null) return ;
 
         var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
         if (distToWaypoint < 80)
@@ -27,6 +28,7 @@ function Opponent(name)
             }
 
             currentWaypoint = currentWaypoint.next == null ? firstWaypoint : currentWaypoint.next;
+            this.selectTarget();
             return
         }
 
@@ -38,8 +40,8 @@ function Opponent(name)
         };
 
         var dirToWaypoint = {
-            "x": (currentWaypoint.x - this.x) / distToWaypoint,
-            "y": (currentWaypoint.y - this.y) / distToWaypoint,
+            "x": (this.target.x - this.x) / distToWaypoint,
+            "y": (this.target.y - this.y) / distToWaypoint,
         }
 
         var dotProd = rightDir.x * dirToWaypoint.x + rightDir.y * dirToWaypoint.y;
@@ -61,6 +63,49 @@ function Opponent(name)
         }
     }
 
+    this.selectTarget = function()
+    {
+        if (currentWaypoint == null) return;
+        
+        var randVal = Math.random();
+
+        if (randVal < 0.25)
+        {
+            this.target = {
+                "x": (currentWaypoint.leftX + currentWaypoint.midLeftX) / 2,
+                "y": (currentWaypoint.leftY + currentWaypoint.midLeftY) / 2,
+            }
+        }
+        else if (randVal < 0.5)
+        {
+            this.target = {
+                "x": (currentWaypoint.midLeftX + currentWaypoint.x) / 2,
+                "y": (currentWaypoint.midLeftY + currentWaypoint.y) / 2,
+            }
+        }
+        else if (randVal < 0.75)
+        {
+            this.target = {
+                "x": (currentWaypoint.x + currentWaypoint.midRightX) / 2,
+                "y": (currentWaypoint.y + currentWaypoint.midRightY) / 2,
+            }
+        }
+        else
+        {
+            this.target = {
+                "x": (currentWaypoint.midRightX + currentWaypoint.rightX) / 2,
+                "y": (currentWaypoint.midRightY + currentWaypoint.rightY) / 2,
+            }
+        }
+    }
+
+    this.superReset = this.reset;
+    this.reset = function(pic)
+    {
+        this.superReset(pic);
+        this.selectTarget();
+    }
+
     this.superdraw = this.draw;
     this.draw = function()
     {
@@ -68,7 +113,7 @@ function Opponent(name)
 
         if (currentWaypoint == null) return;
 
-        lineBetweenTwoPoints(this.x, this.y, currentWaypoint.x, currentWaypoint.y, "red");
+        lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
     }
 
     // this.pushOther(other)
