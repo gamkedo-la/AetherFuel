@@ -44,6 +44,7 @@ function loadImages()
         {trackType: TRACK_TREE, theFile: "Tree.png"},
         {trackType: TRACK_FLAG, theFile: "Flag.png"},
         {trackType: TRACK_GOAL, theFile: "Goal.png"},
+        {trackType: TRACK_SAND_WITH_E_BOMB, theFile: "sandWithE_Bomb.png"},
     ]
 
     picsToLoad = imageList.length;

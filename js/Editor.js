@@ -258,6 +258,7 @@ function Editor()
         colorText("1 - Road", hx, hy+=hs, "white", 16);
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
         colorText("3 - Finish line", hx, hy+=hs, "white", 16);
+        colorText("4 - Sand With E_Bomb", hx, hy+=hs, "white", 16);
         colorText("9 - Waypoint", hx, hy+=hs, "white", 16);
         colorText("R - Resize", hx, hy+=hs, "white", 16);
         colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
@@ -347,6 +348,10 @@ function Editor()
 
             case KEY_NUM_ROW_3:
                 editorPaintType = TRACK_GOAL;
+                break;
+
+            case KEY_NUM_ROW_4:
+                editorPaintType = TRACK_SAND_WITH_E_BOMB;
                 break;
 
             case KEY_NUM_ROW_9:

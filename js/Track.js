@@ -8,6 +8,7 @@ const TRACK_START = 2;
 const TRACK_GOAL = 3;
 const TRACK_TREE = 4;
 const TRACK_FLAG = 5;
+const TRACK_SAND_WITH_E_BOMB = 6;
 
 const TRACK_WAYPOINT = 9;
 
@@ -48,6 +49,7 @@ function setTrackTypeAtIJ(trackI, trackJ, value)
     if (trackI >= 0 && trackI < trackNumRows &&
         trackJ >= 0 && trackJ < trackNumCols)
     {
+        console.log("anything");
         trackGrid[trackI * trackNumCols + trackJ] = value;
     }
 }
@@ -66,6 +68,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             var drawTileX = j * TRACK_W;
 
             var trackIdx = i * trackNumCols + j;
+            
             var tileKind = trackGrid[trackIdx];
 
             if (tileKind == TRACK_ROAD){ continue; }

@@ -19,7 +19,7 @@ function Spaceship(name)
     this.pic;
     this.startIdx = 0;
 
-    this.currentWeaponState = 'E_Bomb';
+    this.currentWeaponState = 'none';
     this.stunned = false;
     this.currentStunnedSheetIndex = 0;
     this.stunnedSheetIndexWidth = 40;
@@ -28,8 +28,15 @@ function Spaceship(name)
     this.maxStunnedSheetIndex = 2;
     this.stunnedSheetDirection = 1;
 
+    this.currentTrackType = undefined;
+
     this.engineSoundFile = "Audio/temp_engine1.ogg"
     this.engineSound = null;
+}
+
+Spaceship.prototype.getCurrentTrackType = function()
+{
+    this.currentTrackType = returnTrackTypeAtIJ(this.colIdx, this.rowIdx);
 }
 
 Spaceship.prototype.move = function()
@@ -72,6 +79,17 @@ Spaceship.prototype.move = function()
     this.x += this.speed * Math.cos(this.ang);
     this.y += this.speed * Math.sin(this.ang);
     this.updateRowColIdx();
+    this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
+
+    if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
+    {
+        let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
+        //console.log("currentLevel.track[currentTrackIndex]: " + currentLevel.track[currentTrackIndex]);
+        this.currentWeaponState = "E_Bomb";
+        //setTrackTypeAtIJ(this.x, this.y, TRACK_ROAD);
+        console.log("picked up e_bomb");
+        trackGrid[currentTrackIndex] = TRACK_ROAD;
+    }
 
     this.handleCollisionWithTracksAdvanced();
 
@@ -206,15 +224,6 @@ Spaceship.prototype.draw = function()
 {
     if (this.stunned)
     {
-        //(bitmap, sheetIndex
-    // indexWidth,indexHeight,
-    // destinationXPos, destinationYPos, 
-    // angle, width, height)
-    // (bitmap, sheetIndex,
-    // indexWidth,indexHeight,
-    // destinationXPos, destinationYPos, 
-    // angle, width, height)
-    this.pic = stunnedOpponentSpriteSheet;
         drawBitmapFromSpriteSheetCenteredWithRotation(this.pic, this.currentStunnedSheetIndex,
             this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight, this.x,this.y, this.ang, 
             this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight);
@@ -224,7 +233,6 @@ Spaceship.prototype.draw = function()
         {
             this.stunnedSheetDirection *= -1;
         }
-        console.log("this.currentStunnedSheetIndex: " + this.currentStunnedSheetIndex);
     }
     else
     {
