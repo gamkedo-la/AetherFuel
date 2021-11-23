@@ -48,7 +48,12 @@ function E_Bomb(x,y, xSpeed,ySpeed)
         if (E_BombTrackIndex == opponentTrackIndex)
         {
         	opponents[0].stunned = true;
-        	setTimeout(function(){opponents[0].stunned = false}, 2000);
+            opponents[0].pic = stunnedOpponentSpriteSheet;
+        	setTimeout(function()
+                {
+                    opponents[0].stunned = false
+                    opponents[0].pic = darkTravelerPic;
+                }, 2000);
         	testE_Bomb = undefined;
             console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
             tireTracks.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);

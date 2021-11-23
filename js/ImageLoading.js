@@ -3,6 +3,7 @@ var darkTravelerPic = document.createElement("img");
 var tireTrackPic = document.createElement("img");
 var waypointPic = document.createElement("img");
 var bombCraterPic = document.createElement("img");
+var stunnedOpponentSpriteSheet = document.createElement("img");
 
 var trackPix = new Array();
 
@@ -34,6 +35,7 @@ function loadImages()
     var imageList = [
         {varName: playerPic, theFile: "spaceship_40x40.png"},
         {varName: darkTravelerPic, theFile: "spaceship_40x40-red.png"},
+        {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/stunnedOpponentSheet.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},
         {varName: bombCraterPic, theFile: "bombCrater.png"},

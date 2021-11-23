@@ -21,6 +21,12 @@ function Spaceship(name)
 
     this.currentWeaponState = 'E_Bomb';
     this.stunned = false;
+    this.currentStunnedSheetIndex = 0;
+    this.stunnedSheetIndexWidth = 40;
+    this.stunnedSheetIndexHeight = 40;
+    this.minStunnedSheetIndex = 0;
+    this.maxStunnedSheetIndex = 2;
+    this.stunnedSheetDirection = 1;
 
     this.engineSoundFile = "Audio/temp_engine1.ogg"
     this.engineSound = null;
@@ -29,7 +35,7 @@ function Spaceship(name)
 Spaceship.prototype.move = function()
 {
     if (this.stunned)
-    {
+    {       
         return;
     }
     
@@ -198,8 +204,33 @@ Spaceship.prototype.getCurrentTrackType = function()
 
 Spaceship.prototype.draw = function()
 {
-    drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang,
+    if (this.stunned)
+    {
+        //(bitmap, sheetIndex
+    // indexWidth,indexHeight,
+    // destinationXPos, destinationYPos, 
+    // angle, width, height)
+    // (bitmap, sheetIndex,
+    // indexWidth,indexHeight,
+    // destinationXPos, destinationYPos, 
+    // angle, width, height)
+    this.pic = stunnedOpponentSpriteSheet;
+        drawBitmapFromSpriteSheetCenteredWithRotation(this.pic, this.currentStunnedSheetIndex,
+            this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight, this.x,this.y, this.ang, 
+            this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight);
+        
+        this.currentStunnedSheetIndex += this.stunnedSheetDirection;
+        if (this.currentStunnedSheetIndex == this.minStunnedSheetIndex || this.currentStunnedSheetIndex == this.maxStunnedSheetIndex)
+        {
+            this.stunnedSheetDirection *= -1;
+        }
+        console.log("this.currentStunnedSheetIndex: " + this.currentStunnedSheetIndex);
+    }
+    else
+    {
+        drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang,
                                     this.pic.width,
                                     this.pic.height);
+    }
 }
 

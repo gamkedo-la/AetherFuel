@@ -7,6 +7,21 @@ function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle, width, height
     canvasContext.restore();
 }
 
+//image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
+function drawBitmapFromSpriteSheetCenteredWithRotation
+    (bitmap, sheetIndex,
+    indexWidth,indexHeight,
+    destinationXPos, destinationYPos, 
+    angle, width, height)
+{
+    canvasContext.save();
+    canvasContext.translate(destinationXPos, destinationYPos);
+    canvasContext.rotate(angle);
+    canvasContext.drawImage(bitmap, sheetIndex * indexWidth,0, indexWidth,indexHeight,
+         -width/2, -height/2, width,height);
+    canvasContext.restore();
+}
+
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor)
 {
     canvasContext.fillStyle = fillColor;
