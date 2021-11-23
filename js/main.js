@@ -67,7 +67,7 @@ function loadLevel(whichLevel)
     currentWaypoint = firstWaypoint;
 
     player.reset(playerPic);
-    player.engineSound.mixVolume *= 0.5;
+    player.engineSound.mixVolume *= 0.10;
     camera.initialize(player.x, player.y, -player.ang);
 
     opponents.forEach(function(opponent) {
