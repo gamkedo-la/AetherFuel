@@ -16,6 +16,17 @@ function Waypoint(data)
 
     // add waypoint thickness
     this.thickness = data.thickness;  // in pixels 
+    this.leftX = this.x + this.thickness / 2 * Math.sin(this.angle);
+    this.leftY = this.y - this.thickness / 2 * Math.cos(this.angle);
+    
+    this.midLeftX = this.x + this.thickness / 4 * Math.sin(this.angle);
+    this.midLeftY = this.y - this.thickness / 4 * Math.cos(this.angle);
+
+    this.midRightX = this.x - this.thickness / 4 * Math.sin(this.angle);
+    this.midRightY = this.y + this.thickness / 4 * Math.cos(this.angle);
+
+    this.rightX = this.x - this.thickness / 2 * Math.sin(this.angle);
+    this.rightY = this.y + this.thickness / 2 * Math.cos(this.angle);
 
     this.addWaypoint = function(waypoint)
     {
@@ -44,9 +55,13 @@ function Waypoint(data)
     this.drawConnectionToNextWaypoint = function()
     {
         var nextWaypoint = this.next != null ? this.next : firstWaypoint;
-        var lineColor = this.next != null ? "black" : "red";
 
-        canvasContext.lineWidth = 5;
+        canvasContext.lineWidth = 3;
+        lineBetweenTwoPoints(this.leftX, this.leftY, nextWaypoint.leftX, nextWaypoint.leftY, "black");
+        lineBetweenTwoPoints(this.midLeftX, this.midLeftY, nextWaypoint.midLeftX, nextWaypoint.midLeftY, "black");
+        lineBetweenTwoPoints(this.x, this.y, nextWaypoint.x, nextWaypoint.y, "black");
+        lineBetweenTwoPoints(this.midRightX, this.midRightY, nextWaypoint.midRightX, nextWaypoint.midRightY, "black");
+        lineBetweenTwoPoints(this.rightX, this.rightY, nextWaypoint.rightX, nextWaypoint.rightY, "black");
 
         areaWithinPolygon(this.x - this.thickness / 2 * Math.sin(this.angle),
                           this.y + this.thickness / 2 * Math.cos(this.angle),
@@ -68,18 +83,39 @@ function Waypoint(data)
     this.drawThickness = function()
     {
         canvasContext.lineWidth = 5;
+        lineBetweenTwoPoints(this.leftX, this.leftY, this.rightX, this.rightY, "green");
+        
+        colorCircle(this.leftX, this.leftY, 4, "magenta");
+        colorCircle(this.midLeftX, this.midLeftY, 4, "gold");
+        colorCircle(this.midRightX, this.midRightY, 4, "chartreuse");
+        colorCircle(this.rightX, this.rightY, 4, "white");
+    }
 
-        lineBetweenTwoPoints(this.x - this.thickness / 2 * Math.sin(this.angle),
-                             this.y + this.thickness / 2 * Math.cos(this.angle),
-                             this.x + this.thickness / 2 * Math.sin(this.angle),
-                             this.y - this.thickness / 2 * Math.cos(this.angle),
-                             "green");
+    this.updateThickness = function(value)
+    {
+        this.thickness += value;
+        this.updateLeftRightTags();
+    }
 
-        colorCircle(this.x + this.thickness / 2 * Math.sin(this.angle),
-                    this.y - this.thickness / 2 * Math.cos(this.angle), 5, "magenta");
-                    
-        colorCircle(this.x - this.thickness / 2 * Math.sin(this.angle),
-                    this.y + this.thickness / 2 * Math.cos(this.angle), 5, "white");
+    this.updateAngle = function(value)
+    {
+        this.angle = value;
+        this.updateLeftRightTags();
+    }
+
+    this.updateLeftRightTags = function()
+    {
+        this.leftX = this.x + this.thickness / 2 * Math.sin(this.angle);
+        this.leftY = this.y - this.thickness / 2 * Math.cos(this.angle);
+        
+        this.midLeftX = this.x + this.thickness / 4 * Math.sin(this.angle);
+        this.midLeftY = this.y - this.thickness / 4 * Math.cos(this.angle);
+
+        this.midRightX = this.x - this.thickness / 4 * Math.sin(this.angle);
+        this.midRightY = this.y + this.thickness / 4 * Math.cos(this.angle);
+
+        this.rightX = this.x - this.thickness / 2 * Math.sin(this.angle);
+        this.rightY = this.y + this.thickness / 2 * Math.cos(this.angle);
     }
 }
 

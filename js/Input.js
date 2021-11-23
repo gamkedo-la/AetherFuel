@@ -123,7 +123,7 @@ function handleWheel(evt)
 {
     if (editor.isPlacingWaypoint)
     {
-        currentWaypoint.thickness += evt.deltaY / 50;
+        currentWaypoint.updateThickness(evt.deltaY / 50);
     }
     else
     {

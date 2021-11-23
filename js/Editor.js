@@ -121,7 +121,7 @@ function Editor()
     this.updateWaypointAngle = function()
     {
         if (!this.isPlacingWaypoint) return;
-        currentWaypoint.angle = Math.atan2(mouseY - currentWaypoint.y, mouseX - currentWaypoint.x);
+        currentWaypoint.updateAngle(Math.atan2(mouseY - currentWaypoint.y, mouseX - currentWaypoint.x));
     }
 
     this.releaseClick = function()
