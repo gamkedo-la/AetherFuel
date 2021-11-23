@@ -34,10 +34,8 @@ function Spaceship(name)
     this.engineSound = null;
 
     this.e_Bomb_Fire_SoundFile = "Audio/E_Bomb_Fire.wav";
-    this.e_Bomb_Sound = null;
 
     this.pickupSoundFile = "Audio/Pickup.wav";
-    this.pickupSound = null;
 }
 
 Spaceship.prototype.getCurrentTrackType = function()
@@ -91,9 +89,7 @@ Spaceship.prototype.move = function()
     {
         let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
         this.currentWeaponState = "E_Bomb";
-        this.e_Bomb_Sound = AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, this, false, 0.75);
-        this.pickupSound = AudioMan.createSound3D(this.pickupSoundFile, this, false, 0.75);
-        this.pickupSound.play();
+        AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
         trackGrid[currentTrackIndex] = TRACK_ROAD;
     }
 
@@ -122,7 +118,7 @@ Spaceship.prototype.launchAttack = function()
             let xSpeed = Math.cos(player.ang) * 15;
             let ySpeed = Math.sin(player.ang) * 15;
             testE_Bomb = new E_Bomb(player.x,player.y, xSpeed,ySpeed);
-            player.e_Bomb_Sound.play();
+            AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, testE_Bomb, false, 0.75).play();
             break;
         case 'none':
             return;
@@ -170,7 +166,7 @@ Spaceship.prototype.reset = function(whichPic)
     }
 
     if (this.engineSound != null) this.engineSound.stop();
-    this.engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.25);
+    this.engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.75);
     this.engineSound.play();
 }
 

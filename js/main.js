@@ -13,7 +13,6 @@ var currentLevelIdx = 0;
 var currentLevel;
 var currentLevelCountDown = 0;
 
-var backgroundMusic = document.createElement("AUDIO");
 var tireTracks;
 
 let puffOfSmoke;
@@ -22,8 +21,6 @@ let bulletManager;
 let testE_Bomb;
 
 var debugAIMode = true;
-
-let tempBackgroundMusicTag;
 
 window.onload = function()
 {
@@ -37,22 +34,7 @@ window.onload = function()
     loadImages();
     AudioMan.init();
 
-    tempBackgroundMusicTag = new Audio("Audio/aetherFuel140bpm.wav");
-    tempBackgroundMusicTag.loop = true;
-    tempBackgroundMusicTag.currentTime = 35;
-    tempBackgroundMusicTag.addEventListener('timeupdate', function()
-    {
-        var buffer = .2;
-        if(this.currentTime > this.duration - buffer)
-        {
-            this.currentTime = 0;
-            this.play();
-        }
-    });
-    tempBackgroundMusicTag.volume = 0.35;
-
-    //document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav")});
-    document.addEventListener("mouseup", function() {tempBackgroundMusicTag.play()});
+    document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
 }
 
 function imageLoadingDoneSoStartGame()
@@ -85,6 +67,7 @@ function loadLevel(whichLevel)
     currentWaypoint = firstWaypoint;
 
     player.reset(playerPic);
+    player.engineSound.mixVolume *= 0.5;
     camera.initialize(player.x, player.y, -player.ang);
 
     opponents.forEach(function(opponent) {

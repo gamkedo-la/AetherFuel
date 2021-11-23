@@ -4,10 +4,10 @@ var AudioMan = new AudioManager();
 function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
-	const DROPOFF_MIN = 60;
-	const DROPOFF_MAX = 1000;
+	const DROPOFF_MIN = 80;
+	const DROPOFF_MAX = 1200;
 	const HEADSHADOW_REDUCTION = 0.5;
-	const DOPLER_SCALE = 10;
+	const DOPLER_SCALE = 8;
 
 //--//Properties----------------------------------------------------------------
 	var initialized = false;
@@ -36,6 +36,8 @@ function AudioManager() {
 			musicBus.gain.value = musicVolume;
 			musicBus.connect(masterBus);
 			masterBus.connect(audioCtx.destination);
+		} else {
+			console.log("Not Server: skipping WebAudioAPI");
 		}
 
 		initialized = true;
@@ -58,8 +60,8 @@ function AudioManager() {
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
+			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
 		}
-
 	};
 
 //--//volume handling functions-------------------------------------------------
@@ -78,7 +80,7 @@ function AudioManager() {
 		var newVolume = (tOrF === false ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
 
-		return tOrF;
+		return newVolume;
 	};
 
 	this.setMusicVolume = function(amount) {
@@ -150,10 +152,6 @@ function AudioManager() {
 
 			source.connect(gainNode);
 			gainNode.connect(musicBus);
-
-
-			//Calculate volume and panning
-			gainNode.gain.value = calcuateVolumeDropoff(location);
 		}
 
 		audioFile.play();
@@ -170,12 +168,15 @@ function AudioManager() {
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate, preservesPitch);
 		currentSoundSources.push(newSound);
+		//console.log(newSound);
 		return newSound;
 	};
 
 	function Sound3D(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
+		this.name = fileNameWithPath;
 		this.mixVolume = mixVolume;
 		this.rate = rate;
+		this.parent = parent;
 		var lastDistance = distanceBetweenTwoPoints(player, parent);;
 
 		//Setup HTMLElement
@@ -193,14 +194,14 @@ function AudioManager() {
 			var gainNode = audioCtx.createGain();
 			var panNode = audioCtx.createStereoPanner();
 
-			//source.connect(gainNode);
+			source.connect(gainNode);
 			gainNode.connect(panNode);
 			panNode.connect(soundEffectsBus);
 
 
 			//Calculate volume and panning
-			gainNode.gain.value = calcuateVolumeDropoff(location);
-			panNode.pan.value = calcuatePan(location);
+			gainNode.gain.value = calcuateVolumeDropoff(this.parent);
+			panNode.pan.value = calcuatePan(this.parent);
 		}
 
 
@@ -209,28 +210,38 @@ function AudioManager() {
 
 			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
-				gainNode.gain.value = calcuateVolumeDropoff(location);
-				panNode.pan.value = calcuatePan(location);
+				gainNode.gain.value = calcuateVolumeDropoff(this.parent);
+				panNode.pan.value = calcuatePan(this.parent);
 			} else {
-				audioFile.volume *= calcuateVolumeDropoff(location);
+				audioFile.volume *= calcuateVolumeDropoff(this.parent);
 			}
 
 			//dopler
 			audioFile.playbackRate = this.rate;
-			var newDistance = distanceBetweenTwoPoints(player, parent);
+			var newDistance = distanceBetweenTwoPoints(player, this.parent);
 			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
-			audioFile.playbackRate *= Math.pow(2, (dopler/12));
+			audioFile.playbackRate *= clipBetween(Math.pow(2, (dopler/12)), 0.8, 1.2);
 			lastDistance = newDistance;
 
 			//console.log(dopler + " " + lastDistance + " " + audioFile.playbackRate);
 		}
 
 		this.play = function() {
+			console.log("Playing audio " + fileNameWithPath);
+			audioFile.currentTime = 0;
 			return audioFile.play();
 		}
 
 		this.stop = function() {
 			return audioFile.pause();
+		}
+
+		this.getAudioFile = function() {
+			return audioFile
+		}
+
+		this.isEnded = function() {
+			return audioFile.ended;
 		}
 	};
 
@@ -258,7 +269,9 @@ function AudioManager() {
 			pan = lerp(1, 0, (direction-270)/90);
 		}
 
-		//Proximity
+		console.log("" + pan + " " + direction);
+
+		Proximity
 		var distance = distanceBetweenTwoPoints(player, location);
 		if (distance <=  DROPOFF_MIN) {
 			var panReduction = distance/DROPOFF_MIN;
@@ -296,5 +309,10 @@ function AudioManager() {
 
 		return Math.pow(newVolume, 2);
 	};
+
+//--//Debuging------------------------------------------------------------------
+	this.getList = function() {
+		return currentSoundSources;
+	}
 
 }
