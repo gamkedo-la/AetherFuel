@@ -4,7 +4,7 @@ var AudioMan = new AudioManager();
 function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
-	const DROPOFF_MIN = 80;
+	const DROPOFF_MIN = 40;
 	const DROPOFF_MAX = 1200;
 	const HEADSHADOW_REDUCTION = 0.5;
 	const DOPLER_SCALE = 8;
@@ -248,7 +248,7 @@ function AudioManager() {
 
 //--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location)) - 90;
+		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player, location));
 		while (direction >= 360) {
 			direction -= 360;
 		}
@@ -259,16 +259,14 @@ function AudioManager() {
 		//Calculate pan
 		var pan = 0;
 		if (direction <= 90) {
-			pan = lerp(0, -1, direction/90);
+			pan = lerp(0, 1, direction/90);
 		} else if (direction <= 180) {
-			pan = lerp(-1, 0, (direction-90)/90);
+			pan = lerp(1, 0, (direction-90)/90);
 		} else if (direction <= 270) {
-			pan = lerp(0, 1, (direction-180)/90);
+			pan = lerp(0, -1, (direction-180)/90);
 		} else if (direction <= 360) {
-			pan = lerp(1, 0, (direction-270)/90);
+			pan = lerp(-1, 0, (direction-270)/90);
 		}
-
-		console.log("" + pan + " " + direction);
 
 		//Proximity
 		var distance = distanceBetweenTwoPoints(player, location);
@@ -276,6 +274,8 @@ function AudioManager() {
 			var panReduction = distance/DROPOFF_MIN;
 			pan *= panReduction;
 		}
+
+		//console.log("" + pan + " " + direction);
 
 		return pan;
 	};
@@ -291,7 +291,7 @@ function AudioManager() {
 			newVolume = 0;
 		}
 
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
+		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player, location));
 		while (direction <= 0) {
 			direction += 360;
 		}
@@ -305,6 +305,8 @@ function AudioManager() {
 		} else if (direction > 180 && direction <= 270) {
 			newVolume *= lerp(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
+
+		//console.log("" + newVolume + " " + distance);
 
 		return Math.pow(newVolume, 2);
 	};
