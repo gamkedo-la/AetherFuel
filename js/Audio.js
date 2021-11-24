@@ -21,8 +21,7 @@ function AudioManager() {
 		if (initialized) return;
 
 		if (isServer) {
-			var AudioContext = window.AudioContext || window.webkitAudioContext;
-			audioCtx = new AudioContext();
+			audioCtx = new window.AudioContext();
 			this.context = audioCtx;
 			soundEffectsBus = audioCtx.createGain();
 			musicBus = audioCtx.createGain();
@@ -249,7 +248,7 @@ function AudioManager() {
 
 //--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
+		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location)) - 90;
 		while (direction >= 360) {
 			direction -= 360;
 		}
@@ -271,7 +270,7 @@ function AudioManager() {
 
 		console.log("" + pan + " " + direction);
 
-		Proximity
+		//Proximity
 		var distance = distanceBetweenTwoPoints(player, location);
 		if (distance <=  DROPOFF_MIN) {
 			var panReduction = distance/DROPOFF_MIN;
