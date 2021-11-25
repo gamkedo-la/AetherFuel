@@ -57,11 +57,11 @@ function Waypoint(data)
         var nextWaypoint = this.next != null ? this.next : firstWaypoint;
 
         canvasContext.lineWidth = 3;
-        lineBetweenTwoPoints(this.leftX, this.leftY, nextWaypoint.leftX, nextWaypoint.leftY, "black");
-        lineBetweenTwoPoints(this.midLeftX, this.midLeftY, nextWaypoint.midLeftX, nextWaypoint.midLeftY, "black");
-        lineBetweenTwoPoints(this.x, this.y, nextWaypoint.x, nextWaypoint.y, "black");
-        lineBetweenTwoPoints(this.midRightX, this.midRightY, nextWaypoint.midRightX, nextWaypoint.midRightY, "black");
-        lineBetweenTwoPoints(this.rightX, this.rightY, nextWaypoint.rightX, nextWaypoint.rightY, "black");
+        // lineBetweenTwoPoints(this.leftX, this.leftY, nextWaypoint.leftX, nextWaypoint.leftY, "black");
+        // lineBetweenTwoPoints(this.midLeftX, this.midLeftY, nextWaypoint.midLeftX, nextWaypoint.midLeftY, "black");
+        // lineBetweenTwoPoints(this.x, this.y, nextWaypoint.x, nextWaypoint.y, "black");
+        // lineBetweenTwoPoints(this.midRightX, this.midRightY, nextWaypoint.midRightX, nextWaypoint.midRightY, "black");
+        // lineBetweenTwoPoints(this.rightX, this.rightY, nextWaypoint.rightX, nextWaypoint.rightY, "black");
 
         areaWithinPolygon(this.x - this.thickness / 2 * Math.sin(this.angle),
                           this.y + this.thickness / 2 * Math.cos(this.angle),
