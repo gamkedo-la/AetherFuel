@@ -28,3 +28,7 @@ function angleBetweenTwoPoints(p1, p2) {
 function randomIntFromInterval(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
+
+function randomFloatFromInterval(min, max) {
+  return Math.random() * (max - min) + min;
+}

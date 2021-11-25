@@ -1,8 +1,12 @@
+const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
+const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
+
 function Opponent(name)
 {
     Spaceship.call(this, name);
 
     this.target = null;
+    this.timeSinceLastTargetSelection = 0.0;
     // this.targetSpeed; 
 
     this.activateGas = function()
@@ -17,28 +21,15 @@ function Opponent(name)
 
     this.steerWheels = function()
     {
+        if (currentWaypoint == null) return;
         if (this.target == null) return ;
-
-        var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
-        if (distToWaypoint < 80)
-        {
-            if (debugAIMode)
-            {
-                console.log("Changing waypoints : " + distToWaypoint);
-            }
-
-            currentWaypoint = currentWaypoint.next == null ? firstWaypoint : currentWaypoint.next;
-            this.selectTarget();
-            return
-        }
-
-        console.log("Driving");
 
         var rightDir = {
             "x": -Math.sin(this.ang),
             "y": Math.cos(this.ang)
         };
 
+        var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
         var dirToWaypoint = {
             "x": (this.target.x - this.x) / distToWaypoint,
             "y": (this.target.y - this.y) / distToWaypoint,
@@ -97,6 +88,33 @@ function Opponent(name)
                 "y": (currentWaypoint.midRightY + currentWaypoint.rightY) / 2,
             }
         }
+
+        // Reset timeSinceLastTargetSelection
+        this.timeSinceLastTargetSelection = 0.0;
+    }
+
+    this.checkIfCloseEnoughToCurrentWaypoint = function()
+    {
+        if (currentWaypoint == null) return;
+
+        var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
+        if (distToWaypoint < 80)
+        {
+            currentWaypoint = currentWaypoint.next == null ? firstWaypoint : currentWaypoint.next;
+            this.selectTarget();
+        }
+    }
+
+    this.updateTimeSinceLastWaypointChange = function ()
+    {
+        this.timeSinceLastTargetSelection += deltaTime;
+
+        if (this.timeSinceLastTargetSelection > randomFloatFromInterval(MIN_TIME_BEFORE_TARGET_CHANGE,
+                                                                        MAX_TIME_BEFORE_TARGET_CHANGE))
+        {
+            console.log("change target my friend!");
+            this.selectTarget();
+        }
     }
 
     this.superReset = this.reset;
@@ -115,6 +133,15 @@ function Opponent(name)
 
         lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
     }
+
+    this.superMove = this.move;
+    this.move = function ()
+    {
+        this.superMove();
+        this.checkIfCloseEnoughToCurrentWaypoint();
+        this.updateTimeSinceLastWaypointChange();
+    }
+    
 
     // this.pushOther(other)
     // {
