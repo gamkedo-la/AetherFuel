@@ -1,24 +1,40 @@
 const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
 const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
 const MIN_TIME_SINCE_LAST_BUMP_TO_WALL = 1000.0;
+const TIME_FOR_RECOVERY_MODE = 500.0 // in milliseconds
 
 function Opponent(name, pic)
 {
     Spaceship.call(this, name);
 
     this.currentWaypoint = null;
+    this.previousWaypoint = null;
     this.target = null;
+
+    this.recoveryMode = false;
+    this.timeSinceRecoveryMode = 0.0;
+
     this.timeSinceLastTargetSelection = 0.0;
 	this.pic = pic;
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
+
     // this.targetSpeed; 
 
     this.activateGas = function()
     {
         if (this.currentWaypoint == null) return ;
         
-        this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
-
+        if (this.recoveryMode)
+        {
+            this.holdGas = false;
+            this.holdReverse = Math.random() < 0.5;
+        }
+        else
+        {
+            this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
+            this.holdReverse = false;
+        }
+        
         // Random reevaluaiton of gas holding
         // frequency of reevaluation
     }
@@ -40,13 +56,14 @@ function Opponent(name, pic)
         }
 
         var dotProd = rightDir.x * dirToWaypoint.x + rightDir.y * dirToWaypoint.y;
+        var signum = this.recoveryMode ? -1 : 1;
 
         if (Math.abs(dotProd) < 0.1)
         {
             this.holdTurnRight = 0;
             this.holdTurnLeft = 0;
         }
-        else if (dotProd > 0)
+        else if (signum * dotProd > 0)
         {
             this.holdTurnRight = 1;
             this.holdTurnLeft = 0;
@@ -104,6 +121,7 @@ function Opponent(name, pic)
         var distToWaypoint = distanceBetweenTwoPoints(this, this.currentWaypoint);
         if (distToWaypoint < 80)
         {
+            this.previousWaypoint = this.currentWaypoint;
             this.currentWaypoint = this.currentWaypoint.next == null ? firstWaypoint : this.currentWaypoint.next;
             this.selectTarget();
         }
@@ -149,8 +167,25 @@ function Opponent(name, pic)
         if (this.timeSinceLastBumpToWall < MIN_TIME_SINCE_LAST_BUMP_TO_WALL)
         {
             console.log("I think  you should stop and focus now");
+            this.recoveryMode = true;
+            this.timeSinceRecoveryMode = 0.0;
+            this.target = this.previousWaypoint;
         }
         this.timeSinceLastBumpToWall = 0.0;
+    }
+
+    this.handleRecoveryModeIfNecessary = function()
+    {
+        if (!this.recoveryMode) return;
+
+        this.timeSinceRecoveryMode += deltaTime;
+            
+        if (this.timeSinceRecoveryMode > TIME_FOR_RECOVERY_MODE)
+        {
+            console.log("good to go");
+            this.recoveryMode = false;
+            this.selectTarget();
+        }
     }
     
     this.superMove = this.move;
@@ -159,6 +194,7 @@ function Opponent(name, pic)
         this.superMove();
         this.checkIfCloseEnoughToCurrentWaypoint();
         this.updateTimeSinceLastWaypointChange();
+        this.handleRecoveryModeIfNecessary();
     }
 
 

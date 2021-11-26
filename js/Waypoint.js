@@ -7,7 +7,7 @@ function Waypoint(data)
     this.y = data.y;
     this.angle = data.angle;
 
-    this.percentageGasAppliedTime = 0.8;
+    this.percentageGasAppliedTime = 1.0;
     // this.targetSpeedToCrossItAt ([0, 1] - when close enough to pixel - percentage)
     // percentage of time at which I hold gas
     // 

@@ -7,7 +7,7 @@ var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
 
-var opponents = [new Opponent("Opponent 1", darkTravelerPic), new Opponent("Opponent 2", lightRiderPic)];
+var opponents = [new Opponent("Opponent 1", lightRiderPic)];  //, new Opponent("Opponent 2", lightRiderPic)];
 
 var currentLevelIdx = 0;
 var currentLevel;
