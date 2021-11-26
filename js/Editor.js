@@ -1,6 +1,7 @@
 var editorMode = false;
 var editorPaintType = 0;
 
+const WAYPOINT_GAS_PERCENTAGE_INCREMENT = 0.1;
 
 function Editor()
 {
@@ -100,6 +101,7 @@ function Editor()
             "y": mouseY,
             "angle": 0,
             "thickness": 100,
+            "percentageGasAppliedTime":0.8,
             "next": null
         }
         var newWaypoint = new Waypoint(waypointData);
@@ -114,7 +116,7 @@ function Editor()
             currentWaypoint = newWaypoint;
             firstWaypoint = newWaypoint;
         }
-
+        console.log(currentWaypoint.percentageGasAppliedTime);
         this.isPlacingWaypoint = true;
     }
 
@@ -320,14 +322,32 @@ function Editor()
 
     this.setKey = function(keyCode)
     {
-        if (this.isPlacingWaypoint) return;
-
         if (!editorMode)
         {
             if (keyCode == KEY_TAB)
             {
                 editorMode = true;
                 trackGrid = currentLevel.track.slice();
+            }
+            return;
+        }
+
+        if (this.isPlacingWaypoint)
+        {
+            switch(keyCode)
+            {
+                case KEY_UP_ARROW:
+                    currentWaypoint.percentageGasAppliedTime += WAYPOINT_GAS_PERCENTAGE_INCREMENT;
+                    currentWaypoint.percentageGasAppliedTime = clipBetween(currentWaypoint.percentageGasAppliedTime, 0.3, 1.0);
+                    console.log(currentWaypoint.percentageGasAppliedTime);
+                    break;
+                case KEY_DOWN_ARROW:
+                    currentWaypoint.percentageGasAppliedTime -= WAYPOINT_GAS_PERCENTAGE_INCREMENT;
+                    currentWaypoint.percentageGasAppliedTime = clipBetween(currentWaypoint.percentageGasAppliedTime, 0.3, 1.0);
+                    console.log(currentWaypoint.percentageGasAppliedTime);
+                    break;
+                default:
+                    break;
             }
             return;
         }
