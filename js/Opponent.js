@@ -1,5 +1,6 @@
 const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
 const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
+const MIN_TIME_SINCE_LAST_BUMP_TO_WALL = 1000.0;
 
 function Opponent(name, pic)
 {
@@ -8,6 +9,7 @@ function Opponent(name, pic)
     this.target = null;
     this.timeSinceLastTargetSelection = 0.0;
 	this.pic = pic;
+    this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
     // this.targetSpeed; 
 
     this.activateGas = function()
@@ -135,6 +137,20 @@ function Opponent(name, pic)
         lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
     }
 
+    this.superHandleCollision = this.handleCollisionWithTracksAdvanced;
+    this.handleCollisionWithTracksAdvanced = function()
+    {
+        this.superHandleCollision();
+        this.timeSinceLastBumpToWall += deltaTime;
+
+        if (this.getCurrentTrackType() != TRACK_WALL) return;
+        if (this.timeSinceLastBumpToWall < MIN_TIME_SINCE_LAST_BUMP_TO_WALL)
+        {
+            console.log("I think  you should stop and focus now");
+        }
+        this.timeSinceLastBumpToWall = 0.0;
+    }
+    
     this.superMove = this.move;
     this.move = function ()
     {
@@ -142,50 +158,11 @@ function Opponent(name, pic)
         this.checkIfCloseEnoughToCurrentWaypoint();
         this.updateTimeSinceLastWaypointChange();
     }
-    
+
 
     // this.pushOther(other)
     // {
     //     other.slideX += 1;
-    // }
-
-    // this.move = function()
-    // {
-    //     if (currentWaypoint == null){ return; }
-
-    //     this.speed = 10.0;
-    //     this.ang = Math.atan2(currentWaypoint.y - this.y + TRACK_H/2, currentWaypoint.x - this.x + TRACK_W/2);
-
-    //     if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
-
-    //     this.x += this.speed * Math.cos(this.ang); // + slideX
-    //     this.y += this.speed * Math.sin(this.ang); // + slideY --> push in the opposite direction
-
-    //     // slideX *= 0.95; 
-    //     // slideY *= 0.95; decay
-
-    //     if (distanceBetweenTwoPoints(this, currentWaypoint) < TRACK_W)
-    //     {
-    //         if (currentWaypoint.next == null)
-    //         {
-    //             currentWaypoint = firstWaypoint;
-    //         }
-    //         else
-    //         {
-    //             currentWaypoint = currentWaypoint.next;
-    //         }
-    //     }
-
-    //     this.updateRowColIdx();
-
-    //     if (tireTracks)
-    //     {
-    //         // FIXME track alpha could check accel/turn state for skids
-    //         let tireTrackAlpha = 0.1;  // barely visible
-    //         tireTracks.add(this.x, this.y, this.ang, tireTrackAlpha);
-    //     }
-
-    //     this.handleCollisionWithTracksAdvanced();
     // }
 }
 Object.setPrototypeOf(Opponent.prototype, Spaceship.prototype);

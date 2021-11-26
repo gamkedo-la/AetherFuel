@@ -34,7 +34,7 @@ window.onload = function()
     loadImages();
     AudioMan.init();
 
-    document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
+    // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
 }
 
 function imageLoadingDoneSoStartGame()
