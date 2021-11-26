@@ -6,6 +6,7 @@ function Opponent(name, pic)
 {
     Spaceship.call(this, name);
 
+    this.currentWaypoint = null;
     this.target = null;
     this.timeSinceLastTargetSelection = 0.0;
 	this.pic = pic;
@@ -14,9 +15,9 @@ function Opponent(name, pic)
 
     this.activateGas = function()
     {
-        if (currentWaypoint == null) return ;
+        if (this.currentWaypoint == null) return ;
         
-        this.holdGas = Math.random() < currentWaypoint.percentageGasAppliedTime;
+        this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
 
         // Random reevaluaiton of gas holding
         // frequency of reevaluation
@@ -24,7 +25,7 @@ function Opponent(name, pic)
 
     this.steerWheels = function()
     {
-        if (currentWaypoint == null) return;
+        if (this.currentWaypoint == null) return;
         if (this.target == null) return ;
 
         var rightDir = {
@@ -32,7 +33,7 @@ function Opponent(name, pic)
             "y": Math.cos(this.ang)
         };
 
-        var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
+        var distToWaypoint = distanceBetweenTwoPoints(this, this.currentWaypoint);
         var dirToWaypoint = {
             "x": (this.target.x - this.x) / distToWaypoint,
             "y": (this.target.y - this.y) / distToWaypoint,
@@ -59,36 +60,36 @@ function Opponent(name, pic)
 
     this.selectTarget = function()
     {
-        if (currentWaypoint == null) return;
+        if (this.currentWaypoint == null) return;
         
         var randVal = Math.random();
 
         if (randVal < 0.25)
         {
             this.target = {
-                "x": (currentWaypoint.leftX + currentWaypoint.midLeftX) / 2,
-                "y": (currentWaypoint.leftY + currentWaypoint.midLeftY) / 2,
+                "x": (this.currentWaypoint.leftX + this.currentWaypoint.midLeftX) / 2,
+                "y": (this.currentWaypoint.leftY + this.currentWaypoint.midLeftY) / 2,
             }
         }
         else if (randVal < 0.5)
         {
             this.target = {
-                "x": (currentWaypoint.midLeftX + currentWaypoint.x) / 2,
-                "y": (currentWaypoint.midLeftY + currentWaypoint.y) / 2,
+                "x": (this.currentWaypoint.midLeftX + this.currentWaypoint.x) / 2,
+                "y": (this.currentWaypoint.midLeftY + this.currentWaypoint.y) / 2,
             }
         }
         else if (randVal < 0.75)
         {
             this.target = {
-                "x": (currentWaypoint.x + currentWaypoint.midRightX) / 2,
-                "y": (currentWaypoint.y + currentWaypoint.midRightY) / 2,
+                "x": (this.currentWaypoint.x + this.currentWaypoint.midRightX) / 2,
+                "y": (this.currentWaypoint.y + this.currentWaypoint.midRightY) / 2,
             }
         }
         else
         {
             this.target = {
-                "x": (currentWaypoint.midRightX + currentWaypoint.rightX) / 2,
-                "y": (currentWaypoint.midRightY + currentWaypoint.rightY) / 2,
+                "x": (this.currentWaypoint.midRightX + this.currentWaypoint.rightX) / 2,
+                "y": (this.currentWaypoint.midRightY + this.currentWaypoint.rightY) / 2,
             }
         }
 
@@ -98,12 +99,12 @@ function Opponent(name, pic)
 
     this.checkIfCloseEnoughToCurrentWaypoint = function()
     {
-        if (currentWaypoint == null) return;
+        if (this.currentWaypoint == null) return;
 
-        var distToWaypoint = distanceBetweenTwoPoints(this, currentWaypoint);
+        var distToWaypoint = distanceBetweenTwoPoints(this, this.currentWaypoint);
         if (distToWaypoint < 80)
         {
-            currentWaypoint = currentWaypoint.next == null ? firstWaypoint : currentWaypoint.next;
+            this.currentWaypoint = this.currentWaypoint.next == null ? firstWaypoint : this.currentWaypoint.next;
             this.selectTarget();
         }
     }
@@ -121,9 +122,10 @@ function Opponent(name, pic)
     }
 
     this.superReset = this.reset;
-    this.reset = function()
+    this.reset = function(waypoint)
     {
         this.superReset(this.pic);
+        this.currentWaypoint = waypoint;
         this.selectTarget();
     }
 
@@ -132,7 +134,7 @@ function Opponent(name, pic)
     {
         this.superdraw();
 
-        if (currentWaypoint == null) return;
+        if (this.currentWaypoint == null) return;
 
         lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
     }

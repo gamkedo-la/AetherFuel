@@ -122,7 +122,6 @@ Spaceship.prototype.launchAttack = function()
             break;
         case 'none':
             return;
-            break;
     }   
 }
 
