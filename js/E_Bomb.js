@@ -46,7 +46,7 @@ function E_Bomb(x,y, xSpeed,ySpeed)
         {
             testE_Bomb = undefined;
             console.log("e_Bomb hit a wall! leaving a scroch mark on the ground");
-            tireTracks.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
+            decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
         }
         if (E_BombTrackIndex == opponentTrackIndex)
         {
@@ -63,7 +63,7 @@ function E_Bomb(x,y, xSpeed,ySpeed)
                 }, 2000);
         	testE_Bomb = undefined;
             console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
-            tireTracks.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
+            decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
         }
          
     }

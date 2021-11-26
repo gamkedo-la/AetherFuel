@@ -2,6 +2,7 @@ var playerPic = document.createElement("img");
 var darkTravelerPic = document.createElement("img");
 var lightRiderPic = document.createElement("img");
 var tireTrackPic = document.createElement("img");
+var neonLinePic = document.createElement("img");
 var waypointPic = document.createElement("img");
 var bombCraterPic = document.createElement("img");
 var stunnedOpponentSpriteSheet = document.createElement("img");
@@ -39,6 +40,7 @@ function loadImages()
 		{varName: lightRiderPic, theFile: "lightrider.png"},
         {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/stunnedOpponentSheet.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
+        {varName: neonLinePic, theFile: "neonLine.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},
         {varName: bombCraterPic, theFile: "bombCrater.png"},
         {trackType: TRACK_ROAD, theFile: "sand.png"},

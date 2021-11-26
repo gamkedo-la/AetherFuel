@@ -1,16 +1,21 @@
+// DECALS - made with love my McFunkypants
 // an overlay canvas that can be drawn onto
 // for infinite scorchmarks, skidmarks, dents, mud, etc
-
+//
+// EXAMPLE:
+//
 // add this to your onload function
-// var tireTracks = new decalManager(canvas); // so we can call tireTracks.add(x,y,r);
+// var decals = new decalManager(canvas);
+//
 // call this anytime:
-// tireTracks.add(this.x, this.y, this.ang, tireTrackAlpha);
+// decals.add(this.x, this.y, this.ang, tireTrackAlpha);
+//
 // and render ALL decals in one draw call using
-// tireTracks.draw(canvasContext);
+// decals.draw(canvasContext);
 
 function decalManager(canvas) {
 	
-    console.log("Initializing tire tracks...");
+    console.log("Initializing decal manager...");
 
 	this.add = function(x,y,rot,alpha,img) {
 		this.decalCount++;
@@ -19,7 +24,7 @@ function decalManager(canvas) {
 		if (alpha < 0) alpha = 0;
         if (img==undefined) img = tireTrackPic;
 		
-		//console.log('addTireTracks:'+x+','+y+','+rot+' alpha:'+alpha);
+		//console.log('decals:'+x+','+y+','+rot+' alpha:'+alpha);
 		this.tireTrackCTX.save();
 		this.tireTrackCTX.translate(x,y);
 		this.tireTrackCTX.rotate(rot);
@@ -58,7 +63,7 @@ function decalManager(canvas) {
 	this.resize = function() {
         this.tireTrackCanvas.width = TRACK_W * trackNumCols;
         this.tireTrackCanvas.height = TRACK_H * trackNumRows;
-        console.log("TireTracks canvas resized to "+this.tireTrackCanvas.width+"x"+this.tireTrackCanvas.height);
+        console.log("decals canvas resized to "+this.tireTrackCanvas.width+"x"+this.tireTrackCanvas.height);
 	};
 
 	this.reset = function() {

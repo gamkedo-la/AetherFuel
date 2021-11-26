@@ -110,7 +110,7 @@ function BulletManager()
         
         if (exploded) {
             console.log("bullet exploded: leaving a scroch mark on the ground");
-            tireTracks.add(arrayOfBullets[i].x, arrayOfBullets[i].y, Math.random(Math.PI*2), 0.25, bombCraterPic);
+            decals.add(arrayOfBullets[i].x, arrayOfBullets[i].y, Math.random(Math.PI*2), 0.25, bombCraterPic);
         }
         
         }//end of all bullet collision checks

@@ -7,6 +7,9 @@ function Opponent(name, pic)
 {
     Spaceship.call(this, name);
 
+    this.decalPic = neonLinePic;
+    this.dualDecalDist = 20; // how far apart are the two trails?
+
     this.currentWaypoint = null;
     this.previousWaypoint = null;
     this.target = null;

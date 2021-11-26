@@ -13,7 +13,7 @@ var currentLevelIdx = 0;
 var currentLevel;
 var currentLevelCountDown = 0;
 
-var tireTracks;
+var decals;
 
 let puffOfSmoke;
 let smokeManager;
@@ -47,7 +47,7 @@ function imageLoadingDoneSoStartGame()
 
     loadLevel(currentLevelIdx);
 
-    tireTracks = new decalManager(canvas);
+    decals = new decalManager(canvas);
 }
 
 
@@ -81,7 +81,7 @@ function loadLevel(whichLevel)
 
     miniMap.setSizes();
 
-    if (tireTracks) tireTracks.reset();
+    if (decals) decals.reset();
 
     countDown(true); // reset
 }
@@ -173,7 +173,7 @@ function gameDrawAll()
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
 
-    if (tireTracks) tireTracks.draw(canvasContext);
+    if (decals) decals.draw(canvasContext);
 
     player.draw();
     opponents.forEach(function(opponent) {

@@ -36,6 +36,9 @@ function Spaceship(name)
     this.e_Bomb_Fire_SoundFile = "Audio/E_Bomb_Fire.wav";
 
     this.pickupSoundFile = "Audio/Pickup.wav";
+
+    this.decalPic = tireTrackPic;
+    this.dualDecalDist = 0; // 0=draw ONE line, else draw two lines offset this many px
 }
 
 Spaceship.prototype.getCurrentTrackType = function()
@@ -95,11 +98,20 @@ Spaceship.prototype.move = function()
 
     this.handleCollisionWithTracksAdvanced();
 
-    if (tireTracks)
+    if (decals)
     {
         // FIXME track alpha could check accel/turn state for skids
         let tireTrackAlpha = 0.1;  // barely visible
-        tireTracks.add(this.x, this.y, this.ang, tireTrackAlpha);
+        if (this.dualDecalDist) { 
+            let leftx = this.dualDecalDist * Math.cos(this.ang - Math.PI/2);
+            let lefty = this.dualDecalDist * Math.sin(this.ang - Math.PI/2);
+            let rightx = this.dualDecalDist * Math.cos(this.ang + Math.PI/2);
+            let righty = this.dualDecalDist * Math.sin(this.ang + Math.PI/2);
+            decals.add(this.x+leftx, this.y+lefty, this.ang, tireTrackAlpha, this.decalPic);
+            decals.add(this.x+rightx, this.y+righty, this.ang, tireTrackAlpha, this.decalPic);
+        } else { // one centered line
+            decals.add(this.x, this.y, this.ang, tireTrackAlpha, this.decalPic);
+        }
     }
 }
 
