@@ -7,7 +7,7 @@ var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
 
-var opponents = [new Opponent("Opponent 1")];
+var opponents = [new Opponent("Opponent 1", darkTravelerPic), new Opponent("Opponent 2", lightRiderPic)];
 
 var currentLevelIdx = 0;
 var currentLevel;
@@ -71,7 +71,7 @@ function loadLevel(whichLevel)
     camera.initialize(player.x, player.y, -player.ang);
 
     opponents.forEach(function(opponent) {
-        opponent.reset(darkTravelerPic);
+        opponent.reset();
     });
 
     smokeManager = new SmokeManager();

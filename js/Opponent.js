@@ -1,12 +1,13 @@
 const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
 const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
 
-function Opponent(name)
+function Opponent(name, pic)
 {
     Spaceship.call(this, name);
 
     this.target = null;
     this.timeSinceLastTargetSelection = 0.0;
+	this.pic = pic;
     // this.targetSpeed; 
 
     this.activateGas = function()
@@ -118,9 +119,9 @@ function Opponent(name)
     }
 
     this.superReset = this.reset;
-    this.reset = function(pic)
+    this.reset = function()
     {
-        this.superReset(pic);
+        this.superReset(this.pic);
         this.selectTarget();
     }
 
