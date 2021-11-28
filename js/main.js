@@ -106,6 +106,7 @@ function updateAll()
     }
     else
     {
+        countDown(true);
         editorMoveAll()
         editorDrawAll();
     }
