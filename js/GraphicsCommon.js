@@ -7,6 +7,15 @@ function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle, width, height
     canvasContext.restore();
 }
 
+function drawBitmapCenteredWithRotationCTX(ctx,bitmap, xPos, yPos, angle, width, height)
+{
+    ctx.save();
+    ctx.translate(xPos, yPos);
+    ctx.rotate(angle);
+    ctx.drawImage(bitmap, -bitmap.width/2, -bitmap.height/2, width, height);
+    ctx.restore();
+}
+
 //image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
 function drawBitmapFromSpriteSheetCenteredWithRotation
     (bitmap, sheetIndex,

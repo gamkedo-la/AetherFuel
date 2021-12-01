@@ -82,6 +82,8 @@ function loadLevel(whichLevel)
     miniMap.setSizes();
 
     if (decals) decals.reset();
+    
+    trackNeedsRefreshing = true; // see track.js optimization
 
     countDown(true); // reset
 }
