@@ -70,7 +70,7 @@ function Editor()
             return;
         }
 
-        trackGrid[mouseIdx] = editorPaintType;
+        setTrackTypeAtIJ(mouseTileI, mouseTileJ, editorPaintType)
 
         if (editorPaintType == TRACK_START)
         {
@@ -146,8 +146,7 @@ function Editor()
         {
             for (var trackJ = selectedTileMinJ; trackJ < selectedTileMaxJ; trackJ++)
             {
-                var trackIdx = trackI * trackNumCols + trackJ;
-                trackGrid[trackIdx] = editorPaintType;
+                setTrackTypeAtIJ(trackI, trackJ, editorPaintType)
             }
         }
 
