@@ -251,8 +251,33 @@ Spaceship.prototype.draw = function()
     else
     {
         drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang,
-                                    this.pic.width,
-                                    this.pic.height);
+                                       this.pic.width,
+                                       this.pic.height);
     }
 }
 
+Spaceship.prototype.handleCollisionWithOtherSpaceship = function()
+{
+       
+}
+
+function checkIfAllSpaceshipNamesAreUnique()
+{
+    var listOfNames = [allSpaceships[0].name];  // initialize the list of names
+    var idx = 1;
+
+    for(var i = 1; i < allSpaceships.length; i++)
+    {
+        var spaceship = allSpaceships[i];
+        var spaceshipName = spaceship.name;
+        
+        for(var j = 0; j < i; j++)
+        {
+            var existingName = listOfNames[j];
+            if (existingName != spaceshipName) continue;
+
+            spaceship.name= spaceshipName + "_" + idx;
+            idx++;
+        }
+    }
+}

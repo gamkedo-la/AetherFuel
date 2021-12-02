@@ -138,7 +138,6 @@ function Opponent(name, pic)
         if (this.timeSinceLastTargetSelection > randomFloatFromInterval(MIN_TIME_BEFORE_TARGET_CHANGE,
                                                                         MAX_TIME_BEFORE_TARGET_CHANGE))
         {
-            console.log("change target my friend!");
             this.selectTarget();
         }
     }
@@ -170,7 +169,7 @@ function Opponent(name, pic)
         if (this.getCurrentTrackType() != TRACK_WALL) return;
         if (this.timeSinceLastBumpToWall < MIN_TIME_SINCE_LAST_BUMP_TO_WALL)
         {
-            console.log("I think  you should stop and focus now");
+            console.log("Recovery: I think  you should stop and focus now");
             this.recoveryMode = true;
             this.timeSinceRecoveryMode = 0.0;
         }
@@ -185,7 +184,7 @@ function Opponent(name, pic)
             
         if (this.timeSinceRecoveryMode > TIME_FOR_RECOVERY_MODE)
         {
-            console.log("good to go");
+            console.log("Recovery: good to go");
             this.recoveryMode = false;
             this.selectTarget();
         }
@@ -194,6 +193,8 @@ function Opponent(name, pic)
     this.superMove = this.move;
     this.move = function ()
     {
+        this.activateGas();
+        this.steerWheels();
         this.superMove();
         this.checkIfCloseEnoughToCurrentWaypoint();
         this.updateTimeSinceLastWaypointChange();

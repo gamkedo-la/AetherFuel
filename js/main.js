@@ -7,7 +7,10 @@ var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
 
-var opponents = [new Opponent("Opponent 1", lightRiderPic)];  //, new Opponent("Opponent 2", lightRiderPic)];
+var opponents = [new Opponent("Player", lightRiderPic), 
+                 new Opponent("Player", darkTravelerPic)];
+
+var allSpaceships = opponents.concat([player]);
 
 var currentLevelIdx = 0;
 var currentLevel;
@@ -44,6 +47,9 @@ function imageLoadingDoneSoStartGame()
 
     setupInput();
     editor.initialize();
+
+    checkIfAllSpaceshipNamesAreUnique()
+    allSpaceships.forEach(function(spaceship){ console.log(spaceship.name); });
 
     loadLevel(currentLevelIdx);
 
@@ -155,8 +161,6 @@ function gameMoveAll()
         testE_Bomb.update();
     }
     opponents.forEach(function(opponent) {
-        opponent.activateGas();
-        opponent.steerWheels();
         opponent.move();
     });
 
