@@ -3,8 +3,10 @@ const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
 const MIN_SPEED_TO_TURN = 0.5;
+const COLLISION_WITH_SPACESHIP_STRENGTH = 0.1;
+const SLIDE_DECAY = 0.1;
 
-const MIN_DIST_BETWEEN_SPACESHIPS = 40;
+const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
 function Spaceship(name)
 {
@@ -20,6 +22,9 @@ function Spaceship(name)
     this.isLap = false;
     this.pic;
     this.startIdx = 0;
+
+    this.slideX = 0;
+    this.slideY = 0;
 
     this.currentWeaponState = 'none';
     this.stunned = false;
@@ -55,6 +60,11 @@ Spaceship.prototype.move = function()
         return;
     }
     
+    
+    // COLLISION SLIDE - NOT WORKING YET 
+    // this.slideX = Math.sign(this.slideX) * clipBetween(Math.abs(this.slideX) - SLIDE_DECAY, 0, Math.abs(this.slideX));
+    // this.slideY = Math.sign(this.slideY) * clipBetween(Math.abs(this.slideY) - SLIDE_DECAY, 0, Math.abs(this.slideY));
+    
     this.speed *= GROUND_SPEED_DECAY_MULT;
 
     if (this.holdGas) 
@@ -87,6 +97,7 @@ Spaceship.prototype.move = function()
 
     this.x += this.speed * Math.cos(this.ang);
     this.y += this.speed * Math.sin(this.ang);
+
     this.updateRowColIdx();
     this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
 
@@ -264,7 +275,12 @@ Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
     if (otherSpaceship.name == this.name) return;
     if (distanceBetweenTwoPoints(this, otherSpaceship) >= MIN_DIST_BETWEEN_SPACESHIPS) return;
 
-    console.log(this.name + " is bumping into " + otherSpaceship.name);
+    this.x -= 1.1 * this.speed * Math.cos(this.ang);
+    this.y -= 1.1 * this.speed * Math.sin(this.ang);
+
+    // NOT WORKING YET 
+    // otherSpaceship.slideX += COLLISION_WITH_SPACESHIP_STRENGTH * Math.cos(this.ang);
+    // otherSpaceship.slideY += COLLISION_WITH_SPACESHIP_STRENGTH * Math.sin(this.ang);
 }
 
 Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
