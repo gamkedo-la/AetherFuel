@@ -3,7 +3,7 @@ const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
 const MIN_SPEED_TO_TURN = 0.5;
-const COLLISION_WITH_SPACESHIP_STRENGTH = 0.1;
+const COLLISION_WITH_SPACESHIP_STRENGTH = 2;
 const SLIDE_DECAY = 0.1;
 
 const MIN_DIST_BETWEEN_SPACESHIPS = 30;
@@ -60,10 +60,9 @@ Spaceship.prototype.move = function()
         return;
     }
     
-    
-    // COLLISION SLIDE - NOT WORKING YET 
-    // this.slideX = Math.sign(this.slideX) * clipBetween(Math.abs(this.slideX) - SLIDE_DECAY, 0, Math.abs(this.slideX));
-    // this.slideY = Math.sign(this.slideY) * clipBetween(Math.abs(this.slideY) - SLIDE_DECAY, 0, Math.abs(this.slideY));
+    // Slide decay every frame (minimum value is 0) 
+    this.slideX = Math.sign(this.slideX) * clipBetween(Math.abs(this.slideX) - SLIDE_DECAY, 0, Math.abs(this.slideX));
+    this.slideY = Math.sign(this.slideY) * clipBetween(Math.abs(this.slideY) - SLIDE_DECAY, 0, Math.abs(this.slideY));
     
     this.speed *= GROUND_SPEED_DECAY_MULT;
 
@@ -95,8 +94,8 @@ Spaceship.prototype.move = function()
         }   
     }
 
-    this.x += this.speed * Math.cos(this.ang);
-    this.y += this.speed * Math.sin(this.ang);
+    this.x += this.speed * Math.cos(this.ang) + this.slideX;
+    this.y += this.speed * Math.sin(this.ang) + this.slideY;
 
     this.updateRowColIdx();
     this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
@@ -109,8 +108,8 @@ Spaceship.prototype.move = function()
         trackGrid[currentTrackIndex] = TRACK_ROAD;
     }
 
-    this.checkIfCollidingWithOtherSpaceships();
     this.handleCollisionWithTracksAdvanced();
+    this.checkIfCollidingWithOtherSpaceships();
 
     if (decals)
     {
@@ -209,9 +208,11 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 
     if (trackType == TRACK_WALL)
     {
-        this.x -= 1.5 * this.speed * Math.cos(this.ang);
-        this.y -= 1.5 * this.speed * Math.sin(this.ang);
+        this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
+        this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
         this.speed *= -0.5;            
+        this.slideX = 0;
+        this.slideY = 0;
     }
     else if (trackType == TRACK_GOAL)
     {
@@ -278,9 +279,9 @@ Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
     this.x -= 1.1 * this.speed * Math.cos(this.ang);
     this.y -= 1.1 * this.speed * Math.sin(this.ang);
 
-    // NOT WORKING YET 
-    // otherSpaceship.slideX += COLLISION_WITH_SPACESHIP_STRENGTH * Math.cos(this.ang);
-    // otherSpaceship.slideY += COLLISION_WITH_SPACESHIP_STRENGTH * Math.sin(this.ang);
+    // Push the other ship
+    otherSpaceship.slideX += COLLISION_WITH_SPACESHIP_STRENGTH * Math.cos(this.ang);
+    otherSpaceship.slideY += COLLISION_WITH_SPACESHIP_STRENGTH * Math.sin(this.ang);
 }
 
 Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
