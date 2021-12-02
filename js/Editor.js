@@ -23,6 +23,8 @@ function Editor()
     this.firstTileSelectedJ = 0;
 
     this.isPlacingWaypoint = false;
+    this.isPlacingDecals = false;
+    this.decalData = "";
 
     this.initialize = function()
     {
@@ -33,6 +35,7 @@ function Editor()
     this.move = function()
     {
         if (this.isPlacingWaypoint) return;
+        if (this.isPlacingDecals) return;
 
         if(this.isMovingUp)
         {
@@ -67,6 +70,12 @@ function Editor()
             {
                 this.isPlacingWaypoint = false;
             }
+            return;
+        }
+
+        if (this.isPlacingDecals) {
+            this.decalData += mouseX+","+mouseY+",";
+            console.log("var decalData = ["+this.decalData+"];");
             return;
         }
 
@@ -169,6 +178,8 @@ function Editor()
             {
                 this.drawWaypointAtMousePosition();
             }
+        } else if (this.isPlacingDecals) {
+            // FIXME draw the decal sprite under the mouse cursor
         }
         else
         {
@@ -253,13 +264,14 @@ function Editor()
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 175, hs*12+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 175, hs*14+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
         colorText("3 - Finish line", hx, hy+=hs, "white", 16);
         colorText("4 - Sand With E_Bomb", hx, hy+=hs, "white", 16);
+        colorText("8 - Decal Paint", hx, hy+=hs, "white", 16);
         colorText("9 - Waypoint", hx, hy+=hs, "white", 16);
         colorText("R - Resize", hx, hy+=hs, "white", 16);
         colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
@@ -373,6 +385,11 @@ function Editor()
                 editorPaintType = TRACK_SAND_WITH_E_BOMB;
                 break;
 
+            case KEY_NUM_ROW_8:
+                this.isPlacingDecals = !this.isPlacingDecals;
+                console.log("Decal Mode "+(this.isPlacingDecals?"ON":"OFF"));
+                break;
+
             case KEY_NUM_ROW_9:
                 editorPaintType = TRACK_WAYPOINT;
                 break;
@@ -392,6 +409,7 @@ function Editor()
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
                 currentLevel.firstWaypoint = firstWaypoint;
+                currentLevel.decalData = decalData;
                 console.log(JSON.stringify(currentLevel));
                 break;
 
@@ -476,6 +494,8 @@ function Editor()
 
     this.initializeNewTrack = function(nrows, ncols, newTrack)
     {
+        if (USE_OFFSCREEN_TRACK_BUFFER) trackNeedsRefreshing = true;
+        
         var isTrackStartFound = false;
         var firstRoadIdx = -1;
 

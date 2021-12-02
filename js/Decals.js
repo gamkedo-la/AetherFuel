@@ -8,7 +8,7 @@
 // var decals = new decalManager(canvas);
 //
 // call this anytime:
-// decals.add(this.x, this.y, this.ang, tireTrackAlpha);
+// decals.add(this.x, this.y, this.ang, tireTrackAlpha, anImage);
 //
 // and render ALL decals in one draw call using
 // decals.draw(canvasContext);
