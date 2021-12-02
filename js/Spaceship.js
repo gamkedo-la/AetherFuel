@@ -4,6 +4,8 @@ const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
 const MIN_SPEED_TO_TURN = 0.5;
 
+const MIN_DIST_BETWEEN_SPACESHIPS = 40;
+
 function Spaceship(name)
 {
     this.name = name;
@@ -96,6 +98,7 @@ Spaceship.prototype.move = function()
         trackGrid[currentTrackIndex] = TRACK_ROAD;
     }
 
+    this.checkIfCollidingWithOtherSpaceships();
     this.handleCollisionWithTracksAdvanced();
 
     if (decals)
@@ -256,9 +259,20 @@ Spaceship.prototype.draw = function()
     }
 }
 
-Spaceship.prototype.handleCollisionWithOtherSpaceship = function()
+Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
 {
-       
+    if (otherSpaceship.name == this.name) return;
+    if (distanceBetweenTwoPoints(this, otherSpaceship) >= MIN_DIST_BETWEEN_SPACESHIPS) return;
+
+    console.log(this.name + " is bumping into " + otherSpaceship.name);
+}
+
+Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
+{
+    for (var i = 0; i < allSpaceships.length; i++)
+    {
+        this.handleCollisionWithOtherSpaceship(allSpaceships[i]);
+    }
 }
 
 function checkIfAllSpaceshipNamesAreUnique()
