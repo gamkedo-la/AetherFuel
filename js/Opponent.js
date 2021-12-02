@@ -80,36 +80,37 @@ function Opponent(name, pic)
 
     this.selectTarget = function()
     {
-        if (this.currentWaypoint == null) return;
+        var targetWaypoint = this.recoveryMode ? this.previousWaypoint : this.currentWaypoint;
+        if (targetWaypoint == null) return;
         
         var randVal = Math.random();
 
         if (randVal < 0.25)
         {
             this.target = {
-                "x": (this.currentWaypoint.leftX + this.currentWaypoint.midLeftX) / 2,
-                "y": (this.currentWaypoint.leftY + this.currentWaypoint.midLeftY) / 2,
+                "x": (targetWaypoint.leftX + targetWaypoint.midLeftX) / 2,
+                "y": (targetWaypoint.leftY + targetWaypoint.midLeftY) / 2,
             }
         }
         else if (randVal < 0.5)
         {
             this.target = {
-                "x": (this.currentWaypoint.midLeftX + this.currentWaypoint.x) / 2,
-                "y": (this.currentWaypoint.midLeftY + this.currentWaypoint.y) / 2,
+                "x": (targetWaypoint.midLeftX + targetWaypoint.x) / 2,
+                "y": (targetWaypoint.midLeftY + targetWaypoint.y) / 2,
             }
         }
         else if (randVal < 0.75)
         {
             this.target = {
-                "x": (this.currentWaypoint.x + this.currentWaypoint.midRightX) / 2,
-                "y": (this.currentWaypoint.y + this.currentWaypoint.midRightY) / 2,
+                "x": (targetWaypoint.x + targetWaypoint.midRightX) / 2,
+                "y": (targetWaypoint.y + targetWaypoint.midRightY) / 2,
             }
         }
         else
         {
             this.target = {
-                "x": (this.currentWaypoint.midRightX + this.currentWaypoint.rightX) / 2,
-                "y": (this.currentWaypoint.midRightY + this.currentWaypoint.rightY) / 2,
+                "x": (targetWaypoint.midRightX + targetWaypoint.rightX) / 2,
+                "y": (targetWaypoint.midRightY + targetWaypoint.rightY) / 2,
             }
         }
 
@@ -172,7 +173,6 @@ function Opponent(name, pic)
             console.log("I think  you should stop and focus now");
             this.recoveryMode = true;
             this.timeSinceRecoveryMode = 0.0;
-            this.target = this.previousWaypoint;
         }
         this.timeSinceLastBumpToWall = 0.0;
     }
