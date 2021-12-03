@@ -3,7 +3,7 @@ const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
 const MIN_SPEED_TO_TURN = 0.5;
-const COLLISION_WITH_SPACESHIP_STRENGTH = 2;
+const COLLISION_WITH_SPACESHIP_STRENGTH = 5;
 const SLIDE_DECAY = 0.1;
 
 const MIN_DIST_BETWEEN_SPACESHIPS = 30;
@@ -269,6 +269,8 @@ Spaceship.prototype.draw = function()
                                        this.pic.width,
                                        this.pic.height);
     }
+
+    lineBetweenTwoPoints(this.x, this.y, this.x + 50 * this.slideX, this.y + 50 * this.slideY, "green");
 }
 
 Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
@@ -276,12 +278,17 @@ Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
     if (otherSpaceship.name == this.name) return;
     if (distanceBetweenTwoPoints(this, otherSpaceship) >= MIN_DIST_BETWEEN_SPACESHIPS) return;
 
+    var dx = this.x - otherSpaceship.x;
+    var dy = this.y - otherSpaceship.y;
+
+    var pushAng = Math.atan2(-dy, -dx);
+
     this.x -= 1.1 * this.speed * Math.cos(this.ang);
     this.y -= 1.1 * this.speed * Math.sin(this.ang);
 
     // Push the other ship
-    otherSpaceship.slideX += COLLISION_WITH_SPACESHIP_STRENGTH * Math.cos(this.ang);
-    otherSpaceship.slideY += COLLISION_WITH_SPACESHIP_STRENGTH * Math.sin(this.ang);
+    otherSpaceship.slideX += COLLISION_WITH_SPACESHIP_STRENGTH * Math.cos(pushAng);
+    otherSpaceship.slideY += COLLISION_WITH_SPACESHIP_STRENGTH * Math.sin(pushAng);
 }
 
 Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()

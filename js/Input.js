@@ -37,6 +37,8 @@ var mouseTileI = 0;
 var mouseTileJ = 0;
 var mouseIdx = 0;
 
+// Add key to paralyze the ai
+
 function keySet(keyEvt, player, setTo)
 {
     if (editorMode){ return; }

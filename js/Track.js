@@ -48,6 +48,14 @@ function returnTrackTypeAtIJ(trackI, trackJ)
     return TRACK_WALL;
 }
 
+function returnTrackTypeAtPixelXY(pixelX, pixelY)
+{
+    var trackJ = Math.floor(pixelX / TRACK_W);
+    var trackI = Math.floor(pixelY / TRACK_H);
+
+    return returnTrackTypeAtIJ(trackI, trackJ);
+}
+
 function setTrackTypeAtIJ(trackI, trackJ, value)
 {
     if (trackI >= 0 && trackI < trackNumRows &&
