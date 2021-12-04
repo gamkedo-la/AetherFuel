@@ -52,8 +52,6 @@ function Spaceship(name)
 Spaceship.prototype.update = function()
 {
     this.move();
-    if(this.stunned) return;
-
     this.launchAttack();
 }
 
@@ -142,6 +140,7 @@ Spaceship.prototype.getCurrentTrackType = function()
 Spaceship.prototype.launchAttack = function()
 {
     if (!this.fire) return;
+    if (this.stunned) return;
 
     switch(this.currentWeaponState) 
     {
@@ -321,7 +320,7 @@ Spaceship.prototype.getStunned = function()
 {
     this.stunned = true;
     this.speed = 0;
-    
+
     setTimeout(function(spaceship)
     {
         spaceship.stunned = false;

@@ -182,6 +182,10 @@ function Opponent(name, pic)
         if (debugAIMode)
         {
             lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+
+            var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
+            var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
+            lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, "blue");
         }
     }
 
