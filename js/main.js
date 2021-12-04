@@ -25,7 +25,7 @@ let testE_Bomb;
 
 var debugAIMode = true;
 var debugFreezeAI = false;
-var debugFreezeAIButOne = false;
+var debugFreezeAIButOne = true;
 
 window.onload = function()
 {
@@ -110,7 +110,7 @@ function updateAll()
 {
     if (!editorMode)
     {
-        gameMoveAll();
+        gameUpdateAll();
         gameDrawAll(); 
         AudioMan.update();
     }
@@ -149,7 +149,7 @@ function editorDrawAll()
     miniMap.draw();
 }
 
-function gameMoveAll()
+function gameUpdateAll()
 {
     if(!countDown())
     {
@@ -157,7 +157,7 @@ function gameMoveAll()
         return;
     }
     
-    player.move();
+    player.update();
     if (testE_Bomb != undefined)
     {
         testE_Bomb.update();
@@ -165,12 +165,12 @@ function gameMoveAll()
 
     if (debugFreezeAIButOne)
     {
-        opponents[0].move();
+        opponents[0].update();
     }
     else
     {
         opponents.forEach(function(opponent) {
-            opponent.move();
+            opponent.update();
         });
     }
 

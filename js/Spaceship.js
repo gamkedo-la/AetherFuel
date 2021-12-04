@@ -49,24 +49,26 @@ function Spaceship(name)
     this.dualDecalDist = 0; // 0=draw ONE line, else draw two lines offset this many px
 }
 
+Spaceship.prototype.update = function()
+{
+    this.move();
+    if(this.stunned) return;
+
+    this.launchAttack();
+}
 
 Spaceship.prototype.move = function()
 {
-    if (this.stunned)
-    {       
-        return;
+    if (!this.stunned)
+    {
+        this.handlesSpeed();
+        this.handlesTurns();
     }
 
-    this.handlesSpeed();
-    this.handlesTurns();
     this.decreaseSlidingDueToFriction();
     this.updatePosition();
     this.handleCollisionWithTracksAdvanced();
     this.checkIfCollidingWithOtherSpaceships();
-
-    this.launchAttack();
-
-    
 
     if (decals)
     {
@@ -318,11 +320,10 @@ Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
 Spaceship.prototype.getStunned = function()
 {
     this.stunned = true;
-    console.log("aouch, that hurts!");
-
+    this.speed = 0;
+    
     setTimeout(function(spaceship)
     {
-        console.log(spaceship.name + " feeling better!");
         spaceship.stunned = false;
     }, 2000, this);
 }
