@@ -144,8 +144,8 @@ function Opponent(name, pic)
     {
         if (this.currentWaypoint == null) return;
 
-        var distToWaypoint = distanceBetweenTwoPoints(this, this.currentWaypoint);
-        if (distToWaypoint < 80)
+        var distToWaypoint = distanceBetweenTwoPoints(this, this.target);
+        if (distToWaypoint < TRACK_W)
         {
             this.previousWaypoint = this.currentWaypoint;
             this.currentWaypoint = this.currentWaypoint.next == null ? firstWaypoint : this.currentWaypoint.next;
@@ -218,8 +218,12 @@ function Opponent(name, pic)
     this.superMove = this.move;
     this.move = function ()
     {
-        this.activateGas();
-        this.steerWheels();
+        if (!debugFreezeAI)
+        {
+            this.activateGas();
+            this.steerWheels();
+        }
+
         this.superMove();
         this.checkIfCloseEnoughToCurrentWaypoint();
         this.updateTimeSinceLastWaypointChange();

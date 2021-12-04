@@ -24,6 +24,7 @@ let bulletManager;
 let testE_Bomb;
 
 var debugAIMode = true;
+var debugFreezeAI = false;
 
 window.onload = function()
 {

@@ -16,6 +16,7 @@ const KEY_X = 88;
 const KEY_C = 67;
 
 const KEY_E = 69;
+const KEY_F = 70;
 
 const KEY_NUM_ROW_0 = 48;
 const KEY_NUM_ROW_1 = 49;
@@ -80,6 +81,13 @@ function keyReleased(evt)
     if (!editorMode)
     {
         keySet(evt, player, false);
+        
+        if (evt.keyCode == KEY_F)
+        {
+            debugFreezeAI = !debugFreezeAI;
+            if (debugFreezeAI) console.log("Freeze AI");
+            else console.log("Release The AI");
+        }
     }
     else
     {
