@@ -230,6 +230,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         this.currentWeaponState = "E_Bomb";
         AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
         trackGrid[currentTrackIndex] = TRACK_ROAD;
+        trackNeedsRefreshing = true;
     }
     else if (this.currentTrackType == TRACK_GOAL)
     {
