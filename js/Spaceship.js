@@ -60,46 +60,15 @@ Spaceship.prototype.move = function()
     {       
         return;
     }
-    
-    // Slide decay every frame (minimum value is 0) 
-    this.slideX = Math.sign(this.slideX) * clipBetween(Math.abs(this.slideX) - SLIDE_DECAY, 0, Math.abs(this.slideX));
-    this.slideY = Math.sign(this.slideY) * clipBetween(Math.abs(this.slideY) - SLIDE_DECAY, 0, Math.abs(this.slideY));
-    
-    this.speed *= GROUND_SPEED_DECAY_MULT;
 
-    if (this.holdGas) 
-    {
-        this.speed += GAS_POWER;
-    }
-    if (this.holdReverse)
-    {
-        this.speed -= REVERSE_POWER;
-    }
-    if (this.fire)
-    {
-        //console.log("anything");
-        this.launchAttack();
-    }
+    this.handlesSpeed();
+    this.handlesTurns();
+    this.decreaseSlidingDueToFriction();
+    this.updatePosition();
+    this.handleCollisionWithTracksAdvanced();
+    this.checkIfCollidingWithOtherSpaceships();
 
-    if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
-
-    if (Math.abs(this.speed) > MIN_SPEED_TO_TURN)
-    {   
-        if (this.holdTurnLeft)
-        {
-            this.ang -= TURN_SPEED;
-        }
-        if (this.holdTurnRight)
-        {
-            this.ang += TURN_SPEED;
-        }   
-    }
-
-    this.x += this.speed * Math.cos(this.ang) + this.slideX;
-    this.y += this.speed * Math.sin(this.ang) + this.slideY;
-
-    this.updateRowColIdx();
-    this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
+    this.launchAttack();
 
     if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
     {
@@ -108,9 +77,6 @@ Spaceship.prototype.move = function()
         AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
         trackGrid[currentTrackIndex] = TRACK_ROAD;
     }
-
-    this.handleCollisionWithTracksAdvanced();
-    this.checkIfCollidingWithOtherSpaceships();
 
     if (decals)
     {
@@ -129,8 +95,57 @@ Spaceship.prototype.move = function()
     }
 }
 
+Spaceship.prototype.handlesSpeed = function()
+{
+    this.speed *= GROUND_SPEED_DECAY_MULT;
+
+    if (this.holdGas) 
+    {
+        this.speed += GAS_POWER;
+    }
+    if (this.holdReverse)
+    {
+        this.speed -= REVERSE_POWER;
+    }
+
+    // Engine audio
+    if (this.engineSound != null) this.engineSound.rate = lerp(0.75, 2, Math.abs(this.speed/16));
+}
+
+Spaceship.prototype.handlesTurns = function()
+{
+    if (Math.abs(this.speed) <= MIN_SPEED_TO_TURN) return;
+
+    if (this.holdTurnLeft)
+    {
+        this.ang -= TURN_SPEED;
+    }
+    if (this.holdTurnRight)
+    {
+        this.ang += TURN_SPEED;
+    }   
+}
+
+Spaceship.prototype.decreaseSlidingDueToFriction = function()
+{
+    // Slide decay every frame (minimum value is 0) 
+    this.slideX = Math.sign(this.slideX) * clipBetween(Math.abs(this.slideX) - SLIDE_DECAY, 0, Math.abs(this.slideX));
+    this.slideY = Math.sign(this.slideY) * clipBetween(Math.abs(this.slideY) - SLIDE_DECAY, 0, Math.abs(this.slideY));
+}
+
+Spaceship.prototype.updatePosition = function()
+{
+    this.x += this.speed * Math.cos(this.ang) + this.slideX;
+    this.y += this.speed * Math.sin(this.ang) + this.slideY;
+
+    this.updateRowColIdx();
+    this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
+}
+
 Spaceship.prototype.launchAttack = function()
 {
+    if (!this.fire) return;
+
     switch(this.currentWeaponState) 
     {
         case 'Bullet':
