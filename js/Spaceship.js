@@ -49,10 +49,6 @@ function Spaceship(name)
     this.dualDecalDist = 0; // 0=draw ONE line, else draw two lines offset this many px
 }
 
-Spaceship.prototype.getCurrentTrackType = function()
-{
-    this.currentTrackType = returnTrackTypeAtIJ(this.colIdx, this.rowIdx);
-}
 
 Spaceship.prototype.move = function()
 {
@@ -70,13 +66,7 @@ Spaceship.prototype.move = function()
 
     this.launchAttack();
 
-    if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
-    {
-        let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
-        this.currentWeaponState = "E_Bomb";
-        AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
-        trackGrid[currentTrackIndex] = TRACK_ROAD;
-    }
+    
 
     if (decals)
     {
@@ -140,6 +130,11 @@ Spaceship.prototype.updatePosition = function()
 
     this.updateRowColIdx();
     this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx,this.colIdx);
+}
+
+Spaceship.prototype.getCurrentTrackType = function()
+{
+    this.currentTrackType = returnTrackTypeAtIJ(this.colIdx, this.rowIdx);
 }
 
 Spaceship.prototype.launchAttack = function()
@@ -220,9 +215,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 {
     if (getTrackIdxFromXY(this.x, this.y) < -1) { return; }
 
-    var trackType = this.getCurrentTrackType();
-
-    if (trackType == TRACK_WALL)
+    if (this.currentTrackType == TRACK_WALL)
     {
         this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
         this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
@@ -230,7 +223,14 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         this.slideX = 0;
         this.slideY = 0;
     }
-    else if (trackType == TRACK_GOAL)
+    else if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
+    {
+        let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
+        this.currentWeaponState = "E_Bomb";
+        AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
+        trackGrid[currentTrackIndex] = TRACK_ROAD;
+    }
+    else if (this.currentTrackType == TRACK_GOAL)
     {
         if (!this.isLap) {
             this.lapsPassed++;
