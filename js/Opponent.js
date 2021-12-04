@@ -39,16 +39,16 @@ function Opponent(name, pic)
             this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
             this.holdReverse = false;
 
-            // // check if wall is in fornt of us
-            // var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
-            // var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
+            // check if wall is in fornt of us
+            var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
+            var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
 
-            // if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
-            // {
-            //     // this.holdGas = false;
-            //     this.dodgeTimer = 15;
-            //     this.dodgeAngTurn = 0.2;  // to be finessed
-            // }
+            if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
+            {
+                // this.holdGas = false;
+                this.dodgeTimer = 15;
+                this.dodgeAngTurn = 0.2;  // to be finessed
+            }
         }
         
         // Random reevaluaiton of gas holding

@@ -84,9 +84,24 @@ function keyReleased(evt)
         
         if (evt.keyCode == KEY_F)
         {
-            debugFreezeAI = !debugFreezeAI;
-            if (debugFreezeAI) console.log("Freeze AI");
-            else console.log("Release The AI");
+            if (debugFreezeAI)
+            {
+                console.log("Freeze all but one AI");
+                debugFreezeAI = false;
+                debugFreezeAIButOne = true;
+            }
+            else if (debugFreezeAIButOne)
+            {
+                console.log("Release all AI");
+                debugFreezeAI = false;
+                debugFreezeAIButOne = false;
+            }
+            else
+            {
+                console.log("Freeze all AI");
+                debugFreezeAI = true;
+                debugFreezeAIButOne = false;
+            }
         }
     }
     else

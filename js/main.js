@@ -25,6 +25,7 @@ let testE_Bomb;
 
 var debugAIMode = true;
 var debugFreezeAI = false;
+var debugFreezeAIButOne = false;
 
 window.onload = function()
 {
@@ -161,9 +162,17 @@ function gameMoveAll()
     {
         testE_Bomb.update();
     }
-    opponents.forEach(function(opponent) {
-        opponent.move();
-    });
+
+    if (debugFreezeAIButOne)
+    {
+        opponents[0].move();
+    }
+    else
+    {
+        opponents.forEach(function(opponent) {
+            opponent.move();
+        });
+    }
 
     smokeManager.updatePuffsOfSmoke();
     bulletManager.updateBullets();
