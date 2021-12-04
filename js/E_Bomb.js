@@ -55,11 +55,9 @@ function E_Bomb(x,y, xSpeed,ySpeed)
             this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
             this.e_Bomb_Collision_Stun_Sound.play();
 
-            opponents[0].pic = stunnedOpponentSpriteSheet;
         	setTimeout(function()
                 {
                     opponents[0].stunned = false
-                    opponents[0].pic = darkTravelerPic;
                 }, 2000);
         	testE_Bomb = undefined;
             console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");

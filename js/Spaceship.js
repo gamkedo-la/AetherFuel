@@ -34,6 +34,7 @@ function Spaceship(name)
     this.minStunnedSheetIndex = 0;
     this.maxStunnedSheetIndex = 2;
     this.stunnedSheetDirection = 1;
+    this.stunnedPic = stunnedOpponentSpriteSheet;
 
     this.currentTrackType = undefined;
 
@@ -253,7 +254,7 @@ Spaceship.prototype.draw = function()
 {
     if (this.stunned)
     {
-        drawBitmapFromSpriteSheetCenteredWithRotation(this.pic, this.currentStunnedSheetIndex,
+        drawBitmapFromSpriteSheetCenteredWithRotation(this.stunnedPic, this.currentStunnedSheetIndex,
             this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight, this.x,this.y, this.ang, 
             this.stunnedSheetIndexWidth,this.stunnedSheetIndexHeight);
         
