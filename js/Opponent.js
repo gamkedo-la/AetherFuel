@@ -179,7 +179,10 @@ function Opponent(name, pic)
 
         if (this.currentWaypoint == null) return;
 
-        lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+        if (debugAIMode)
+        {
+            lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+        }
     }
 
     this.superHandleCollision = this.handleCollisionWithTracksAdvanced;

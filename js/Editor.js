@@ -339,6 +339,7 @@ function Editor()
             {
                 editorMode = true;
                 trackGrid = currentLevel.track.slice();
+                trackNeedsRefreshing = true;
             }
             return;
         }
@@ -423,6 +424,8 @@ function Editor()
                 opponents.forEach(function(opponent) {
                     opponent.reset(firstWaypoint);
                 });
+                
+                trackNeedsRefreshing = true;
                 break;
 
             case KEY_W:

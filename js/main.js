@@ -7,8 +7,8 @@ var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
 
-var opponents = [new Opponent("Opponent 1", lightRiderPic)]; //, 
-                //  new Opponent("Opponent 2", darkTravelerPic)];
+var opponents = [new Opponent("Opponent 1", lightRiderPic), 
+                 new Opponent("Opponent 2", darkTravelerPic)];
 
 var allSpaceships = opponents.concat([player]);
 
