@@ -143,7 +143,7 @@ Spaceship.prototype.launchAttack = function()
             }
             let xSpeed = Math.cos(player.ang) * 15;
             let ySpeed = Math.sin(player.ang) * 15;
-            testE_Bomb = new E_Bomb(player.x,player.y, xSpeed,ySpeed);
+            testE_Bomb = new E_Bomb(player.x,player.y, xSpeed,ySpeed, this.name);
             AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, testE_Bomb, false, 0.75).play();
             break;
         case 'none':
@@ -298,6 +298,18 @@ Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
     {
         this.handleCollisionWithOtherSpaceship(allSpaceships[i]);
     }
+}
+
+Spaceship.prototype.getStunned = function()
+{
+    this.stunned = true;
+    console.log("aouch, that hurts!");
+
+    setTimeout(function(spaceship)
+    {
+        console.log(spaceship.name + " feeling better!");
+        spaceship.stunned = false;
+    }, 2000, this);
 }
 
 function checkIfAllSpaceshipNamesAreUnique()

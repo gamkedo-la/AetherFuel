@@ -1,5 +1,7 @@
-function E_Bomb(x,y, xSpeed,ySpeed)
+function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
 {        
+    this.launcherName = launcherName  // name of the spaceship who launched the ebomb
+    
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
 
@@ -39,31 +41,44 @@ function E_Bomb(x,y, xSpeed,ySpeed)
         this.updateRowColIdx();
         this.currentTrackType = returnTrackTypeAtIJ(this.rowIdx, this.colIdx);
 
-        let E_BombTrackIndex = getTrackIdxFromXY(this.x, this.y);
-        let opponentTrackIndex = getTrackIdxFromXY(opponents[0].x,opponents[0].y);
-
         if (this.currentTrackType == TRACK_WALL)
         {
             testE_Bomb = undefined;
             console.log("e_Bomb hit a wall! leaving a scroch mark on the ground");
             decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
         }
-        if (E_BombTrackIndex == opponentTrackIndex)
+
+        let E_BombTrackIndex = getTrackIdxFromXY(this.x, this.y);
+        
+        for (var i = 0; i < allSpaceships.length ; i++)
         {
-        	opponents[0].stunned = true;
+            if (allSpaceships[i].name == this.launcherName) continue;  // cannot shoot yourself with an ebomb
+        
+            var currentBombTarget = allSpaceships[i];
+            let opponentTrackIndex = getTrackIdxFromXY(currentBombTarget.x,currentBombTarget.y);
+            
+            if (E_BombTrackIndex == opponentTrackIndex)
+            {
+                currentBombTarget.getStunned();
+                // currentBombTarget.stunned = true;
+                // console.log("aouch, that hurts!");
+                
+                // setTimeout(function()
+                // {
+                //     console.log("feeling better!");
+                //     currentBombTarget.stunned = false
+                // }, 2000);
 
-            this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
-            this.e_Bomb_Collision_Stun_Sound.play();
+                this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
+                this.e_Bomb_Collision_Stun_Sound.play();
+                
+                testE_Bomb = undefined;
+                console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
+                decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
 
-        	setTimeout(function()
-                {
-                    opponents[0].stunned = false
-                }, 2000);
-        	testE_Bomb = undefined;
-            console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
-            decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
+                return;
+            }
         }
-         
     }
 
     this.updateRowColIdx = function()
