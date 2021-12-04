@@ -39,16 +39,16 @@ function Opponent(name, pic)
             this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
             this.holdReverse = false;
 
-            // check if wall is in fornt of us
-            var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
-            var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
+            // // check if wall is in fornt of us
+            // var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
+            // var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
 
-            if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
-            {
-                // this.holdGas = false;
-                this.dodgeTimer = 15;
-                this.dodgeAngTurn = 0.2;  // to be finessed
-            }
+            // if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
+            // {
+            //     this.holdGas = false;
+            //     this.dodgeTimer = 15;
+            //     this.dodgeAngTurn = 0.2;  // to be finessed
+            // }
         }
         
         // Random reevaluaiton of gas holding
@@ -144,8 +144,14 @@ function Opponent(name, pic)
     {
         if (this.currentWaypoint == null) return;
 
-        var distToWaypoint = distanceBetweenTwoPoints(this, this.target);
-        if (distToWaypoint < TRACK_W)
+        // var distToWaypoint = distanceBetweenTwoPoints(this, this.target);
+        
+        // Check if spaceship has crossed waypoint thickness
+        var dotProd = (this.x - this.currentWaypoint.x) * Math.cos(this.currentWaypoint.angle) +
+                      (this.y - this.currentWaypoint.y) * Math.sin(this.currentWaypoint.angle);
+
+        // if (distToWaypoint < TRACK_W)
+        if (dotProd > 0)
         {
             this.previousWaypoint = this.currentWaypoint;
             this.currentWaypoint = this.currentWaypoint.next == null ? firstWaypoint : this.currentWaypoint.next;
@@ -195,7 +201,7 @@ function Opponent(name, pic)
         this.superHandleCollision();
         this.timeSinceLastBumpToWall += deltaTime;
 
-        if (this.getCurrentTrackType() != TRACK_WALL) return;
+        if (this.getCurrentTrackType() == TRACK_ROAD || this.getCurrentTrackType() == TRACK_GOAL) return;
         if (this.timeSinceLastBumpToWall < MIN_TIME_SINCE_LAST_BUMP_TO_WALL)
         {
             console.log("Recovery: I think  you should stop and focus now");
@@ -233,11 +239,5 @@ function Opponent(name, pic)
         this.updateTimeSinceLastWaypointChange();
         this.handleRecoveryModeIfNecessary();
     }
-
-
-    // this.pushOther(other)
-    // {
-    //     other.slideX += 1;
-    // }
 }
 Object.setPrototypeOf(Opponent.prototype, Spaceship.prototype);
