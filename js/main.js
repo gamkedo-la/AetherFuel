@@ -7,6 +7,8 @@ var player = new Player("Player");
 var editor = new Editor();
 var miniMap = new MiniMap();
 
+var paused = false;
+
 var opponents = [new Opponent("Opponent 1", lightRiderPic), 
                  new Opponent("Opponent 2", darkTravelerPic)];
 
@@ -110,7 +112,9 @@ function updateAll()
 {
     if (!editorMode)
     {
-        gameUpdateAll();
+        if (!paused) {
+            gameUpdateAll();
+        }
         gameDrawAll(); 
         AudioMan.update();
     }
@@ -216,6 +220,9 @@ function gameDrawAll()
         var countDownTextXPos = canvas.width / 2 + (currentLevelCountDown > 0 ? 0 : -35);
         var countDownTextYPos = canvas.height / 2;
         colorText(countDownText, countDownTextXPos, countDownTextYPos, 'red', 70);
+    }
+    else if (paused) {
+        colorText("PAUSED", canvas.width / 2 - 98, canvas.height / 2, 'red', 70);
     }
 }
 

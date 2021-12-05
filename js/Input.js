@@ -31,6 +31,7 @@ const KEY_NUM_ROW_9 = 57;
 
 const KEY_TAB = 9;
 
+const KEY_P = 80;
 const KEY_R = 82;
 
 var mouseX, mouseY;
@@ -101,6 +102,11 @@ function keyReleased(evt)
                 console.log("Freeze all AI");
                 debugFreezeAI = true;
                 debugFreezeAIButOne = false;
+            }
+        }
+        else if (evt.keyCode == KEY_P) {     
+            if (currentLevelCountDown < -deltaTime)  {    
+                paused = !paused;            
             }
         }
     }
