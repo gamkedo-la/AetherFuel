@@ -93,7 +93,7 @@ function loadLevel(whichLevel)
     smokeManager.createPuffsOfSmokeOverTime();
     //puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
 
-    miniMap.setSizes();
+    miniMap.reset();
 
     if (decals) decals.reset();
     
@@ -223,7 +223,11 @@ function gameDrawAll()
 
     // Draw the minimap
     miniMap.draw();
-    colorText(`Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`, miniMap.x + 2, miniMap.y + miniMap.height / 2 + 20, 'red', 20);
+    colorText(
+        `Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        miniMap.x + 2,
+        miniMap.y + miniMapCanvas.height * miniMap.scale + 50,
+        'red', 20);
 
     if (currentLevelCountDown > -deltaTime) {
         var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "GO!";        
