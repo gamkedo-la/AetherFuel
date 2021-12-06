@@ -170,6 +170,8 @@ Spaceship.prototype.reset = function(whichPic)
     this.speed = 0;
     this.lapsPassed = 0;
     this.isLap = false
+    this.slideX = 0;
+    this.slideY = 0;
 
     let didWeFindTrackStart = false;
     for (var i = 0; i < trackNumRows ; i++)

@@ -21,6 +21,7 @@ var trackGrid = [];
 // in one single drawImage() call vs thousands
 // this also eliminates the seams between tiles on rotation
 var trackCanvas = null; // a large offscreen canvas
+var backGroundCanvas = null;  // a canvas for the background
 var trackNeedsRefreshing = true; // set to true if you change trackGrid[] data
 
 function getTrackIdxFromXY(xPos, yPos)
@@ -64,6 +65,34 @@ function setTrackTypeAtIJ(trackI, trackJ, value)
         console.log("anything");
         trackGrid[trackI * trackNumCols + trackJ] = value;
         trackNeedsRefreshing = true;
+    }
+}
+
+function drawBackGround()
+{
+    if (!backGroundCanvas)
+    {
+        backGroundCanvas = document.createElement("canvas");
+        backGroundCanvas.width = canvas.width;
+        backGroundCanvas.height = canvas.height;
+        console.log("created track canvas sized "+backGroundCanvas.width+"x"+backGroundCanvas.height);
+    }
+    
+    var useImg = trackPix[TRACK_ROAD];
+    backGroundCanvasCtx = backGroundCanvas.getContext("2d");
+    
+    for (var i = 0; i < trackNumRows ; i++)
+    {
+        var drawTileY = i * TRACK_H;
+
+        for (var j = 0; j < trackNumCols; j++)
+        {
+            var drawTileX = j * TRACK_W;
+
+            backGroundCanvasCtx.drawImage(useImg, drawTileX, drawTileY, 
+                                 useImg.width,
+                                 useImg.height);
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 const FRAME_PER_SECOND = 30
+const UI_WIDTH = 200;
 
 var canvas, canvasContext, deltaTime;
 
@@ -27,7 +28,7 @@ let testE_Bomb;
 
 var debugAIMode = true;
 var debugFreezeAI = false;
-var debugFreezeAIButOne = true;
+var debugFreezeAIButOne = false;
 
 window.onload = function()
 {
@@ -71,6 +72,9 @@ function loadLevel(whichLevel)
     trackNumRows = currentLevel.numRows;
     trackNumCols = currentLevel.numCols;
 
+    maxNumColsOutside = Math.ceil((canvas.width / 2) / TRACK_W);
+    maxNumRowsOutside = Math.ceil(canvas.height / TRACK_H);
+
     trackGrid = currentLevel.track.slice();
     
     firstWaypoint = currentLevel.firstWaypoint == null ? null : new Waypoint(currentLevel.firstWaypoint);
@@ -94,6 +98,7 @@ function loadLevel(whichLevel)
     if (decals) decals.reset();
     
     trackNeedsRefreshing = true; // see track.js optimization
+    drawBackGround();
 
     countDown(true); // reset
 }
@@ -134,7 +139,8 @@ function editorMoveAll()
 
 function editorDrawAll()
 {
-    clearScreen();
+    // clearScreen();
+    canvasContext.drawImage(backGroundCanvas, 0, 0);
 
     // Translate the context for camera scrolling
     camera.translate();
@@ -185,7 +191,8 @@ function gameUpdateAll()
 
 function gameDrawAll()
 {
-    clearScreen();
+    // clearScreen();
+    canvasContext.drawImage(backGroundCanvas, 0, 0);
 
     // Translate the context for camera scrolling
     camera.translate();
@@ -210,6 +217,9 @@ function gameDrawAll()
     
     // Restore the context
     canvasContext.restore();
+
+    // Black band on the left for the UI
+    colorRect(0, 0, UI_WIDTH, canvas.height, "black");
 
     // Draw the minimap
     miniMap.draw();
