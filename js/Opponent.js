@@ -23,6 +23,8 @@ function Opponent(name, pic)
 	this.pic = pic;
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
 
+    this.maxDistToProbForWall = 3 * TRACK_W;
+
     // this.targetSpeed; 
 
     this.activateGas = function()
@@ -36,19 +38,19 @@ function Opponent(name, pic)
         }
         else
         {
-            this.holdGas = Math.random() < this.currentWaypoint.percentageGasAppliedTime;
+            this.holdGas = Math.random() < 2;  //this.currentWaypoint.percentageGasAppliedTime;
             this.holdReverse = false;
 
-            // // check if wall is in fornt of us
-            // var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
-            // var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
+            // check if wall is in fornt of us
+            var testerPointX = this.x + Math.cos(this.ang) * this.maxDistToProbForWall;
+            var testerPointY = this.y + Math.sin(this.ang) * this.maxDistToProbForWall;
 
-            // if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
-            // {
-            //     this.holdGas = false;
-            //     this.dodgeTimer = 15;
-            //     this.dodgeAngTurn = 0.2;  // to be finessed
-            // }
+            if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
+            {
+                this.holdGas = Math.random() < 0.5;
+                this.dodgeTimer = 1;
+                this.dodgeAngTurn = 0.1;  // to be finessed
+            }
         }
         
         // Random reevaluaiton of gas holding
@@ -96,7 +98,7 @@ function Opponent(name, pic)
             this.holdTurnRight = false;
 
             this.dodgeTimer--;
-            this.ang += this.dodgeAngTurn;
+            this.ang += Math.sign(dotProd) * this.dodgeAngTurn;
         }
     }
 
@@ -189,8 +191,8 @@ function Opponent(name, pic)
         {
             lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
 
-            var testerPointX = this.x + Math.cos(this.ang) * TRACK_W * 2;
-            var testerPointY = this.y + Math.sin(this.ang) * TRACK_H * 2;
+            var testerPointX = this.x + Math.cos(this.ang) * this.maxDistToProbForWall;
+            var testerPointY = this.y + Math.sin(this.ang) * this.maxDistToProbForWall;
             lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, "blue");
         }
     }
