@@ -109,6 +109,9 @@ function keyReleased(evt)
                 paused = !paused;            
             }
         }
+        else if (evt.keyCode == KEY_NUM_ROW_1) {
+            debugFollowAI = !debugFollowAI;
+        }
     }
     else
     {

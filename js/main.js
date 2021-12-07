@@ -29,6 +29,7 @@ let testE_Bomb;
 var debugAIMode = true;
 var debugFreezeAI = false;
 var debugFreezeAIButOne = false;
+var debugFollowAI = false;
 
 window.onload = function()
 {
@@ -163,7 +164,8 @@ function gameUpdateAll()
 {
     if(!countDown())
     {
-        camera.follow(player);        
+        if (debugFollowAI) camera.follow(opponents[0]);  
+        else camera.follow(player);        
         return;
     }
     
@@ -186,7 +188,9 @@ function gameUpdateAll()
 
     smokeManager.updatePuffsOfSmoke();
     bulletManager.updateBullets();
-    camera.follow(player);
+
+    if (debugFollowAI) camera.follow(opponents[0]);  
+    else camera.follow(player);       
 }
 
 function gameDrawAll()
