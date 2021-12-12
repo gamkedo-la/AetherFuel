@@ -102,6 +102,7 @@ function loadLevel(whichLevel)
     drawBackGround();
 
     countDown(true); // reset
+    camera.zoom = 1.0;
 }
 
 function countDown(reset=false)
@@ -191,6 +192,13 @@ function gameUpdateAll()
 
     if (debugFollowAI) camera.follow(opponents[0]);  
     else camera.follow(player);       
+    
+    if (camera.zoom > 0.7 && player.speed > 10) {
+        camera.zoom -= 0.01
+    }
+    else if (camera.zoom < 1 && player.speed < 10) {
+        camera.zoom += 0.01
+    }
 }
 
 function gameDrawAll()
