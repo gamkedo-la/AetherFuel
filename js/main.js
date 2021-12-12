@@ -85,7 +85,12 @@ function loadLevel(whichLevel)
     player.engineSound.mixVolume *= 0.10;
     camera.initialize(player.x, player.y, -player.ang);
 
+    var engineSounds = [
+    "Audio/engine_01.wav",
+    "Audio/engine_02.wav",]
+
     opponents.forEach(function(opponent) {
+        opponent.engineSoundFile = engineSounds[Math.floor(Math.random() * engineSounds.length)];
         opponent.reset(firstWaypoint);
     });
 
