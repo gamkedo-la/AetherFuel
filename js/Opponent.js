@@ -184,7 +184,7 @@ function Opponent(name, pic)
             
             for (var angleFrac = 0; angleFrac < this.maxAngleNumberToProbe; angleFrac++)
             {
-                var currentAngle = angleFrac * 2 * Math.PI / this.maxAngleNumberToProbe;
+                var currentAngle = this.ang + angleFrac * 2 * Math.PI / this.maxAngleNumberToProbe;
                 var isWallNear = this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle);
                 if (isWallNear) console.log("wall ahead!!");
 
