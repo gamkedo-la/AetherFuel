@@ -226,6 +226,18 @@ function Opponent(name, pic)
             this.selectTarget();
         }
     }
+
+    this.freeze = function()
+    {
+        this.speed = 0; 
+        this.slideX = 0;
+        this.slideY = 0;
+        this.holdGas = false;
+        this.holdReverse = false;
+        this.holdTurnLeft = false;
+        this.holdTurnRight = false;
+        console.log(this.name + " freezing");
+    }
     
     this.superMove = this.move;
     this.move = function ()

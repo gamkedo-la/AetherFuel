@@ -90,18 +90,21 @@ function keyReleased(evt)
                 console.log("Freeze all but one AI");
                 debugFreezeAI = false;
                 debugFreezeAIButOne = true;
+                opponents.forEach(function(opponent){opponent.freeze();});
             }
             else if (debugFreezeAIButOne)
             {
                 console.log("Release all AI");
                 debugFreezeAI = false;
                 debugFreezeAIButOne = false;
+                opponents.forEach(function(opponent){opponent.freeze();});
             }
             else
             {
                 console.log("Freeze all AI");
                 debugFreezeAI = true;
                 debugFreezeAIButOne = false;
+                opponents.forEach(function(opponent){opponent.freeze();});
             }
         }
         else if (evt.keyCode == KEY_P) {     
