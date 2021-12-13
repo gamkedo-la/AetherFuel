@@ -24,6 +24,7 @@ function Opponent(name, pic)
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
 
     this.maxDistToProbForWall = 3 * TRACK_W;
+    this.maxAngleNumberToProbe = 10;
 
     // this.targetSpeed; 
 
@@ -52,9 +53,6 @@ function Opponent(name, pic)
                 this.dodgeAngTurn = 0.1;  // to be finessed
             }
         }
-        
-        // Random reevaluaiton of gas holding
-        // frequency of reevaluation
     }
 
     this.steerWheels = function()
@@ -92,14 +90,14 @@ function Opponent(name, pic)
             this.holdTurnLeft = 1; 
         }
 
-        if (this.dodgeTimer > 0.0)
-        {
-            this.holdTurnLeft = false;
-            this.holdTurnRight = false;
+        // if (this.dodgeTimer > 0.0)
+        // {
+        //     this.holdTurnLeft = false;
+        //     this.holdTurnRight = false;
 
-            this.dodgeTimer--;
-            this.ang += Math.sign(dotProd) * this.dodgeAngTurn;
-        }
+        //     this.dodgeTimer--;
+        //     this.ang += Math.sign(dotProd) * this.dodgeAngTurn;
+        // }
     }
 
     this.selectTarget = function()
@@ -145,14 +143,11 @@ function Opponent(name, pic)
     this.checkIfCloseEnoughToCurrentWaypoint = function()
     {
         if (this.currentWaypoint == null) return;
-
-        // var distToWaypoint = distanceBetweenTwoPoints(this, this.target);
         
         // Check if spaceship has crossed waypoint thickness
         var dotProd = (this.x - this.currentWaypoint.x) * Math.cos(this.currentWaypoint.angle) +
                       (this.y - this.currentWaypoint.y) * Math.sin(this.currentWaypoint.angle);
 
-        // if (distToWaypoint < TRACK_W)
         if (dotProd > 0)
         {
             this.previousWaypoint = this.currentWaypoint;
@@ -183,18 +178,25 @@ function Opponent(name, pic)
     this.superdraw = this.draw;
     this.draw = function()
     {
-        this.superdraw();
-
-        if (this.currentWaypoint == null) return;
-
-        if (debugAIMode)
+        if (debugAIMode && this.currentWaypoint != null)
         {
             lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+            
+            for (var angleFrac = 0; angleFrac < this.maxAngleNumberToProbe; angleFrac++)
+            {
+                var currentAngle = angleFrac * 2 * Math.PI / this.maxAngleNumberToProbe;
+                var isWallNear = this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle);
+                if (isWallNear) console.log("wall ahead!!");
 
-            var testerPointX = this.x + Math.cos(this.ang) * this.maxDistToProbForWall;
-            var testerPointY = this.y + Math.sin(this.ang) * this.maxDistToProbForWall;
-            lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, "blue");
+                var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
+                var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
+
+                var currentColor = isWallNear ? "magenta" : "blue"; 
+                lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
+            }
         }
+
+        this.superdraw();
     }
 
     this.superHandleCollision = this.handleCollisionWithTracksAdvanced;
@@ -238,6 +240,101 @@ function Opponent(name, pic)
         this.holdTurnRight = false;
         console.log(this.name + " freezing");
     }
+
+    this.checkIfWallInThisDirectionAtMaxProbDist = function(angle)
+    {
+        var tipX = this.x + Math.cos(angle) * this.maxDistToProbForWall;
+        var tipY = this.y + Math.sin(angle) * this.maxDistToProbForWall;
+
+        return returnTrackTypeAtPixelXY(tipX, tipY) == TRACK_WALL;
+    }
+
+    this.checkIfWallInThisDirectionAtMaxProbDistAdvance = function(angle)
+    {
+        // Prob the grid intersection in the vertical direction
+        if(this.checkForRayWallIntersectionInVerticalSweep(angle)) return true;
+
+        // Prob the grid intersection in the horizontal direction
+        return this.checkForRayWallIntersectionInHorizontalSweep(angle);
+    }
+
+    this.checkForRayWallIntersectionInVerticalSweep = function(angle)
+    {
+        if (Math.sin(angle) == 0) return false;
+        
+        var rayDir = Math.sign(Math.sin(angle)) > 0 ? 1 : -1;
+
+        var rayIntersectY = TRACK_H * Math.floor(this.y / TRACK_H);
+        if (rayDir > 0) rayIntersectY += TRACK_H;
+
+        var rayIntersectX = this.x + Math.cos(angle) * Math.abs(this.y - rayIntersectY);
+        
+        var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
+
+        while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
+        {
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H) == TRACK_WALL;
+            if (isWallFound) return true;
+            
+            rayIntersect.x += Math.cos(angle) * TRACK_H;
+            rayIntersect.y += rayDir * TRACK_H;
+        }
+
+        return false;
+    }
+
+    this.checkForRayWallIntersectionInHorizontalSweep = function(angle)
+    {
+        if (Math.cos(angle) == 0) return false;
+        
+        var rayDir = Math.sign(Math.cos(angle)) > 0 ? 1 : -1;
+
+        var rayIntersectX = TRACK_W * Math.floor(this.x / TRACK_W);
+        if (rayDir > 0) rayIntersectX += TRACK_W;
+
+        var rayIntersectY = this.y + Math.sin(angle) * Math.abs(this.x - rayIntersectX);
+        
+        var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
+
+        while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
+        {
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x + rayDir * 0.1 * TRACK_W, rayIntersect.y) == TRACK_WALL;
+            if (isWallFound) return true;
+            
+            rayIntersect.x += rayDir * TRACK_W;
+            rayIntersect.y += Math.sin(angle) * TRACK_W;
+        }
+
+        return false;
+    }
+
+    // this.checkForRayWallIntersectionInVerticalSweep = function(angle)
+    // {
+    //     if (Math.sin(angle) == 0) return false;
+        
+    //     var rayDir = Math.sign(Math.sin(angle)) > 0 ? 1 : -1;
+
+    //     var rayIntersectY = TRACK_H * Math.floor(this.y / TRACK_H);
+    //     if (rayDir > 0) rayIntersectY += TRACK_H;
+
+    //     var rayIntersectX = this.x + Math.cos(angle) * Math.abs(this.y - rayIntersectY);
+        
+    //     var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
+
+    //     var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H);
+    //     if (isWallFound) return true;
+
+    //     while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
+    //     {
+    //         rayIntersect.y += rayDir * TRACK_H;
+    //         rayIntersect.x += Math.cos(angle) * TRACK_H;
+
+    //         var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H);
+    //         if (isWallFound) return true;
+    //     }
+
+    //     return false;
+    // }
     
     this.superMove = this.move;
     this.move = function ()

@@ -290,7 +290,8 @@ Spaceship.prototype.draw = function()
                                        this.pic.height);
     }
 
-    lineBetweenTwoPoints(this.x, this.y, this.x + 50 * this.slideX, this.y + 50 * this.slideY, "green");
+    // Debug code to visualize when spaceships are pushed
+    // lineBetweenTwoPoints(this.x, this.y, this.x + 50 * this.slideX, this.y + 50 * this.slideY, "green");
 }
 
 Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
