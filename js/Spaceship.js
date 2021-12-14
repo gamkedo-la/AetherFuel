@@ -79,9 +79,15 @@ Spaceship.prototype.move = function()
             let righty = this.dualDecalDist * Math.sin(this.ang + Math.PI/2);
             decals.add(this.x+leftx, this.y+lefty, this.ang, tireTrackAlpha, this.decalPic);
             decals.add(this.x+rightx, this.y+righty, this.ang, tireTrackAlpha, this.decalPic);
-        } else { // one centered line
-            decals.add(this.x, this.y, this.ang, tireTrackAlpha, this.decalPic);
         }
+        // removed this else because it looks even cooler with both! =)
+        // else { // one centered line of tire tracks
+        //    decals.add(this.x, this.y, this.ang, tireTrackAlpha, this.decalPic);
+        //}
+        
+        // FIXME: this adds tire tracks to EVERY vehicle
+        // to go back to either/or, uncomment the above and remove the below
+        decals.add(this.x, this.y, this.ang, tireTrackAlpha, tireTrackPic);
     }
 }
 

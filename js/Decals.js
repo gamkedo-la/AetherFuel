@@ -76,16 +76,17 @@ function decalManager(canvas) {
             // FIXME - only spawn in certain regions
             // and only spawn depending on the level!!
             // small levels look too dense - adjust nums
-            this.scatterMany(cracksPic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
-            this.scatterMany(gravelPic,555,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(cracksPic,222,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(gravelPic,777,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
             this.scatterMany(rocksPic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
-            this.scatterMany(rubblePic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(rubblePic,88,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
         }
 
 	};
   
     this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000) {
         if (img==undefined) img = tireTrackPic;
+        console.log("scattering "+num+" decals...");
         for (let n=0; n<num; n++) {
             // random decal placement in the box specified
             let x = Math.round((Math.random()*(xmax-xmin))+xmin);
