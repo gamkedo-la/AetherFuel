@@ -34,11 +34,12 @@ const KEY_TAB = 9;
 const KEY_P = 80;
 const KEY_R = 82;
 
-var mouseX, mouseY;
+var mouseX, mouseY, mouseOnScreenX, mouseOnScreenY;
 var mouseTileI = 0;
 var mouseTileJ = 0;
 var mouseIdx = 0;
 
+var debugQuarterRotNum = 0;
 // Add key to paralyze the ai
 
 function keySet(keyEvt, player, setTo)
@@ -115,6 +116,16 @@ function keyReleased(evt)
         else if (evt.keyCode == KEY_NUM_ROW_1) {
             debugFollowAI = !debugFollowAI;
         }
+        else if (evt.keyCode == KEY_NUM_ROW_2)
+        {
+            player.speed = 0;
+            player.slideX = 0;
+            player.slideY = 0;
+            player.ang = debugQuarterRotNum * Math.PI/ 2;
+
+            debugQuarterRotNum++;
+            if (debugQuarterRotNum == 4) debugQuarterRotNum = 0;
+        }
     }
     else
     {
@@ -139,12 +150,30 @@ function updateMousePos(evt)
     var rect = canvas.getBoundingClientRect();
     var root = document.documentElement;
 
-    mouseX = evt.clientX - rect.left - root.scrollLeft;
-    mouseY = evt.clientY - rect.top - root.scrollTop;
+    mouseOnScreenX = evt.clientX - rect.left - root.scrollLeft;
+    mouseOnScreenY = evt.clientY - rect.top - root.scrollTop;
 
-    mouseX = mouseX / camera.zoom + camera.panX;
-    mouseY = mouseY / camera.zoom + camera.panY;
-    
+    mouseX = mouseOnScreenX / camera.zoom + camera.panX;
+    mouseY = mouseOnScreenY / camera.zoom + camera.panY;
+
+    if (editorMode)
+    {
+        mouseX = mouseOnScreenX / camera.zoom + camera.panX;
+        mouseY = mouseOnScreenY / camera.zoom + camera.panY;
+    }
+    else
+    {
+        var tempMouseX = mouseOnScreenX + camera.panX;
+        var tempMouseY = mouseOnScreenY + camera.panY;
+
+        var angle = camera.angle - Math.PI / 2;
+        mouseX = tempMouseX * Math.cos(angle) + tempMouseY * Math.sin(angle);
+        mouseY = -tempMouseX * Math.sin(angle) + tempMouseY * Math.cos(angle);
+        
+        mouseX = mouseX / camera.zoom - (canvas.width + UI_WIDTH) / 2 ;
+        mouseY = mouseY / camera.zoom - canvas.height * 0.95 ;
+    }
+
     mouseIdx = getTrackIdxFromXY(mouseX, mouseY);
     
     mouseTileI = Math.floor(mouseIdx / trackNumCols);

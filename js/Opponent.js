@@ -24,7 +24,7 @@ function Opponent(name, pic)
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
 
     this.maxDistToProbForWall = 3 * TRACK_W;
-    this.maxAngleNumberToProbe = 10;
+    this.maxAngleNumberToProbe = 1;
 
     // this.targetSpeed; 
 
@@ -191,6 +191,10 @@ function Opponent(name, pic)
                 var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
                 var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
 
+                // var maxTesterPointX = this.x + Math.cos(currentAngle) * 4 * TRACK_W;
+                // var maxTesterPointY = this.y + Math.sin(currentAngle) * 4 * TRACK_W;
+                // lineBetweenTwoPoints(this.x, this.y, maxTesterPointX, maxTesterPointY, "blue");
+
                 var currentColor = isWallNear ? "magenta" : "blue"; 
                 lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
             }
@@ -274,7 +278,14 @@ function Opponent(name, pic)
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
             var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H) == TRACK_WALL;
-            if (isWallFound) return true;
+            if (isWallFound)
+            {
+                console.log((rayIntersect.x  + " , " + rayIntersect.y));
+                var trackJ = Math.floor(rayIntersect.x / TRACK_W);
+                var trackI = Math.floor((rayIntersect.y + rayDir * 0.1 * TRACK_H) / TRACK_H);
+                colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
+                return true;
+            }
             
             rayIntersect.x += Math.cos(angle) * TRACK_H;
             rayIntersect.y += rayDir * TRACK_H;
@@ -299,7 +310,13 @@ function Opponent(name, pic)
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
             var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x + rayDir * 0.1 * TRACK_W, rayIntersect.y) == TRACK_WALL;
-            if (isWallFound) return true;
+            if (isWallFound)
+            {
+                var trackJ = Math.floor(rayIntersect.x / TRACK_W);
+                var trackI = Math.floor((rayIntersect.y + rayDir * 0.1 * TRACK_H) / TRACK_H);
+                colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
+                return true;
+            } 
             
             rayIntersect.x += rayDir * TRACK_W;
             rayIntersect.y += Math.sin(angle) * TRACK_W;

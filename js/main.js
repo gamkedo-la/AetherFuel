@@ -164,6 +164,9 @@ function editorDrawAll()
 
     // Draw the minimap
     miniMap.draw();
+    
+    colorText(mouseX.toFixed(3) + " , " + mouseY.toFixed(3), mouseOnScreenX, mouseOnScreenY + 30, "blue", 30);
+    colorText(mouseTileJ + " , " + mouseTileI, mouseOnScreenX, mouseOnScreenY + 70, "blue", 30);
 }
 
 function gameUpdateAll()
@@ -255,6 +258,11 @@ function gameDrawAll()
     else if (paused) {
         colorText("PAUSED", canvas.width / 2 - 98, canvas.height / 2, 'red', 70);
     }
+
+    // Debug mouse position
+    
+    colorText(mouseX.toFixed(2) + " , " + mouseY.toFixed(2), miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 100, "red", 30);
+    colorText(mouseTileI + " , " + mouseTileJ, miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 150, "red", 30);
 }
 
 function clearScreen()
