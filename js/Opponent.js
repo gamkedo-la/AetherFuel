@@ -1,3 +1,4 @@
+const DEBUG_AI = false; // if true we get console logs every frame
 const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
 const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
 const MIN_TIME_SINCE_LAST_BUMP_TO_WALL = 1000.0;
@@ -186,7 +187,7 @@ function Opponent(name, pic)
             {
                 var currentAngle = this.ang + angleFrac * 2 * Math.PI / this.maxAngleNumberToProbe;
                 var isWallNear = this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle);
-                if (isWallNear) console.log("wall ahead!!");
+                if (DEBUG_AI) { if (isWallNear) console.log("wall ahead!!"); }
 
                 var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
                 var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
@@ -280,7 +281,7 @@ function Opponent(name, pic)
             var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H) == TRACK_WALL;
             if (isWallFound)
             {
-                console.log((rayIntersect.x  + " , " + rayIntersect.y));
+                if (DEBUG_AI) { console.log((rayIntersect.x  + " , " + rayIntersect.y)); }
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
                 var trackI = Math.floor((rayIntersect.y + rayDir * 0.1 * TRACK_H) / TRACK_H);
                 colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");

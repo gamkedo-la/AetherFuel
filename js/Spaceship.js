@@ -1,3 +1,4 @@
+const WALL_COLLISIONS_LEAVE_DECALS = true;
 const GROUND_SPEED_DECAY_MULT = 0.94;
 const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
@@ -226,6 +227,10 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 
     if (this.currentTrackType == TRACK_WALL)
     {
+        if (WALL_COLLISIONS_LEAVE_DECALS) {
+            console.log("colliding with a wall! that left a mark!");
+            decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
+        }
         this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
         this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
         this.speed *= -0.5;            

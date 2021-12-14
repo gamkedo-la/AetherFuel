@@ -92,7 +92,7 @@ function decalManager(canvas) {
             let x = Math.round((Math.random()*(xmax-xmin))+xmin);
             let y = Math.round((Math.random()*(ymax-ymin))+ymin);
             let rot = Math.random()*Math.PI*2; // any rotation
-            let alpha = 0.25; // FIXME: how opaque should these be?
+            let alpha = 0.2; // FIXME: how opaque should these be?
             this.add(x,y,rot,alpha,img);
         }
     }
