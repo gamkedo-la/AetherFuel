@@ -6,6 +6,10 @@ var neonLinePic = document.createElement("img");
 var waypointPic = document.createElement("img");
 var bombCraterPic = document.createElement("img");
 var stunnedOpponentSpriteSheet = document.createElement("img");
+var cracksPic = document.createElement("img");
+var gravelPic = document.createElement("img");
+var rocksPic = document.createElement("img");
+var rubblePic = document.createElement("img");
 
 var trackPix = new Array();
 
@@ -43,6 +47,10 @@ function loadImages()
         {varName: neonLinePic, theFile: "neonLine.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},
         {varName: bombCraterPic, theFile: "bombCrater.png"},
+        {varName: cracksPic, theFile: "decalCracks.png"},
+        {varName: gravelPic, theFile: "decalGravel.png"},
+        {varName: rocksPic, theFile: "decalRocks.png"},
+        {varName: rubblePic, theFile: "decalRubble.png"},
         {trackType: TRACK_ROAD, theFile: "sand.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
         {trackType: TRACK_TREE, theFile: "Tree.png"},

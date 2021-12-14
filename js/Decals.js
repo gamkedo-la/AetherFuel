@@ -73,7 +73,13 @@ function decalManager(canvas) {
         this.tireTrackCTX.clearRect(0, 0, this.tireTrackCanvas.width, this.tireTrackCanvas.height);
         
         if (scatter_random_decals_everywhere) {
-            this.scatterMany(tireTrackPic,5000,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            // FIXME - only spawn in certain regions
+            // and only spawn depending on the level!!
+            // small levels look too dense - adjust nums
+            this.scatterMany(cracksPic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(gravelPic,555,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(rocksPic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+            this.scatterMany(rubblePic,111,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
         }
 
 	};
