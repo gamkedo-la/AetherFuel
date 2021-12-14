@@ -15,6 +15,8 @@
 
 function decalManager(canvas) {
 	
+    const scatter_random_decals_everywhere = true; // experimental
+
     console.log("Initializing decal manager...");
 
 	this.add = function(x,y,rot,alpha,img) {
@@ -69,8 +71,25 @@ function decalManager(canvas) {
 	this.reset = function() {
         this.resize();
         this.tireTrackCTX.clearRect(0, 0, this.tireTrackCanvas.width, this.tireTrackCanvas.height);
+        
+        if (scatter_random_decals_everywhere) {
+            this.scatterMany(tireTrackPic,5000,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
+        }
+
 	};
   
+    this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000) {
+        if (img==undefined) img = tireTrackPic;
+        for (let n=0; n<num; n++) {
+            // random decal placement in the box specified
+            let x = Math.round((Math.random()*(xmax-xmin))+xmin);
+            let y = Math.round((Math.random()*(ymax-ymin))+ymin);
+            let rot = Math.random()*Math.PI*2; // any rotation
+            let alpha = 0.25; // FIXME: how opaque should these be?
+            this.add(x,y,rot,alpha,img);
+        }
+    }
+
 	//var img.crossOrigin = "Anonymous";
 	this.clear = function() {
         

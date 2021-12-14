@@ -34,7 +34,10 @@ const KEY_TAB = 9;
 const KEY_P = 80;
 const KEY_R = 82;
 
-var mouseX, mouseY, mouseOnScreenX, mouseOnScreenY;
+var mouseX = 0;
+var mouseY = 0;
+var mouseOnScreenX = 0;
+var mouseOnScreenY = 0;
 var mouseTileI = 0;
 var mouseTileJ = 0;
 var mouseIdx = 0;
