@@ -32,7 +32,9 @@ const KEY_NUM_ROW_9 = 57;
 const KEY_TAB = 9;
 
 const KEY_P = 80;
+const KEY_Q = 81;
 const KEY_R = 82;
+const KEY_T = 84;
 
 var mouseX = 0;
 var mouseY = 0;

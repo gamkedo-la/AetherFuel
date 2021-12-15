@@ -103,6 +103,11 @@ function Editor()
         this.createNewWaypoint();
     }
 
+    this.deleteAllWaypoints = function()
+    {
+        firstWaypoint = null;
+    }
+
     this.createNewWaypoint = function()
     {
         var waypointData = {
@@ -264,7 +269,7 @@ function Editor()
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy=40,hs=17;
-        colorRect(0, hy, 175, hs*14+5, "rgba(0,0,0,0.33)");
+        colorRect(0, hy, 175, hs*16+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
@@ -279,6 +284,8 @@ function Editor()
         colorText("C - Corners", hx, hy+=hs, "white", 16);
         colorText("E - Export", hx, hy+=hs, "white", 16);
         colorText("Mouse Wheel - Zoom", hx, hy+=hs, "white", 16);
+        colorText("Q - Delete All Waypoints", hx, hy+=hs, "white", 16);
+        colorText("T - Load a Level", hx, hy+=hs, "white", 16);
     }
 
     // erases the entire map and fills it with a single tile
@@ -410,7 +417,7 @@ function Editor()
             case KEY_E:
                 currentLevel.track = trackGrid.slice();
                 currentLevel.firstWaypoint = firstWaypoint;
-                currentLevel.decalData = decalData;
+                //currentLevel.decalData = decalData;
                 console.log(JSON.stringify(currentLevel));
                 break;
 
@@ -446,6 +453,15 @@ function Editor()
 
             case KEY_R:
                 this.resizeTrackGrid();
+                break;
+
+            case KEY_Q:
+                this.deleteAllWaypoints();
+                break;
+
+            case KEY_T:       
+                var whichLevel = window.prompt("Which level do you want to load?");
+                loadLevel(whichLevel - 1);
                 break;
                                                     
             default:
