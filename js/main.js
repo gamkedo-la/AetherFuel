@@ -30,6 +30,7 @@ var debugAIMode = true;
 var debugFreezeAI = false;
 var debugFreezeAIButOne = false;
 var debugFollowAI = false;
+var debugDeactivateZoom = false;
 
 window.onload = function()
 {
@@ -201,6 +202,7 @@ function gameUpdateAll()
     if (debugFollowAI) camera.follow(opponents[0]);  
     else camera.follow(player);       
     
+    if (debugDeactivateZoom) return;
     if (camera.zoom > 0.7 && player.speed > 10) {
         camera.zoom -= 0.01
     }
@@ -260,9 +262,10 @@ function gameDrawAll()
     }
 
     // Debug mouse position
-    
-    colorText(mouseX.toFixed(2) + " , " + mouseY.toFixed(2), miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 100, "red", 30);
-    colorText(mouseTileI + " , " + mouseTileJ, miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 150, "red", 30);
+    if (DEBUG_AI){
+        colorText(mouseX.toFixed(2) + " , " + mouseY.toFixed(2), miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 100, "red", 30);
+        colorText(mouseTileI + " , " + mouseTileJ, miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 150, "red", 30);
+    }
 }
 
 function clearScreen()

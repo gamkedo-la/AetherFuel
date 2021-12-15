@@ -192,10 +192,6 @@ function Opponent(name, pic)
                 var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
                 var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
 
-                // var maxTesterPointX = this.x + Math.cos(currentAngle) * 4 * TRACK_W;
-                // var maxTesterPointY = this.y + Math.sin(currentAngle) * 4 * TRACK_W;
-                // lineBetweenTwoPoints(this.x, this.y, maxTesterPointX, maxTesterPointY, "blue");
-
                 var currentColor = isWallNear ? "magenta" : "blue"; 
                 lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
             }
@@ -267,29 +263,39 @@ function Opponent(name, pic)
     {
         if (Math.sin(angle) == 0) return false;
         
+        // Direction in which the ray is facing in vertical direction
         var rayDir = Math.sign(Math.sin(angle)) > 0 ? 1 : -1;
 
+        // Initialize ray intersect in y dierection
         var rayIntersectY = TRACK_H * Math.floor(this.y / TRACK_H);
         if (rayDir > 0) rayIntersectY += TRACK_H;
 
-        var rayIntersectX = this.x + Math.cos(angle) * Math.abs(this.y - rayIntersectY);
+        // Initialize ray intersect in x direction
+        var rayIntersectX = this.x + (rayIntersectY - this.y) / Math.tan(angle);
         
+        // Set the increment step
+        var incrementY = rayDir * TRACK_H;
+        var incrementX = incrementY / Math.tan(angle);
+
+        // Create ray intersect variable
         var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
 
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
-            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H) == TRACK_WALL;
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
             if (isWallFound)
             {
                 if (DEBUG_AI) { console.log((rayIntersect.x  + " , " + rayIntersect.y)); }
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
-                var trackI = Math.floor((rayIntersect.y + rayDir * 0.1 * TRACK_H) / TRACK_H);
+                var trackI = Math.floor(rayIntersect.y / TRACK_H);
+                canvasContext.globalAlpha = 0.5;
                 colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
+                canvasContext.globalAlpha = 1.0;
                 return true;
             }
             
-            rayIntersect.x += Math.cos(angle) * TRACK_H;
-            rayIntersect.y += rayDir * TRACK_H;
+            rayIntersect.x += incrementX;
+            rayIntersect.y += incrementY;
         }
 
         return false;
@@ -298,29 +304,40 @@ function Opponent(name, pic)
     this.checkForRayWallIntersectionInHorizontalSweep = function(angle)
     {
         if (Math.cos(angle) == 0) return false;
-        
+
+        // Direction in which the ray is facing in horizontal direction
         var rayDir = Math.sign(Math.cos(angle)) > 0 ? 1 : -1;
 
+        // Initialize ray intersect in x direction
         var rayIntersectX = TRACK_W * Math.floor(this.x / TRACK_W);
         if (rayDir > 0) rayIntersectX += TRACK_W;
 
-        var rayIntersectY = this.y + Math.sin(angle) * Math.abs(this.x - rayIntersectX);
+        // Initialize ray intersect in y direction
+        var rayIntersectY = this.y + Math.tan(angle) * (rayIntersectX - this.x);
         
+        // Set the increment step
+        var incrementX = rayDir * TRACK_W;
+        var incrementY = incrementX * Math.tan(angle);
+
+        // Create ray intersect variable
         var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
 
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
-            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x + rayDir * 0.1 * TRACK_W, rayIntersect.y) == TRACK_WALL;
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
             if (isWallFound)
             {
+                if (DEBUG_AI) { console.log((rayIntersect.x  + " , " + rayIntersect.y)); }
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
-                var trackI = Math.floor((rayIntersect.y + rayDir * 0.1 * TRACK_H) / TRACK_H);
+                var trackI = Math.floor(rayIntersect.y / TRACK_H);
+                canvasContext.globalAlpha = 0.5;
                 colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
+                canvasContext.globalAlpha = 1.0;
                 return true;
             } 
             
-            rayIntersect.x += rayDir * TRACK_W;
-            rayIntersect.y += Math.sin(angle) * TRACK_W;
+            rayIntersect.x += incrementX;
+            rayIntersect.y += incrementY;
         }
 
         return false;

@@ -168,15 +168,15 @@ function updateMousePos(evt)
     }
     else
     {
-        var tempMouseX = mouseOnScreenX + camera.panX;
-        var tempMouseY = mouseOnScreenY + camera.panY;
+        var tempMouseX = (mouseOnScreenX - (canvas.width + UI_WIDTH) / 2) / camera.zoom;
+        var tempMouseY = (mouseOnScreenY - canvas.height * 0.95) / camera.zoom;  
 
         var angle = camera.angle - Math.PI / 2;
         mouseX = tempMouseX * Math.cos(angle) + tempMouseY * Math.sin(angle);
         mouseY = -tempMouseX * Math.sin(angle) + tempMouseY * Math.cos(angle);
-        
-        mouseX = mouseX / camera.zoom - (canvas.width + UI_WIDTH) / 2 ;
-        mouseY = mouseY / camera.zoom - canvas.height * 0.95 ;
+
+        mouseX += camera.panX;
+        mouseY += camera.panY; 
     }
 
     mouseIdx = getTrackIdxFromXY(mouseX, mouseY);
