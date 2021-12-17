@@ -2,7 +2,8 @@ const DEBUG_AI = false; // if true we get console logs every frame
 const MIN_TIME_BEFORE_TARGET_CHANGE = 300.0;  // in milliseconds
 const MAX_TIME_BEFORE_TARGET_CHANGE = 1000.0;  // in milliseconds
 const MIN_TIME_SINCE_LAST_BUMP_TO_WALL = 1000.0;
-const TIME_FOR_RECOVERY_MODE = 500.0 // in milliseconds
+const TIME_FOR_RECOVERY_MODE = 2000.0 // in milliseconds
+const TIME_FOR_BACKWARD_RECOVERY_MODE = 1000.0  // in milliseconds
 
 function Opponent(name, pic)
 {
@@ -16,16 +17,17 @@ function Opponent(name, pic)
     this.target = null;
 
     this.recoveryMode = false;
+    this.timeSinceRecoveryMode = 0.0;
+
     this.dodgeTimer = 0.0;
     this.dodgeAngTurn = 0.0;
-    this.timeSinceRecoveryMode = 0.0;
 
     this.timeSinceLastTargetSelection = 0.0;
 	this.pic = pic;
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
 
     this.maxDistToProbForWall = 3 * TRACK_W;
-    this.maxAngleNumberToProbe = 1;
+    this.maxAngleNumberToProbe = 32;
 
     // this.targetSpeed; 
 
@@ -33,7 +35,7 @@ function Opponent(name, pic)
     {
         if (this.currentWaypoint == null) return ;
         
-        if (this.recoveryMode)
+        if (this.recoveryMode && this.timeSinceRecoveryMode < TIME_FOR_BACKWARD_RECOVERY_MODE)
         {
             this.holdGas = false;
             this.holdReverse = Math.random() < 0.5;
@@ -43,16 +45,18 @@ function Opponent(name, pic)
             this.holdGas = Math.random() < 2;  //this.currentWaypoint.percentageGasAppliedTime;
             this.holdReverse = false;
 
-            // check if wall is in fornt of us
-            var testerPointX = this.x + Math.cos(this.ang) * this.maxDistToProbForWall;
-            var testerPointY = this.y + Math.sin(this.ang) * this.maxDistToProbForWall;
+            // var testerPointX = this.x + Math.cos(this.ang) * this.maxDistToProbForWall;
+            // var testerPointY = this.y + Math.sin(this.ang) * this.maxDistToProbForWall;
 
-            if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
-            {
-                this.holdGas = Math.random() < 0.5;
-                this.dodgeTimer = 1;
-                this.dodgeAngTurn = 0.1;  // to be finessed
-            }
+            // if (returnTrackTypeAtPixelXY(testerPointX, testerPointY) == TRACK_WALL)
+            // {
+            //     this.holdGas = Math.random() < 0.5;
+            //     if (this.dodgeTimer <= 0)
+            //     {
+            //         this.dodgeTimer = 5;
+            //         this.dodgeAngTurn = 0.1;  // to be finessed
+            //     }
+            // }
         }
     }
 
@@ -60,6 +64,7 @@ function Opponent(name, pic)
     {
         if (this.currentWaypoint == null) return;
         if (this.target == null) return ;
+        if (this.recoveryBackwardTime > 0) return;
 
         var rightDir = {
             "x": -Math.sin(this.ang),
@@ -73,7 +78,8 @@ function Opponent(name, pic)
         }
 
         var dotProd = rightDir.x * dirToWaypoint.x + rightDir.y * dirToWaypoint.y;
-        var signum = this.recoveryMode ? -1 : 1;
+        var signum = 1;
+        // var signum = this.recoveryMode ? -1 : 1;
 
         if (Math.abs(dotProd) < 0.1)
         {
@@ -91,14 +97,14 @@ function Opponent(name, pic)
             this.holdTurnLeft = 1; 
         }
 
-        // if (this.dodgeTimer > 0.0)
-        // {
-        //     this.holdTurnLeft = false;
-        //     this.holdTurnRight = false;
+        if (this.dodgeTimer > 0.0)
+        {
+            this.holdTurnLeft = false;
+            this.holdTurnRight = false;
 
-        //     this.dodgeTimer--;
-        //     this.ang += Math.sign(dotProd) * this.dodgeAngTurn;
-        // }
+            this.dodgeTimer--;
+            this.ang += Math.sign(dotProd) * this.dodgeAngTurn;
+        }
     }
 
     this.selectTarget = function()
@@ -159,6 +165,8 @@ function Opponent(name, pic)
 
     this.updateTimeSinceLastWaypointChange = function ()
     {
+        if (this.recoveryMode) return;
+
         this.timeSinceLastTargetSelection += deltaTime;
 
         if (this.timeSinceLastTargetSelection > randomFloatFromInterval(MIN_TIME_BEFORE_TARGET_CHANGE,
@@ -181,20 +189,29 @@ function Opponent(name, pic)
     {
         if (debugAIMode && this.currentWaypoint != null)
         {
-            lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
-            
-            for (var angleFrac = 0; angleFrac < this.maxAngleNumberToProbe; angleFrac++)
-            {
-                var currentAngle = this.ang + angleFrac * 2 * Math.PI / this.maxAngleNumberToProbe;
-                var isWallNear = this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle);
-                if (DEBUG_AI) { if (isWallNear) console.log("wall ahead!!"); }
-
-                var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
-                var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
-
-                var currentColor = isWallNear ? "magenta" : "blue"; 
-                lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
+            if (this.target != null){
+                lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+                colorCircle(this.target.x, this.target.y, TRACK_H / 4, "magenta");
             }
+            
+            if (this.recoveryMode)
+            {
+                for (var angleFrac = 0; angleFrac < this.maxAngleNumberToProbe; angleFrac++)
+                {
+                    var currentAngle = this.ang + angleFrac * Math.PI / (2 * this.maxAngleNumberToProbe) -  Math.PI / 4;
+
+                    var isWallNear = this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle);
+
+                    var testerPointX = this.x + Math.cos(currentAngle) * this.maxDistToProbForWall;
+                    var testerPointY = this.y + Math.sin(currentAngle) * this.maxDistToProbForWall;
+
+                    var currentColor = isWallNear ? "magenta" : "blue"; 
+                    lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
+                }   
+            }
+
+            var modeColor = this.recoveryMode ? "red" : "green";
+            colorCircle(this.x + TRACK_W * Math.cos(this.ang), this.y + TRACK_H * Math.sin(this.ang), TRACK_H / 3, modeColor);
         }
 
         this.superdraw();
@@ -207,10 +224,12 @@ function Opponent(name, pic)
         this.timeSinceLastBumpToWall += deltaTime;
 
         if (this.getCurrentTrackType() == TRACK_ROAD || this.getCurrentTrackType() == TRACK_GOAL) return;
+        if (this.recoveryMode) return;
+        
         if (this.timeSinceLastBumpToWall < MIN_TIME_SINCE_LAST_BUMP_TO_WALL)
         {
-            console.log("Recovery: I think  you should stop and focus now");
-            this.recoveryMode = true;
+            this.recoveryMode = true; //  enter recovery mode
+            this.target = null;  // stop thinking about the current target
             this.timeSinceRecoveryMode = 0.0;
         }
         this.timeSinceLastBumpToWall = 0.0;
@@ -221,10 +240,44 @@ function Opponent(name, pic)
         if (!this.recoveryMode) return;
 
         this.timeSinceRecoveryMode += deltaTime;
-            
+        
+        // If no new target has been selected, select one
+        if (this.target == null)
+        {
+            var pointerLeft = 0;
+            var pointerRight = this.maxAngleNumberToProbe -1;
+            var isPointerLeft = true;
+
+            for (var ptrIdx = 0; ptrIdx < this.maxAngleNumberToProbe; ptrIdx++)
+            {
+                var angleFrac = 0;
+                if (isPointerLeft)
+                {
+                    angleFrac = pointerLeft;
+                    pointerLeft++ 
+                }
+                else
+                {
+                    angleFrac = pointerRight;
+                    pointerRight--
+                }
+
+                var currentAngle = this.ang + angleFrac * Math.PI / (2 * this.maxAngleNumberToProbe) -  Math.PI / 4;
+
+                // if there is no wall in this direction
+                if (!this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle))
+                {
+                    this.target = {
+                        "x": this.x + Math.cos(currentAngle) * this.maxDistToProbForWall,
+                        "y": this.y + Math.sin(currentAngle) * this.maxDistToProbForWall
+                    }
+                    break;
+                }
+            }
+        }
+
         if (this.timeSinceRecoveryMode > TIME_FOR_RECOVERY_MODE)
         {
-            console.log("Recovery: good to go");
             this.recoveryMode = false;
             this.selectTarget();
         }
@@ -240,14 +293,6 @@ function Opponent(name, pic)
         this.holdTurnLeft = false;
         this.holdTurnRight = false;
         console.log(this.name + " freezing");
-    }
-
-    this.checkIfWallInThisDirectionAtMaxProbDist = function(angle)
-    {
-        var tipX = this.x + Math.cos(angle) * this.maxDistToProbForWall;
-        var tipY = this.y + Math.sin(angle) * this.maxDistToProbForWall;
-
-        return returnTrackTypeAtPixelXY(tipX, tipY) == TRACK_WALL;
     }
 
     this.checkIfWallInThisDirectionAtMaxProbDistAdvance = function(angle)
@@ -285,7 +330,6 @@ function Opponent(name, pic)
             var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
             if (isWallFound)
             {
-                if (DEBUG_AI) { console.log((rayIntersect.x  + " , " + rayIntersect.y)); }
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
                 var trackI = Math.floor(rayIntersect.y / TRACK_H);
                 canvasContext.globalAlpha = 0.5;
@@ -327,7 +371,6 @@ function Opponent(name, pic)
             var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
             if (isWallFound)
             {
-                if (DEBUG_AI) { console.log((rayIntersect.x  + " , " + rayIntersect.y)); }
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
                 var trackI = Math.floor(rayIntersect.y / TRACK_H);
                 canvasContext.globalAlpha = 0.5;
@@ -342,34 +385,6 @@ function Opponent(name, pic)
 
         return false;
     }
-
-    // this.checkForRayWallIntersectionInVerticalSweep = function(angle)
-    // {
-    //     if (Math.sin(angle) == 0) return false;
-        
-    //     var rayDir = Math.sign(Math.sin(angle)) > 0 ? 1 : -1;
-
-    //     var rayIntersectY = TRACK_H * Math.floor(this.y / TRACK_H);
-    //     if (rayDir > 0) rayIntersectY += TRACK_H;
-
-    //     var rayIntersectX = this.x + Math.cos(angle) * Math.abs(this.y - rayIntersectY);
-        
-    //     var rayIntersect = {"x": rayIntersectX, "y": rayIntersectY};
-
-    //     var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H);
-    //     if (isWallFound) return true;
-
-    //     while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
-    //     {
-    //         rayIntersect.y += rayDir * TRACK_H;
-    //         rayIntersect.x += Math.cos(angle) * TRACK_H;
-
-    //         var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + rayDir * 0.1 * TRACK_H);
-    //         if (isWallFound) return true;
-    //     }
-
-    //     return false;
-    // }
     
     this.superMove = this.move;
     this.move = function ()
