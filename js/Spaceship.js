@@ -268,6 +268,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         }
         
         loadLevel(currentLevelIdx);
+        // transitionToLevel(currentLevelIdx);
     }
     else 
     {

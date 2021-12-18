@@ -63,6 +63,31 @@ function imageLoadingDoneSoStartGame()
     decals = new decalManager(canvas);
 }
 
+var didFadeOut = false
+var transitioning = false
+var levelToTransitionTo = 0
+function transitionToLevel(whichLevel) 
+{
+    paused = true
+    transitioning = true
+    levelToTransitionTo = whichLevel
+
+    if (!didFadeOut) {
+        if (canvasContext.globalAlpha > 0) {
+            canvasContext.globalAlpha -= 0.01
+        } else {
+            didFadeOut = true
+        }
+    } else if (canvasContext.globalAlpha <= 1) {
+        canvasContext.globalAlpha += 0.01
+        if (canvasContext.globalAlpha > 1) canvasContext.globalAlpha = 1
+    } else {
+        paused = false
+        transitioning = false
+        didFadeOut = false
+        levelToTransitionTo = 0
+    }
+}
 
 function loadLevel(whichLevel)
 {
@@ -127,6 +152,9 @@ function updateAll()
     {
         if (!paused) {
             gameUpdateAll();
+        }
+        if (transitioning) {
+            transitionToLevel(levelToTransitionTo)
         }
         gameDrawAll(); 
         AudioMan.update();
