@@ -39,22 +39,22 @@ function Editor()
 
         if(this.isMovingUp)
         {
-            this.y -= this.speed;
+            this.y -= this.speed / camera.zoom;
         }
 
         if(this.isMovingLeft)
         {
-            this.x -= this.speed;
+            this.x -= this.speed / camera.zoom;
         }
 
         if(this.isMovingDown)
         {
-            this.y += this.speed;
+            this.y += this.speed / camera.zoom;
         }
 
         if(this.isMovingRight)
         {
-            this.x += this.speed;
+            this.x += this.speed / camera.zoom;
         }
     }
 
