@@ -35,6 +35,7 @@ const KEY_P = 80;
 const KEY_Q = 81;
 const KEY_R = 82;
 const KEY_T = 84;
+const KEY_N = 78;
 
 var mouseX = 0;
 var mouseY = 0;

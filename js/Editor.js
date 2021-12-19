@@ -171,8 +171,6 @@ function Editor()
     {
         if (!editorMode){ return; }
 
-        // this.displayEditorLabel();
-
         if (editorPaintType == TRACK_START)
         {
             this.drawTrackStartAtMousePosition();
@@ -273,6 +271,7 @@ function Editor()
         var hx=5,hy= offsetY + 40,hs=17;
         
         colorRect(0, hy, 175, hs*16+5, "rgba(0,0,0,0.33)");
+        colorText("Mouse Wheel - Zoom", hx, hy+=hs, "white", 16);
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
         colorText("1 - Road", hx, hy+=hs, "white", 16);
@@ -286,9 +285,9 @@ function Editor()
         colorText("X - Fill Map", hx, hy+=hs, "white", 16);
         colorText("C - Corners", hx, hy+=hs, "white", 16);
         colorText("E - Export", hx, hy+=hs, "white", 16);
-        colorText("Mouse Wheel - Zoom", hx, hy+=hs, "white", 16);
         colorText("Q - Delete All Waypoints", hx, hy+=hs, "white", 16);
         colorText("T - Load a Level", hx, hy+=hs, "white", 16);
+        colorText("N - Create a new Level", hx, hy+=hs, "white", 16);
     }
 
     // erases the entire map and fills it with a single tile
@@ -465,6 +464,12 @@ function Editor()
             case KEY_T:       
                 var whichLevel = window.prompt("Which level do you want to load?");
                 loadLevel(whichLevel - 1);
+                break;
+
+            case KEY_N:
+                var newLevel = createNewLevel();
+                levels.push(newLevel);
+                loadLevel(levels.length - 1);
                 break;
                                                     
             default:
