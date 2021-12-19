@@ -5,6 +5,9 @@ const MIN_TIME_SINCE_LAST_BUMP_TO_WALL = 1000.0;
 const TIME_FOR_RECOVERY_MODE = 2000.0 // in milliseconds
 const TIME_FOR_BACKWARD_RECOVERY_MODE = 1000.0  // in milliseconds
 
+const MIN_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY = 200.0;  // in milliseconds
+const MAX_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY = 800.0;  // in milliseconds
+
 function Opponent(name, pic)
 {
     Spaceship.call(this, name);
@@ -155,7 +158,9 @@ function Opponent(name, pic)
         var dotProd = (this.x - this.currentWaypoint.x) * Math.cos(this.currentWaypoint.angle) +
                       (this.y - this.currentWaypoint.y) * Math.sin(this.currentWaypoint.angle);
 
-        if (dotProd > 0)
+        var distToTarget = this.target != null ? distanceBetweenTwoPoints(this, this.target) : TRACK_H * 3;
+
+        if (dotProd > 0 || distToTarget < 2 * TRACK_H )
         {
             this.previousWaypoint = this.currentWaypoint;
             this.currentWaypoint = this.currentWaypoint.next == null ? firstWaypoint : this.currentWaypoint.next;
@@ -189,11 +194,6 @@ function Opponent(name, pic)
     {
         if (debugAIMode && this.currentWaypoint != null)
         {
-            if (this.target != null){
-                lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
-                colorCircle(this.target.x, this.target.y, TRACK_H / 4, "magenta");
-            }
-            
             if (this.recoveryMode)
             {
                 for (var angleFrac = 0; angleFrac < this.maxAngleNumberToProbe; angleFrac++)
@@ -208,6 +208,11 @@ function Opponent(name, pic)
                     var currentColor = isWallNear ? "magenta" : "blue"; 
                     lineBetweenTwoPoints(this.x, this.y, testerPointX, testerPointY, currentColor);
                 }   
+            }
+
+            if (this.target != null){
+                lineBetweenTwoPoints(this.x, this.y, this.target.x, this.target.y, "red");
+                colorCircle(this.target.x, this.target.y, TRACK_H / 4, "magenta");
             }
 
             var modeColor = this.recoveryMode ? "red" : "green";
@@ -242,44 +247,57 @@ function Opponent(name, pic)
         this.timeSinceRecoveryMode += deltaTime;
         
         // If no new target has been selected, select one
-        if (this.target == null)
+        if (this.target == null && this.timeSinceRecoveryMode > MIN_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY)
         {
-            var pointerLeft = 0;
-            var pointerRight = this.maxAngleNumberToProbe -1;
-            var isPointerLeft = true;
-
-            for (var ptrIdx = 0; ptrIdx < this.maxAngleNumberToProbe; ptrIdx++)
+            if (this.timeSinceRecoveryMode < MAX_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY)
             {
-                var angleFrac = 0;
-                if (isPointerLeft)
-                {
-                    angleFrac = pointerLeft;
-                    pointerLeft++ 
-                }
-                else
-                {
-                    angleFrac = pointerRight;
-                    pointerRight--
-                }
-
-                var currentAngle = this.ang + angleFrac * Math.PI / (2 * this.maxAngleNumberToProbe) -  Math.PI / 4;
-
-                // if there is no wall in this direction
-                if (!this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle))
-                {
-                    this.target = {
-                        "x": this.x + Math.cos(currentAngle) * this.maxDistToProbForWall,
-                        "y": this.y + Math.sin(currentAngle) * this.maxDistToProbForWall
-                    }
-                    break;
-                }
+                if (Math.random() < 0.5) this.selectTargetForRecoveryMode();
             }
+            else this.selectTargetForRecoveryMode();
         }
 
         if (this.timeSinceRecoveryMode > TIME_FOR_RECOVERY_MODE)
         {
             this.recoveryMode = false;
             this.selectTarget();
+        }
+    }
+
+    this.selectTargetForRecoveryMode = function()
+    {
+        var pointerLeft = 0;
+        var pointerRight = this.maxAngleNumberToProbe -1;
+        var isPointerLeft = true;
+
+        for (var ptrIdx = 0; ptrIdx < this.maxAngleNumberToProbe; ptrIdx++)
+        {
+            var angleFrac = 0;
+
+            if (isPointerLeft)
+            {
+                angleFrac = pointerLeft;
+                pointerLeft++
+                isPointerLeft = false; 
+            }
+            else
+            {
+                angleFrac = pointerRight;
+                pointerRight--
+                isPointerLeft = true;
+            }
+
+            var currentAngle = this.ang + angleFrac * Math.PI / (2 * this.maxAngleNumberToProbe) -  Math.PI / 4;
+
+            // if there is no wall in this direction
+            if (!this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle))
+            {
+                console.log(currentAngle);
+                this.target = {
+                    "x": this.x + Math.cos(currentAngle) * this.maxDistToProbForWall,
+                    "y": this.y + Math.sin(currentAngle) * this.maxDistToProbForWall
+                }
+                break;
+            }
         }
     }
 
@@ -327,11 +345,11 @@ function Opponent(name, pic)
 
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
-            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + 0.01*incrementY) == TRACK_WALL;
             if (isWallFound)
             {
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);
-                var trackI = Math.floor(rayIntersect.y / TRACK_H);
+                var trackI = Math.floor((rayIntersect.y + + 0.01*incrementY) / TRACK_H);
                 canvasContext.globalAlpha = 0.5;
                 colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
                 canvasContext.globalAlpha = 1.0;
@@ -368,10 +386,10 @@ function Opponent(name, pic)
 
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
-            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y) == TRACK_WALL;
+            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x + 0.01*incrementX, rayIntersect.y) == TRACK_WALL;
             if (isWallFound)
             {
-                var trackJ = Math.floor(rayIntersect.x / TRACK_W);
+                var trackJ = Math.floor((rayIntersect.x  + 0.01*incrementX) / TRACK_W);
                 var trackI = Math.floor(rayIntersect.y / TRACK_H);
                 canvasContext.globalAlpha = 0.5;
                 colorRect(trackJ * TRACK_W, trackI * TRACK_H, TRACK_W, TRACK_H, "red");
