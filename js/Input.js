@@ -163,7 +163,7 @@ function updateMousePos(evt)
 
     if (editorMode)
     {
-        mouseX = mouseOnScreenX / camera.zoom + camera.panX;
+        mouseX =  (mouseOnScreenX - (canvas.width + UI_WIDTH) / 2) / camera.zoom + camera.panX;
         mouseY = mouseOnScreenY / camera.zoom + camera.panY;
     }
     else

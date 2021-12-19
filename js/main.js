@@ -175,8 +175,8 @@ function editorMoveAll()
 
 function editorDrawAll()
 {
-    // clearScreen();
-    canvasContext.drawImage(backGroundCanvas, 0, 0);
+    clearScreen("LightGray");
+    // canvasContext.drawImage(backGroundCanvas, 0, 0);
 
     // Translate the context for camera scrolling
     camera.translate();
@@ -191,11 +191,14 @@ function editorDrawAll()
     // Restore the context
     canvasContext.restore();
 
+    // Black band on the left for the UI
+    colorRect(0, 0, UI_WIDTH, canvas.height, "black");
+
     // Draw the minimap
     miniMap.draw();
-    
-    colorText(mouseX.toFixed(3) + " , " + mouseY.toFixed(3), mouseOnScreenX, mouseOnScreenY + 30, "blue", 30);
-    colorText(mouseTileJ + " , " + mouseTileI, mouseOnScreenX, mouseOnScreenY + 70, "blue", 30);
+
+    // Display editor help
+    editor.displayEditorLabel()
 }
 
 function gameUpdateAll()
@@ -296,7 +299,7 @@ function gameDrawAll()
     }
 }
 
-function clearScreen()
+function clearScreen(color="black")
 {
-    colorRect(0, 0, canvas.width, canvas.height, "black");
+    colorRect(0, 0, canvas.width, canvas.height, color);
 }

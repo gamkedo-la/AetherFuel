@@ -79,7 +79,7 @@ function Editor()
             return;
         }
 
-        setTrackTypeAtIJ(mouseTileI, mouseTileJ, editorPaintType)
+        setTrackTypeAtIJ(mouseTileI, mouseTileJ, editorPaintType);
 
         if (editorPaintType == TRACK_START)
         {
@@ -160,7 +160,7 @@ function Editor()
         {
             for (var trackJ = selectedTileMinJ; trackJ < selectedTileMaxJ; trackJ++)
             {
-                setTrackTypeAtIJ(trackI, trackJ, editorPaintType)
+                setTrackTypeAtIJ(trackI, trackJ, editorPaintType);
             }
         }
 
@@ -171,7 +171,7 @@ function Editor()
     {
         if (!editorMode){ return; }
 
-        this.displayEditorLabel();
+        // this.displayEditorLabel();
 
         if (editorPaintType == TRACK_START)
         {
@@ -262,13 +262,16 @@ function Editor()
     
     this.displayEditorLabel = function() 
     {
+        var offsetY = miniMapCanvas.height * miniMap.scale
+
         canvasContext.globalAlpha = 0.75;
-        colorRect(0, 0, 175, 40, "red");
+        colorRect(0, offsetY, 175, 40, "red");
         canvasContext.globalAlpha = 1.0;
-        colorText("EDITOR", 5, 30, "black");
+        colorText("EDITOR", 5, offsetY + 30, "black");
 
         // and some edit mode help because I keep forgetting
-        var hx=5,hy=40,hs=17;
+        var hx=5,hy= offsetY + 40,hs=17;
+        
         colorRect(0, hy, 175, hs*16+5, "rgba(0,0,0,0.33)");
         colorText("TAB to Return", hx, hy+=hs, "white", 16);
         colorText("0 - Starting Line", hx, hy+=hs, "white", 16);

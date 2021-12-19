@@ -57,10 +57,11 @@ function Camera()
     this.translate = function()
     {
         canvasContext.save();
+        canvasContext.translate((canvas.width + UI_WIDTH) / 2, 0);
 
         if (!editorMode)
         {
-            canvasContext.translate((canvas.width + UI_WIDTH) / 2, canvas.height * 0.95);
+            canvasContext.translate(0, canvas.height * 0.95);
         }
         
         canvasContext.scale(this.zoom, this.zoom);

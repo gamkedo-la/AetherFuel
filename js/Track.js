@@ -65,6 +65,7 @@ function setTrackTypeAtIJ(trackI, trackJ, value)
         console.log("anything");
         trackGrid[trackI * trackNumCols + trackJ] = value;
         trackNeedsRefreshing = true;
+        miniMap.reset();
     }
 }
 
