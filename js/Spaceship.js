@@ -225,7 +225,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 {
     if (getTrackIdxFromXY(this.x, this.y) < -1) { return; }
 
-    if (this.currentTrackType == TRACK_WALL)
+    if (this.currentTrackType == TRACK_WALL || this.currentTrackType == TRACK_TREE)
     {
         if (WALL_COLLISIONS_LEAVE_DECALS) {
             console.log("colliding with a wall! that left a mark!");

@@ -345,7 +345,9 @@ function Opponent(name, pic)
 
         while (distanceBetweenTwoPoints(this, rayIntersect) < this.maxDistToProbForWall)
         {
-            var isWallFound = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + 0.01*incrementY) == TRACK_WALL;
+            var tileKind = returnTrackTypeAtPixelXY(rayIntersect.x, rayIntersect.y + 0.01*incrementY);
+            var isWallFound = (tileKind == TRACK_WALL) || (tileKind == TRACK_TREE);
+            
             if (isWallFound)
             {
                 var trackJ = Math.floor(rayIntersect.x / TRACK_W);

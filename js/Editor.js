@@ -274,6 +274,7 @@ function Editor()
         colorText("2 - Wall", hx, hy+=hs, "white", 16);
         colorText("3 - Finish line", hx, hy+=hs, "white", 16);
         colorText("4 - Sand With E_Bomb", hx, hy+=hs, "white", 16);
+        colorText("5 - Tree", hx, hy+=hs, "white", 16);
         colorText("8 - Decal Paint", hx, hy+=hs, "white", 16);
         colorText("9 - Waypoint", hx, hy+=hs, "white", 16);
         colorText("R - Resize", hx, hy+=hs, "white", 16);
@@ -390,6 +391,10 @@ function Editor()
 
             case KEY_NUM_ROW_4:
                 editorPaintType = TRACK_SAND_WITH_E_BOMB;
+                break;
+
+            case KEY_NUM_ROW_5:
+                editorPaintType = TRACK_TREE;
                 break;
 
             case KEY_NUM_ROW_8:

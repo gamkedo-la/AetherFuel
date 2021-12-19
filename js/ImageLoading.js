@@ -53,7 +53,7 @@ function loadImages()
         {varName: rubblePic, theFile: "decalRubble.png"},
         {trackType: TRACK_ROAD, theFile: "sand.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
-        {trackType: TRACK_TREE, theFile: "Tree.png"},
+        {trackType: TRACK_TREE, theFile: "palm.png"},
         {trackType: TRACK_FLAG, theFile: "Flag.png"},
         {trackType: TRACK_GOAL, theFile: "Goal.png"},
         {trackType: TRACK_SAND_WITH_E_BOMB, theFile: "sandWithE_Bomb.png"},
