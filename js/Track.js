@@ -13,7 +13,6 @@ const TRACK_WAYPOINT = 9;
 
 var trackNumRows;
 var trackNumCols;
-var playerStart;
 var trackGrid = [];
 
 // to one huge offscreen canvas ONCE 
@@ -62,7 +61,6 @@ function setTrackTypeAtIJ(trackI, trackJ, value)
     if (trackI >= 0 && trackI < trackNumRows &&
         trackJ >= 0 && trackJ < trackNumCols)
     {
-        console.log("anything");
         trackGrid[trackI * trackNumCols + trackJ] = value;
         trackNeedsRefreshing = true;
         miniMap.reset();

@@ -192,7 +192,7 @@ Spaceship.prototype.reset = function(whichPic)
                 didWeFindTrackStart = true;
                 console.log(this.name + " didWeFindTrackStart: " + didWeFindTrackStart);
 
-                trackGrid[trackIdx] = TRACK_ROAD;
+                setTrackTypeAtIJ(i, j, TRACK_ROAD);
                 this.startIdx = trackIdx;
 
                 this.x = j * TRACK_W + TRACK_W / 2;

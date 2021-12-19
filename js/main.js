@@ -91,6 +91,8 @@ function transitionToLevel(whichLevel)
 
 function loadLevel(whichLevel)
 {
+    currentLevelIdx = whichLevel;
+
     AudioMan.reset();
 
     var levelData = levels[whichLevel];
@@ -129,6 +131,7 @@ function loadLevel(whichLevel)
 
     if (decals) decals.reset();
     
+    if (editorMode) trackGrid = currentLevel.track.slice();
     trackNeedsRefreshing = true; // see track.js optimization
     drawBackGround();
 

@@ -81,11 +81,7 @@ function Editor()
 
         setTrackTypeAtIJ(mouseTileI, mouseTileJ, editorPaintType);
 
-        if (editorPaintType == TRACK_START)
-        {
-            playerStart = mouseIdx;
-        }
-        else
+        if (editorPaintType != TRACK_START)
         {
             this.isSelectingMultipleTiles = true;
             this.firstTileSelected = mouseIdx;
@@ -117,7 +113,7 @@ function Editor()
             "thickness": 100,
             "percentageGasAppliedTime":0.8,
             "next": null
-        }
+        };
         var newWaypoint = new Waypoint(waypointData);
 
         if (currentWaypoint != null)
@@ -347,7 +343,7 @@ function Editor()
             if (keyCode == KEY_TAB)
             {
                 editorMode = true;
-                trackGrid = currentLevel.track.slice();
+                trackGrid = JSON.parse(levels[currentLevelIdx]).track.slice();
                 trackNeedsRefreshing = true;
             }
             return;
@@ -468,6 +464,7 @@ function Editor()
 
             case KEY_N:
                 var newLevel = createNewLevel();
+                console.log(newLevel);
                 levels.push(newLevel);
                 loadLevel(levels.length - 1);
                 break;
