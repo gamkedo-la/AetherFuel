@@ -29,6 +29,7 @@ function MiniMap()
         miniMapCanvasCtx.fillStyle = "black";
         miniMapCanvasCtx.fillRect(0, 0, miniMapCanvas.width, miniMapCanvas.height, "black");
 
+        var isFirstTrackStartFound = false;
         for (var i = 0; i < trackNumRows ; i++)
         {
             var drawTileY = i * TRACK_H;
@@ -50,6 +51,15 @@ function MiniMap()
                     miniMapCanvasCtx.fillStyle = "white";
                     miniMapCanvasCtx.fillRect(drawTileX, drawTileY, TRACK_W, TRACK_H);
                 }
+                else if (tileKind == TRACK_START && editorMode)
+                {
+                    miniMapCanvasCtx.fillStyle = isFirstTrackStartFound ? "green" : "red";
+                    miniMapCanvasCtx.beginPath();
+                    miniMapCanvasCtx.arc(drawTileX + TRACK_W/2, drawTileY + TRACK_H/2, TRACK_W / 2, 0, Math.PI * 2, true);
+                    miniMapCanvasCtx.fill();
+
+                    if (!isFirstTrackStartFound) isFirstTrackStartFound = true;
+                }
             }
         }
     }
@@ -61,8 +71,12 @@ function MiniMap()
 
         // this.drawMap();
         canvasContext.drawImage(miniMapCanvas, 0, 0);
-        this.drawOpponents();
-        this.drawPlayer();
+
+        if (!editorMode)
+        {
+            this.drawOpponents();
+            this.drawPlayer();
+        }
         
         canvasContext.restore();
     }

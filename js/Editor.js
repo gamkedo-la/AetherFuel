@@ -345,6 +345,7 @@ function Editor()
                 editorMode = true;
                 trackGrid = JSON.parse(levels[currentLevelIdx]).track.slice();
                 trackNeedsRefreshing = true;
+                miniMap.reset();
             }
             return;
         }
@@ -431,6 +432,7 @@ function Editor()
                 });
                 
                 trackNeedsRefreshing = true;
+                miniMap.reset();
                 break;
 
             case KEY_W:
