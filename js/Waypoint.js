@@ -1,3 +1,5 @@
+const MIN_DIST_BETWEEN_WAYPOINTS = 2 * TRACK_W;
+
 var currentWaypoint = null;
 var firstWaypoint = null;
 
@@ -6,12 +8,7 @@ function Waypoint(data)
     this.x = data.x;
     this.y = data.y;
     this.angle = data.angle;
-
     this.percentageGasAppliedTime = data.percentageGasAppliedTime;
-    // this.targetSpeedToCrossItAt ([0, 1] - when close enough to pixel - percentage)
-    // percentage of time at which I hold gas
-    // 
-
     this.next = data.next == null? null : new Waypoint(data.next);
 
     // add waypoint thickness
@@ -39,10 +36,9 @@ function Waypoint(data)
         this.next = waypoint;
     }
 
-    this.checkIfExistsAtIJ = function(x, y)
+    this.checkIfCloseToXY = function(x, y)
     {
-        // replace with a distance check if not tile locked
-        return this.x == x && this.y == y;
+        return distanceBetweenTwoPoints(this, {"x":x, "y":y}) < MIN_DIST_BETWEEN_WAYPOINTS;
     }
 
     this.draw = function()
@@ -117,6 +113,43 @@ function Waypoint(data)
         this.rightX = this.x - this.thickness / 2 * Math.sin(this.angle);
         this.rightY = this.y + this.thickness / 2 * Math.cos(this.angle);
     }
+
+    this.clone = function()
+    {
+        var dataToClone = {
+            "x": this.x,
+            "y": this.y,
+            "angle": this.angle,
+            "percentageGasAppliedTime": this.percentageGasAppliedTime,
+            "next": null,
+        };
+        var cloneWaypoint = new Waypoint(dataToClone);
+        cloneWaypoint.next = this.next;
+        return cloneWaypoint;
+    }
+
+    this.resetData = function(data)
+    {
+        this.x = data.x;
+        this.y = data.y;
+        this.thickness = data.thickness;
+        this.percentageGasAppliedTime = data.percentageGasAppliedTime;
+
+        this.updateAngle(data.angle);
+        this.next = data.next;
+    }
+
+    this.exportData = function()
+    {
+        return {
+            "x": this.x,
+            "y": this.y,
+            "thickness": this.thickness,
+            "percentageGasAppliedTime": this.percentageGasAppliedTime,
+            "angle": this.angle,
+            "next": this.next,
+        }
+    }
 }
 
 function drawAllWaypoints()
@@ -130,13 +163,13 @@ function drawAllWaypoints()
     }
 }
 
-function getExistingWaypointAtIJ(x, y)
+function getExistingWaypointAtXY(x, y)
 {
     var tempWaypoint = currentWaypoint;
 
     while (tempWaypoint != null)
     {
-        if(tempWaypoint.checkIfExistsAtIJ(x, y))
+        if(tempWaypoint.checkIfCloseToXY(x, y))
         {
             return tempWaypoint;
         }
@@ -145,4 +178,12 @@ function getExistingWaypointAtIJ(x, y)
     }
 
     return null;  // Waypoint does not exist at tile (tileI, tileJ)
+}
+
+function placeCurrentWaypointAtLastWaypoint()
+{
+    while (currentWaypoint.next != null)
+    {
+        currentWaypoint = currentWaypoint.next;
+    }
 }

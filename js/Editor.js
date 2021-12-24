@@ -4,6 +4,8 @@ var editorPaintType = 0;
 const WAYPOINT_GAS_PERCENTAGE_INCREMENT = 0.1;
 const NUM_WAYPOINT_ORIENTATIONS = 16;
 
+var oldWaypointDataContainer = null;
+
 function Editor()
 {
     this.x = 0;
@@ -24,6 +26,7 @@ function Editor()
     this.firstTileSelectedJ = 0;
 
     this.isPlacingWaypoint = false;
+    this.isUpdatingExistingWaypoint = false;
     this.isPlacingDecals = false;
     this.decalData = "";
 
@@ -69,7 +72,8 @@ function Editor()
             }
             else
             {
-                this.isPlacingWaypoint = false;
+                this.endWaypointCreation();
+                placeCurrentWaypointAtLastWaypoint();
             }
             return;
         }
@@ -92,12 +96,23 @@ function Editor()
         }
     }
 
+    this.endWaypointCreation = function()
+    {
+        this.isPlacingWaypoint = false;
+        this.isUpdatingExistingWaypoint = false;
+    }
+
     this.createWaypoint = function()
     {
-        var existingWaypoint = getExistingWaypointAtIJ(mouseX, mouseY);
+        var existingWaypoint = getExistingWaypointAtXY(mouseX, mouseY);
 
-        if (existingWaypoint != null){ return; }
-        this.createNewWaypoint();
+        if (existingWaypoint != null)
+        {
+            this.updateExistingWaypoint(existingWaypoint);
+        }
+        else{
+            this.createNewWaypoint();
+        }
     }
 
     this.deleteAllWaypoints = function()
@@ -129,6 +144,15 @@ function Editor()
         }
         console.log(currentWaypoint.percentageGasAppliedTime);
         this.isPlacingWaypoint = true;
+    }
+
+    this.updateExistingWaypoint = function(existingWaypoint)
+    {
+        currentWaypoint = existingWaypoint;
+        oldWaypointDataContainer = existingWaypoint.exportData();
+
+        this.isPlacingWaypoint = true;
+        this.isUpdatingExistingWaypoint = true;
     }
 
     this.updateWaypointAngle = function()
@@ -376,6 +400,18 @@ function Editor()
                     currentWaypoint.percentageGasAppliedTime = clipBetween(currentWaypoint.percentageGasAppliedTime, 0.3, 1.0);
                     console.log(currentWaypoint.percentageGasAppliedTime);
                     break;
+
+                case KEY_ESC:
+                    if (this.isUpdatingExistingWaypoint)
+                    {    
+                        currentWaypoint.resetData(oldWaypointDataContainer);
+
+                        oldWaypointDataContainer = null;
+                        this.endWaypointCreation();
+                        placeCurrentWaypointAtLastWaypoint();
+                    }
+                    break;
+
                 default:
                     break;
             }

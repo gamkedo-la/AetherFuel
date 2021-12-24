@@ -37,6 +37,8 @@ const KEY_R = 82;
 const KEY_T = 84;
 const KEY_N = 78;
 
+const KEY_ESC = 27;
+
 var mouseX = 0;
 var mouseY = 0;
 var mouseOnScreenX = 0;
