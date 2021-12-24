@@ -2,6 +2,7 @@ var editorMode = false;
 var editorPaintType = 0;
 
 const WAYPOINT_GAS_PERCENTAGE_INCREMENT = 0.1;
+const NUM_WAYPOINT_ORIENTATIONS = 16;
 
 function Editor()
 {
@@ -133,8 +134,9 @@ function Editor()
     this.updateWaypointAngle = function()
     {
         if (!this.isPlacingWaypoint) return;
-        console.log(mouseOnScreenX);
-        currentWaypoint.updateAngle(Math.atan2(mouseY - currentWaypoint.y, mouseX - currentWaypoint.x));
+        var anglePortion = Math.max(0, (mouseOnScreenX - UI_WIDTH) / (canvas.width - UI_WIDTH));
+        anglePortion = Math.floor(anglePortion * NUM_WAYPOINT_ORIENTATIONS);
+        currentWaypoint.updateAngle(anglePortion * 2 * Math.PI / NUM_WAYPOINT_ORIENTATIONS);
     }
 
     this.releaseClick = function()
