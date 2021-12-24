@@ -212,7 +212,7 @@ function Editor()
             var useImg;
             if (editorPaintType == TRACK_ROAD)
             {
-                useImg = currentLevelIdx == 1 ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
+                useImg = currentLevelIdx == LEVEL_ICE ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
             }
             else
             {

@@ -1,5 +1,5 @@
-const LEVEL_SAND = 0;
-const LEVEL_ICE = 1;
+const LEVEL_SAND = 1;
+const LEVEL_ICE = 0;
 
 function Level(numRows, numCols)
 {

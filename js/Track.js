@@ -77,7 +77,7 @@ function drawBackGround()
         console.log("created track canvas sized "+backGroundCanvas.width+"x"+backGroundCanvas.height);
     }
 
-    var useImg = currentLevelIdx == 1 ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
+    var useImg = currentLevelIdx == LEVEL_ICE ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
     backGroundCanvasCtx = backGroundCanvas.getContext("2d");
     
     for (var i = 0; i < trackNumRows ; i++)
@@ -202,7 +202,7 @@ function drawBackGroundCTX(drawOnThis, trackStartJ, trackEndJ, trackStartI, trac
         {
             var drawTileX = j * TRACK_W;
 
-            var useImg = currentLevelIdx == 1 ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
+            var useImg = currentLevelIdx == LEVEL_ICE ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
 
             drawOnThis.drawImage(useImg, drawTileX, drawTileY, 
                                     useImg.width,
