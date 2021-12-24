@@ -165,7 +165,7 @@ function drawAllWaypoints()
 
 function getExistingWaypointAtXY(x, y)
 {
-    var tempWaypoint = currentWaypoint;
+    var tempWaypoint = firstWaypoint;
 
     while (tempWaypoint != null)
     {
