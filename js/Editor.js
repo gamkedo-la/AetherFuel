@@ -133,6 +133,7 @@ function Editor()
     this.updateWaypointAngle = function()
     {
         if (!this.isPlacingWaypoint) return;
+        console.log(mouseOnScreenX);
         currentWaypoint.updateAngle(Math.atan2(mouseY - currentWaypoint.y, mouseX - currentWaypoint.x));
     }
 
@@ -182,7 +183,15 @@ function Editor()
         }
         else
         {
-            var useImg = trackPix[editorPaintType];
+            var useImg;
+            if (editorPaintType == TRACK_ROAD)
+            {
+                useImg = currentLevelIdx == 1 ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
+            }
+            else
+            {
+                useImg = trackPix[editorPaintType];
+            }
 
             if (!this.isSelectingMultipleTiles)
             {

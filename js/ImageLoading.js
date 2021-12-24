@@ -12,6 +12,7 @@ var rocksPic = document.createElement("img");
 var rubblePic = document.createElement("img");
 
 var trackPix = new Array();
+var roadPix = new Array();
 
 var picsToLoad = 0;
 
@@ -36,6 +37,12 @@ function loadImageForTrackCode(trackCode, filename)
     beginLoadingImage(trackPix[trackCode], filename);
 }
 
+function loadImageForRoadCode(levelCode, filename)
+{
+    roadPix[levelCode] = document.createElement("img");
+    beginLoadingImage(roadPix[levelCode], filename);
+}
+
 function loadImages()
 {
     var imageList = [
@@ -51,7 +58,8 @@ function loadImages()
         {varName: gravelPic, theFile: "decalGravel.png"},
         {varName: rocksPic, theFile: "decalRocks.png"},
         {varName: rubblePic, theFile: "decalRubble.png"},
-        {trackType: TRACK_ROAD, theFile: "sand.png"},
+        {trackType: TRACK_ROAD, level: LEVEL_SAND, theFile: "sand.png"},
+        {trackType: TRACK_ROAD, level: LEVEL_ICE, theFile: "ice2.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
         {trackType: TRACK_TREE, theFile: "palm.png"},
         {trackType: TRACK_FLAG, theFile: "Flag.png"},
@@ -66,6 +74,10 @@ function loadImages()
         if (imageList[i].varName != undefined)
         {
             beginLoadingImage(imageList[i].varName, imageList[i].theFile);
+        }
+        else if (imageList[i].level != undefined)
+        {
+            loadImageForRoadCode(imageList[i].level, imageList[i].theFile);
         }
         else
         {

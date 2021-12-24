@@ -1,3 +1,6 @@
+const LEVEL_SAND = 0;
+const LEVEL_ICE = 1;
+
 function Level(numRows, numCols)
 {
     this.numRows = numRows;
