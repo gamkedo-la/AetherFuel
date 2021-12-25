@@ -32,6 +32,14 @@ var debugFreezeAIButOne = false;
 var debugFollowAI = false;
 var debugDeactivateZoom = false;
 
+// Variables to control level-to-level transitions
+var didFadeOut = false;
+var transitioning = false;
+var transitionRate = 750; // 1000 = 1 second full fade & 1 more second to full restore
+var levelToTransitionTo = 0;
+var transitionAlpha = 0;
+var transitioningTime = 0;
+
 window.onload = function()
 {
     canvas = document.getElementById("gameCanvas");
@@ -63,29 +71,38 @@ function imageLoadingDoneSoStartGame()
     decals = new decalManager(canvas);
 }
 
-var didFadeOut = false
-var transitioning = false
-var levelToTransitionTo = 0
 function transitionToLevel(whichLevel) 
 {
-    paused = true
-    transitioning = true
-    levelToTransitionTo = whichLevel
+    transitioning = true;
+    levelToTransitionTo = whichLevel;
+    transitioningTime += deltaTime;
 
     if (!didFadeOut) {
-        if (canvasContext.globalAlpha > 0) {
-            canvasContext.globalAlpha -= 0.01
+        if (transitionAlpha <= 0.95) {
+            transitionAlpha = Math.sin(transitioningTime / transitionRate);
+            if (transitionAlpha > 1) {
+                transitionAlpha = 1;
+                didFadeOut = true;
+                loadLevel(levelToTransitionTo);
+            }
         } else {
-            didFadeOut = true
+            didFadeOut = true;
+            loadLevel(levelToTransitionTo);
         }
-    } else if (canvasContext.globalAlpha <= 1) {
-        canvasContext.globalAlpha += 0.01
-        if (canvasContext.globalAlpha > 1) canvasContext.globalAlpha = 1
+    } else if (transitionAlpha >= 0.05) {
+        transitionAlpha = Math.sin(transitioningTime / transitionRate);
+        if (transitionAlpha <= 0) {
+            transitionAlpha = 0;
+            didFadeOut = false;
+            transitioning = false;
+            levelToTransitionTo = 0;
+            transitioningTime = 0;
+        }
     } else {
-        paused = false
-        transitioning = false
-        didFadeOut = false
-        levelToTransitionTo = 0
+        transitioning = false;
+        didFadeOut = false;
+        levelToTransitionTo = 0;
+        transitioningTime = 0;
     }
 }
 
@@ -153,10 +170,9 @@ function updateAll()
 {
     if (!editorMode)
     {
-        if (!paused) {
+        if (!paused && !transitioning) {
             gameUpdateAll();
-        }
-        if (transitioning) {
+        } else if (transitioning) {
             transitionToLevel(levelToTransitionTo)
         }
         gameDrawAll(); 
@@ -299,6 +315,13 @@ function gameDrawAll()
     if (DEBUG_AI){
         colorText(mouseX.toFixed(2) + " , " + mouseY.toFixed(2), miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 100, "red", 30);
         colorText(mouseTileI + " , " + mouseTileJ, miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 150, "red", 30);
+    }
+
+    if (transitioning) {
+        canvasContext.save();
+        canvasContext.globalAlpha = transitionAlpha;
+        clearScreen();
+        canvasContext.restore();
     }
 }
 
