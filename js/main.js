@@ -55,6 +55,16 @@ window.onload = function()
     // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
 }
 
+window.onblur = function() {    
+    paused = true;    
+}
+
+window.onfocus = function() {    
+    if (currentLevelCountDown > -60) {
+        paused = false;
+    }
+}
+
 function imageLoadingDoneSoStartGame()
 {
     deltaTime = 1000 / FRAME_PER_SECOND;
