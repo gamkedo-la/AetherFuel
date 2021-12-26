@@ -36,6 +36,12 @@ function Camera()
         this.panX = panX;
         this.panY = panY;
         this.angle = angle;
+
+        this.minTrackSeenJ = 0;
+        this.maxTrackSeenJ = trackNumCols;
+
+        this.minTrackSeenI = 0;
+        this.maxTrackSeenI = trackNumRows;
     }
     
     this.follow = function(target)
@@ -47,11 +53,6 @@ function Camera()
     
         // this.checkForCollisions();
         // this.updateTracksSeen();
-        this.minTrackSeenJ = 0;
-        this.maxTrackSeenJ = trackNumCols;
-
-        this.minTrackSeenI = 0;
-        this.maxTrackSeenI = trackNumRows;
     }
 
     this.translate = function()
