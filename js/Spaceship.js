@@ -21,6 +21,7 @@ function Spaceship(name)
     this.speed = 0;
     this.lapsPassed = 0;
     this.isLap = false;
+    this.hasReachedHalfTrack = false;
     this.pic;
     this.startIdx = 0;
 
@@ -66,6 +67,7 @@ Spaceship.prototype.move = function()
 
     this.decreaseSlidingDueToFriction();
     this.updatePosition();
+    this.checkIfCloseEnoughToHalfWaypoint();
     this.handleCollisionWithTracksAdvanced();
     this.checkIfCollidingWithOtherSpaceships();
 
@@ -245,11 +247,12 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         trackGrid[currentTrackIndex] = TRACK_ROAD;
         trackNeedsRefreshing = true;
     }
-    else if (this.currentTrackType == TRACK_GOAL)
+    else if (this.currentTrackType == TRACK_GOAL && this.hasReachedHalfTrack)
     {
         if (!this.isLap) {
             this.lapsPassed++;
             this.isLap = true;
+            this.hasReachedHalfTrack = false;
         }
 
         if (this.lapsPassed < currentLevel.laps) {
@@ -340,6 +343,22 @@ Spaceship.prototype.getStunned = function()
     {
         spaceship.stunned = false;
     }, 2000, this);
+}
+
+Spaceship.prototype.checkIfCloseEnoughToHalfWaypoint = function()
+{
+    if (halfWaypoint == null) return;
+    
+    // Check if spaceship has crossed waypoint thickness
+    var dotProd = (this.x - halfWaypoint.x) * Math.cos(halfWaypoint.angle) +
+                  (this.y - halfWaypoint.y) * Math.sin(halfWaypoint.angle);
+
+    var distToTarget = distanceBetweenTwoPoints(this, halfWaypoint);
+
+    if (dotProd > 0 && distToTarget < 4 * TRACK_H)
+    {
+        this.hasReachedHalfTrack = true;
+    }
 }
 
 function checkIfAllSpaceshipNamesAreUnique()

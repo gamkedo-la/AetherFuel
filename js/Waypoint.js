@@ -2,6 +2,7 @@ const MIN_DIST_BETWEEN_WAYPOINTS = 2 * TRACK_W;
 
 var currentWaypoint = null;
 var firstWaypoint = null;
+var halfWaypoint = null;
 
 function Waypoint(data)
 {
@@ -185,5 +186,32 @@ function placeCurrentWaypointAtLastWaypoint()
     while (currentWaypoint.next != null)
     {
         currentWaypoint = currentWaypoint.next;
+    }
+}
+
+function getNumWaypoints()
+{
+    var tempWaypoint = firstWaypoint;
+    var numWaypoints = 0;
+
+    while (tempWaypoint != null)
+    {
+        numWaypoints++;
+        tempWaypoint = tempWaypoint.next;
+    }
+
+    return numWaypoints;
+}
+
+function setHalfWayPoint()
+{
+    halfWaypoint = firstWaypoint;
+    var numWaypoints = getNumWaypoints();
+    var waypointIdx = 0;
+
+    while (waypointIdx < numWaypoints / 2)
+    {
+        waypointIdx++;
+        halfWaypoint = halfWaypoint.next;
     }
 }

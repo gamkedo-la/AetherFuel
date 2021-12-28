@@ -135,6 +135,7 @@ function loadLevel(whichLevel)
     
     firstWaypoint = currentLevel.firstWaypoint == null ? null : new Waypoint(currentLevel.firstWaypoint);
     currentWaypoint = firstWaypoint;
+    setHalfWayPoint();
 
     player.reset(playerPic);
     player.engineSound.mixVolume *= 0.10;
