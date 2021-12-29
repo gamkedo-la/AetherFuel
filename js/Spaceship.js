@@ -9,6 +9,8 @@ const SLIDE_DECAY = 0.1;
 
 const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
+const EBOMB_SPEED = 50;
+
 function Spaceship(name)
 {
     this.name = name;
@@ -28,7 +30,7 @@ function Spaceship(name)
     this.slideX = 0;
     this.slideY = 0;
 
-    this.currentWeaponState = 'none';
+    this.currentWeaponState = 'E_Bomb';
     this.stunned = false;
     this.currentStunnedSheetIndex = 0;
     this.stunnedSheetIndexWidth = 40;
@@ -37,6 +39,8 @@ function Spaceship(name)
     this.maxStunnedSheetIndex = 2;
     this.stunnedSheetDirection = 1;
     this.stunnedPic = stunnedOpponentSpriteSheet;
+
+    this.fire = false;
 
     this.currentTrackType = undefined;
 
@@ -54,7 +58,6 @@ function Spaceship(name)
 Spaceship.prototype.update = function()
 {
     this.move();
-    this.launchAttack();
 }
 
 Spaceship.prototype.move = function()
@@ -148,27 +151,34 @@ Spaceship.prototype.getCurrentTrackType = function()
 
 Spaceship.prototype.launchAttack = function()
 {
-    if (!this.fire) return;
+    console.log(this.fire)
+    if (this.fire) return;
     if (this.stunned) return;
 
+    this.fire = true;
+    
     switch(this.currentWeaponState) 
     {
         case 'Bullet':
             bulletManager.createABullet();
             break;
         case 'E_Bomb':
-            if (testE_Bomb)
-            {
-                return;
-            }
-            let xSpeed = Math.cos(player.ang) * 15;
-            let ySpeed = Math.sin(player.ang) * 15;
-            testE_Bomb = new E_Bomb(player.x,player.y, xSpeed,ySpeed, this.name);
-            AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, testE_Bomb, false, 0.75).play();
+            let xSpeed = Math.cos(player.ang) * EBOMB_SPEED;
+            let ySpeed = Math.sin(player.ang) * EBOMB_SPEED;
+
+            var ebombInstance = new E_Bomb(this.x,this.y, xSpeed,ySpeed, this.name)
+            ebombsList.push(ebombInstance)
+            AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, ebombInstance, false, 0.75).play();
             break;
         case 'none':
             return;
     }   
+}
+
+Spaceship.prototype.stopAttack = function()
+{
+    if (!this.fire) return;
+    this.fire = false;
 }
 
 Spaceship.prototype.reset = function(whichPic)
@@ -181,6 +191,7 @@ Spaceship.prototype.reset = function(whichPic)
     this.isLap = false
     this.slideX = 0;
     this.slideY = 0;
+    this.fire = false;
 
     let didWeFindTrackStart = false;
     for (var i = 0; i < trackNumRows ; i++)

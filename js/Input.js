@@ -72,7 +72,8 @@ function keySet(keyEvt, player, setTo)
     }
     if (keyEvt.keyCode == player.controlKeySpace)
     {
-        player.fire = setTo;
+        if (setTo) player.launchAttack();
+        else player.stopAttack();
     }
 }
 

@@ -241,9 +241,10 @@ function gameUpdateAll()
     }
     
     player.update();
-    if (testE_Bomb != undefined)
+
+    for (var i = 0 ; i < ebombsList.length ; i++)
     {
-        testE_Bomb.update();
+        ebombsList[i].update();
     }
 
     if (debugFreezeAIButOne)
@@ -293,11 +294,10 @@ function gameDrawAll()
 
     smokeManager.drawPuffsOfSmoke();
     bulletManager.drawBullets();
-    if (testE_Bomb != undefined)
+    for (var i = 0 ; i < ebombsList.length ; i++)
     {
-        testE_Bomb.draw();
+        ebombsList[i].draw();
     }
-    
     // Restore the context
     canvasContext.restore();
 

@@ -1,3 +1,5 @@
+var ebombsList = [];
+
 function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
 {        
     this.launcherName = launcherName  // name of the spaceship who launched the ebomb
