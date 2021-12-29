@@ -9,7 +9,7 @@ const SLIDE_DECAY = 0.1;
 
 const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
-const EBOMB_SPEED = 50;
+const EBOMB_SPEED = 10;
 
 function Spaceship(name)
 {
@@ -163,8 +163,8 @@ Spaceship.prototype.launchAttack = function()
             bulletManager.createABullet();
             break;
         case 'E_Bomb':
-            let xSpeed = Math.cos(player.ang) * EBOMB_SPEED;
-            let ySpeed = Math.sin(player.ang) * EBOMB_SPEED;
+            let xSpeed = Math.cos(player.ang) * (EBOMB_SPEED + this.speed);
+            let ySpeed = Math.sin(player.ang) * (EBOMB_SPEED + this.speed);
 
             var ebombInstance = new E_Bomb(this.x,this.y, xSpeed,ySpeed, this.name)
             ebombsList.push(ebombInstance)

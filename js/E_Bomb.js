@@ -23,6 +23,8 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
     this.e_Bomb_Collision_Stun_Sound_File = "Audio/E_Bomb_Collision_Stun_2.wav";
     this.e_Bomb_Sound_Sound = null;
 
+    this.delete = false;
+
 	this.draw = function()
     {    
         colorCircle(this.x, this.y, this.size, this.color);
@@ -46,8 +48,9 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
         if (this.currentTrackType == TRACK_WALL)
         {
             testE_Bomb = undefined;
-            console.log("e_Bomb hit a wall! leaving a scroch mark on the ground");
             decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
+            this.delete = true;
+            return;
         }
 
         let E_BombTrackIndex = getTrackIdxFromXY(this.x, this.y);
@@ -76,7 +79,10 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
                 
                 testE_Bomb = undefined;
                 console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
-                decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2, Math.random(Math.PI*2), 0.5, bombCraterPic);
+                decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2,
+                           Math.random(Math.PI*2), 0.5, bombCraterPic);
+
+                this.delete = true;
 
                 return;
             }
@@ -88,4 +94,14 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
         this.colIdx = Math.floor(this.x / TRACK_W);
         this.rowIdx = Math.floor(this.y / TRACK_H);
     }
+}
+
+function deleteExplodedEBombs ()
+{
+    for (var i = 0; i < ebombsList.length ; i++)
+    {
+        if (ebombsList[i].delete) ebombsList.splice(i, i+1);
+    }
+
+    console.log(ebombsList.length);
 }

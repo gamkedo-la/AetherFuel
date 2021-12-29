@@ -271,6 +271,8 @@ function gameUpdateAll()
     else if (camera.zoom < 1 && player.speed < 10) {
         camera.zoom += 0.01
     }
+
+    deleteExplodedEBombs();
 }
 
 function gameDrawAll()
