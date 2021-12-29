@@ -47,7 +47,7 @@ function loadImages()
 {
     var imageList = [
         {varName: playerPic, theFile: "spaceship_40x40.png"},
-		{varName: darkTravelerPic, theFile: "spaceship_40x40-red.png"},
+		{varName: darkTravelerPic, theFile: "darktraveler.png"},
 		{varName: lightRiderPic, theFile: "lightrider.png"},
         {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/stunnedOpponentSheet.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
