@@ -1,4 +1,5 @@
 const WALL_COLLISIONS_LEAVE_DECALS = true;
+const SHIP_WALL_COLLISION_CIRCLES = true;
 const GROUND_SPEED_DECAY_MULT = 0.94;
 const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
@@ -236,23 +237,41 @@ Spaceship.prototype.updateRowColIdx = function()
 
 Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 {
-    if (getTrackIdxFromXY(this.x, this.y) < -1) { return; }
+    let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
+    if (currentTrackIndex < -1) { return; }
 
     if (this.currentTrackType == TRACK_WALL || this.currentTrackType == TRACK_TREE)
     {
-        if (WALL_COLLISIONS_LEAVE_DECALS) {
-            console.log("colliding with a wall! that left a mark!");
-            decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
+        if (SHIP_WALL_COLLISION_CIRCLES) {
+            var trackX = TRACK_W * (currentTrackIndex % trackNumCols) + TRACK_W / 2;
+            var trackY = TRACK_H * Math.floor(currentTrackIndex / trackNumCols) + TRACK_H / 2;
+    
+            if (((trackX - this.x) * (trackX - this.x)) + ((trackY - this.y) * (trackY - this.y)) < TRACK_W * TRACK_W / 4) {
+                if (WALL_COLLISIONS_LEAVE_DECALS) {
+                    console.log("colliding with a wall! that left a mark!");
+                    decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
+                }
+                this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
+                this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
+                this.speed *= -0.5;            
+                this.slideX = 0;
+                this.slideY = 0;
+            }
+        } else {
+            if (WALL_COLLISIONS_LEAVE_DECALS) {
+                console.log("colliding with a wall! that left a mark!");
+                decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
+            }
+            this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
+            this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
+            this.speed *= -0.5;            
+            this.slideX = 0;
+            this.slideY = 0;
         }
-        this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
-        this.y -= 1.5 * (this.speed * Math.sin(this.ang) + this.slideY);
-        this.speed *= -0.5;            
-        this.slideX = 0;
-        this.slideY = 0;
     }
     else if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
     {
-        let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
+        // let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
         this.currentWeaponState = "E_Bomb";
         AudioMan.createSound3D(this.pickupSoundFile, {x: this.x, y: this.y}, false, 0.75).play();
         trackGrid[currentTrackIndex] = TRACK_ROAD;
