@@ -10,6 +10,7 @@ var cracksPic = document.createElement("img");
 var gravelPic = document.createElement("img");
 var rocksPic = document.createElement("img");
 var rubblePic = document.createElement("img");
+var ebombPic = document.createElement("img");
 
 var trackPix = new Array();
 var roadPix = new Array();
@@ -58,6 +59,7 @@ function loadImages()
         {varName: gravelPic, theFile: "decalGravel.png"},
         {varName: rocksPic, theFile: "decalRocks.png"},
         {varName: rubblePic, theFile: "decalRubble.png"},
+        {varName: ebombPic, theFile: "ebomb.png"},
         {trackType: TRACK_ROAD, level: LEVEL_SAND, theFile: "sand.png"},
         {trackType: TRACK_ROAD, level: LEVEL_ICE, theFile: "ice2.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},

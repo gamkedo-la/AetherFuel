@@ -12,6 +12,8 @@ const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
 const EBOMB_SPEED = 10;
 
+const MAX_NUM_AMMO = 5;
+
 function Spaceship(name)
 {
     this.name = name;
@@ -42,6 +44,7 @@ function Spaceship(name)
     this.stunnedPic = stunnedOpponentSpriteSheet;
 
     this.fire = false;
+    this.numAmmo = 5;
 
     this.currentTrackType = undefined;
 
@@ -155,6 +158,7 @@ Spaceship.prototype.launchAttack = function()
     console.log(this.fire)
     if (this.fire) return;
     if (this.stunned) return;
+    if (this.numAmmo <= 0) return;
 
     this.fire = true;
     
@@ -170,6 +174,9 @@ Spaceship.prototype.launchAttack = function()
             var ebombInstance = new E_Bomb(this.x,this.y, xSpeed,ySpeed, this.name)
             ebombsList.push(ebombInstance)
             AudioMan.createSound3D(this.e_Bomb_Fire_SoundFile, ebombInstance, false, 0.75).play();
+
+            this.numAmmo--;
+
             break;
         case 'none':
             return;
@@ -180,6 +187,11 @@ Spaceship.prototype.stopAttack = function()
 {
     if (!this.fire) return;
     this.fire = false;
+}
+
+Spaceship.prototype.reloadWeapon = function()
+{
+    this.numAmmo = MAX_NUM_AMMO;
 }
 
 Spaceship.prototype.reset = function(whichPic)
@@ -193,6 +205,8 @@ Spaceship.prototype.reset = function(whichPic)
     this.slideX = 0;
     this.slideY = 0;
     this.fire = false;
+
+    this.numAmmo = 0;
 
     let didWeFindTrackStart = false;
     for (var i = 0; i < trackNumRows ; i++)
@@ -283,6 +297,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             this.lapsPassed++;
             this.isLap = true;
             this.hasReachedHalfTrack = false;
+            this.reloadWeapon();
         }
 
         if (this.lapsPassed < currentLevel.laps) {

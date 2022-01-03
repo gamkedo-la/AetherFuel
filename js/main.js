@@ -1,5 +1,7 @@
 const FRAME_PER_SECOND = 30
 const UI_WIDTH = 200;
+const UI_SPACING = 50;
+const UI_OFFSET_X = 5;
 
 var canvas, canvasContext, deltaTime;
 
@@ -303,24 +305,19 @@ function gameDrawAll()
     // Restore the context
     canvasContext.restore();
 
-    // Black band on the left for the UI
-    colorRect(0, 0, UI_WIDTH, canvas.height, "black");
+    //Draw UI
+    drawUI();
 
-    // Draw the minimap
-    miniMap.draw();
-    colorText(
-        `Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
-        miniMap.x + 2,
-        miniMap.y + miniMapCanvas.height * miniMap.scale + 50,
-        'red', 20);
-
-    if (currentLevelCountDown > -deltaTime) {
+    // Count Down
+    if (currentLevelCountDown > -deltaTime)
+    {
         var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "GO!";        
         var countDownTextXPos = canvas.width / 2 + (currentLevelCountDown > 0 ? 0 : -35);
         var countDownTextYPos = canvas.height / 2;
         colorText(countDownText, countDownTextXPos, countDownTextYPos, 'red', 70);
     }
-    else if (paused) {
+    else if (paused)
+    {
         colorText("PAUSED", canvas.width / 2 - 98, canvas.height / 2, 'red', 70);
     }
 
@@ -341,4 +338,36 @@ function gameDrawAll()
 function clearScreen(color="black")
 {
     colorRect(0, 0, canvas.width, canvas.height, color);
+}
+
+function drawUI()
+{
+    var offsetY = 0;
+
+    // Black band on the left for the UI
+    colorRect(0, 0, UI_WIDTH, canvas.height, "black");
+
+    // Draw the minimap
+    miniMap.draw();
+    offsetY += miniMap.y + miniMapCanvas.height * miniMap.scale + UI_SPACING;
+
+    // Draw Remaining ammo
+    drawBitmapCenteredWithRotation(
+        ebombPic,
+        UI_OFFSET_X + ebombPic.width / 2,
+        offsetY + ebombPic.height / 2,
+        0, ebombPic.width, ebombPic.height);
+
+    colorText(
+        `${player.numAmmo}`,
+        4 * UI_OFFSET_X + ebombPic.width, offsetY + 30,
+        'red', 40);
+    
+    offsetY += ebombPic.height + UI_SPACING;
+
+    // Indicate lap number
+    colorText(
+        `Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        UI_OFFSET_X, offsetY,
+        'red', 20);
 }
