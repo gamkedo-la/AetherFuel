@@ -364,6 +364,18 @@ function drawUI()
         'red', 40);
     
     offsetY += ebombPic.height + UI_SPACING;
+    
+    // Draw Shield Level
+    colorCircleOutline(
+        UI_OFFSET_X + SHIELD_RADIUS,
+        offsetY + SHIELD_RADIUS, SHIELD_RADIUS, "red");
+
+    colorText(
+        `${player.shieldLevel}`,
+        4 * UI_OFFSET_X + SHIELD_RADIUS * 2, offsetY + SHIELD_RADIUS + 15,
+        'red', 40);
+    
+    offsetY += SHIELD_RADIUS * 2 + UI_SPACING;
 
     // Indicate lap number
     colorText(
