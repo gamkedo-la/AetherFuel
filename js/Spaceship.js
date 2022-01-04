@@ -13,6 +13,7 @@ const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 const EBOMB_SPEED = 10;
 
 const MAX_NUM_AMMO = 5;
+const MAX_SHIELD_LEVEL = 3;
 
 function Spaceship(name)
 {
@@ -45,6 +46,8 @@ function Spaceship(name)
 
     this.fire = false;
     this.numAmmo = 5;
+
+    this.shieldLevel = MAX_SHIELD_LEVEL;
 
     this.currentTrackType = undefined;
 
@@ -207,6 +210,7 @@ Spaceship.prototype.reset = function(whichPic)
     this.fire = false;
 
     this.numAmmo = 0;
+    this.shieldLevel = MAX_SHIELD_LEVEL;
 
     let didWeFindTrackStart = false;
     for (var i = 0; i < trackNumRows ; i++)
@@ -347,6 +351,11 @@ Spaceship.prototype.draw = function()
         drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang,
                                        this.pic.width,
                                        this.pic.height);
+
+        if (this.shieldLevel > 0)
+        {
+            colorCircleOutline(this.x, this.y, 2 * TRACK_H / 3, "red");
+        }
     }
 
     // Debug code to visualize when spaceships are pushed
@@ -381,6 +390,13 @@ Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
 
 Spaceship.prototype.getStunned = function()
 {
+
+    if (this.shieldLevel > 0)
+    {
+        this.shieldLevel--;
+        return;
+    }
+
     this.stunned = true;
     this.speed = 0;
 
