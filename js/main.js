@@ -1,7 +1,7 @@
 const FRAME_PER_SECOND = 30
 const UI_WIDTH = 200;
 const UI_SPACING = 50;
-const UI_OFFSET_X = 5;
+const UI_OFFSET_X = 15;
 
 var canvas, canvasContext, deltaTime;
 

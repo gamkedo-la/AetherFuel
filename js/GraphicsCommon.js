@@ -45,9 +45,9 @@ function colorCircle(centerX, centerY, radius, fillColor)
     canvasContext.fill();
 }
 
-function colorCircleOutline(centerX, centerY, radius, fillColor)
+function colorCircleOutline(centerX, centerY, radius, strokeColor)
 {
-    canvasContext.fillStyle = fillColor;
+    canvasContext.strokeStyle = strokeColor;
     canvasContext.beginPath();
     canvasContext.arc(centerX, centerY, radius, 10, 0, Math.PI * 2, true);
     canvasContext.stroke();

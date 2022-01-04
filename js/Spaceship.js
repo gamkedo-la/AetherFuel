@@ -15,6 +15,8 @@ const EBOMB_SPEED = 10;
 const MAX_NUM_AMMO = 5;
 const MAX_SHIELD_LEVEL = 3;
 
+const SHIELD_RADIUS = 2/3 * 40;
+
 function Spaceship(name)
 {
     this.name = name;
@@ -275,7 +277,8 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
                 this.slideX = 0;
                 this.slideY = 0;
             }
-        } else {
+        }
+        else {
             if (WALL_COLLISIONS_LEAVE_DECALS) {
                 console.log("colliding with a wall! that left a mark!");
                 decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
@@ -352,14 +355,11 @@ Spaceship.prototype.draw = function()
                                        this.pic.width,
                                        this.pic.height);
 
-        if (this.shieldLevel > 0)
+        if (this.checkIfHasShield())
         {
-            colorCircleOutline(this.x, this.y, 2 * TRACK_H / 3, "red");
+            colorCircleOutline(this.x, this.y, SHIELD_RADIUS, "red");
         }
     }
-
-    // Debug code to visualize when spaceships are pushed
-    // lineBetweenTwoPoints(this.x, this.y, this.x + 50 * this.slideX, this.y + 50 * this.slideY, "green");
 }
 
 Spaceship.prototype.handleCollisionWithOtherSpaceship = function(otherSpaceship)
@@ -390,13 +390,6 @@ Spaceship.prototype.checkIfCollidingWithOtherSpaceships = function()
 
 Spaceship.prototype.getStunned = function()
 {
-
-    if (this.shieldLevel > 0)
-    {
-        this.shieldLevel--;
-        return;
-    }
-
     this.stunned = true;
     this.speed = 0;
 
@@ -404,6 +397,12 @@ Spaceship.prototype.getStunned = function()
     {
         spaceship.stunned = false;
     }, 2000, this);
+}
+
+Spaceship.prototype.getShieldDamage = function()
+{
+    if (this.shieldLevel <= 0) return;
+    this.shieldLevel--;
 }
 
 Spaceship.prototype.checkIfCloseEnoughToHalfWaypoint = function()
@@ -420,6 +419,11 @@ Spaceship.prototype.checkIfCloseEnoughToHalfWaypoint = function()
     {
         this.hasReachedHalfTrack = true;
     }
+}
+
+Spaceship.prototype.checkIfHasShield = function()
+{
+    return this.shieldLevel > 0;
 }
 
 function checkIfAllSpaceshipNamesAreUnique()

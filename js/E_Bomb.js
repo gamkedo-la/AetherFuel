@@ -26,12 +26,15 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
     this.delete = false;
 
 	this.draw = function()
-    {    
+    {
+        if (this.delete) return;
         colorCircle(this.x, this.y, this.size, this.color);
     }
 
     this.update = function()
     {
+        if (this.delete) return;
+        
     	this.lightness += 4;
     	if (this.lightness > 100)
     	{
@@ -60,33 +63,53 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
             if (allSpaceships[i].name == this.launcherName) continue;  // cannot shoot yourself with an ebomb
         
             var currentBombTarget = allSpaceships[i];
-            let opponentTrackIndex = getTrackIdxFromXY(currentBombTarget.x,currentBombTarget.y);
-            
-            if (E_BombTrackIndex == opponentTrackIndex)
+
+            if (currentBombTarget.checkIfHasShield())
             {
-                currentBombTarget.getStunned();
-                // currentBombTarget.stunned = true;
-                // console.log("aouch, that hurts!");
+                console.log("ebomb aiming at " + currentBombTarget.name);
                 
-                // setTimeout(function()
-                // {
-                //     console.log("feeling better!");
-                //     currentBombTarget.stunned = false
-                // }, 2000);
+                var distToBombTarget = distanceBetweenTwoPoints(this, currentBombTarget);
+                if (distToBombTarget < SHIELD_RADIUS)
+                {
+                    currentBombTarget.getShieldDamage();
+                    this.playSounds();
+                    this.markForDeletion();
+                    return;
+                }
+            }
+            else
+            {
+                let opponentTrackIndex = getTrackIdxFromXY(currentBombTarget.x,currentBombTarget.y);
+            
+                if (E_BombTrackIndex == opponentTrackIndex)
+                {
+                    currentBombTarget.getStunned();
+                    this.playSounds();
+                    this.markForDeletion();
+                    this.leaveScorchMark();
 
-                this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
-                this.e_Bomb_Collision_Stun_Sound.play();
-                
-                testE_Bomb = undefined;
-                console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
-                decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2,
-                           Math.random(Math.PI*2), 0.5, bombCraterPic);
-
-                this.delete = true;
-
-                return;
+                    return;
+                }
             }
         }
+    }
+
+    this.markForDeletion = function()
+    {
+        this.delete = true;
+    }
+
+    this.playSounds = function()
+    {
+        this.e_Bomb_Collision_Stun_Sound = AudioMan.createSound3D(this.e_Bomb_Collision_Stun_Sound_File, this, false, 1);
+        this.e_Bomb_Collision_Stun_Sound.play();
+    }
+
+    this.leaveScorchMark = function()
+    {
+        console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
+        decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2,
+                   Math.random(Math.PI*2), 0.5, bombCraterPic);
     }
 
     this.updateRowColIdx = function()
