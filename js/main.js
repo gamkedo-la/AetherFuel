@@ -285,9 +285,9 @@ function gameDrawAll()
     // Translate the context for camera scrolling
     camera.translate();
 
-    // Draw all images
     drawTracks(camera.minTrackSeenJ, camera.maxTrackSeenJ,
                camera.minTrackSeenI, camera.maxTrackSeenI);
+
 
     if (decals) decals.draw(canvasContext);
 

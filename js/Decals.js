@@ -21,23 +21,23 @@ function decalManager(canvas) {
 
     console.log("Initializing decal manager...");
 
-	this.add = function(x,y,rot,alpha,img) {
+	this.add = function(x,y,rot,alpha,img,decalCTX) {
 		this.decalCount++;
 		if (alpha === undefined) alpha = 0.1;
 		if (alpha > 1) alpha = 1;
 		if (alpha < 0) alpha = 0;
         if (img==undefined) img = tireTrackPic;
-		
 		//console.log('decals:'+x+','+y+','+rot+' alpha:'+alpha);
-		this.tireTrackCTX.save();
-		this.tireTrackCTX.translate(x,y);
-		this.tireTrackCTX.rotate(rot);
-		this.tireTrackCTX.globalAlpha = alpha;
-		this.tireTrackCTX.drawImage(img, -9, -9); // FIXME
-		
-		this.tireTrackCTX.restore()
 
-		if (this.decalCount % 7 == 0) // every Xth skidmark
+        if (decalCTX==undefined) decalCTX = this.tireTrackCTX;
+		decalCTX.save();
+		decalCTX.translate(x,y);
+		decalCTX.rotate(rot);
+		decalCTX.globalAlpha = alpha;
+		decalCTX.drawImage(img, -9, -9); // FIXME
+		decalCTX.restore()
+
+		if (this.decalCount % 7 == 0) // every Xth decal, fade everything out a little
 		{
 			this.fadeOut(); // fade out the entire decal canvas
 		}
@@ -98,7 +98,7 @@ function decalManager(canvas) {
 
 	};
   
-    this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000,alpha=0.2) {
+    this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000,alpha=0.2,forceCTX) {
         if (img==undefined) img = tireTrackPic;
         console.log("scattering "+num+" decals...");
         for (let n=0; n<num; n++) {
@@ -106,7 +106,7 @@ function decalManager(canvas) {
             let x = Math.round((Math.random()*(xmax-xmin))+xmin);
             let y = Math.round((Math.random()*(ymax-ymin))+ymin);
             let rot = Math.random()*Math.PI*2; // any rotation
-            this.add(x,y,rot,alpha,img);
+            this.add(x,y,rot,alpha,img,forceCTX);
         }
     }
 

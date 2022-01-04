@@ -152,9 +152,13 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
 
                 // grow grass or rubble on the ground near walls
                 if (tileKind == TRACK_WALL && SCATTER_DECALS_NEAR_WALLS) {
-                    decals.scatterMany(gravelPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
-                    decals.scatterMany(rocksPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
-                    decals.scatterMany(rubblePic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
+                    // the decals. version works great but appears above the tiles
+                    //decals.scatterMany(gravelPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1);
+                    //decals.scatterMany(rocksPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1);
+                    //decals.scatterMany(rubblePic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1);
+                    decals.scatterMany(gravelPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1,drawOnThis);
+                    decals.scatterMany(rocksPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1,drawOnThis);
+                    decals.scatterMany(rubblePic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,1,drawOnThis);
                 }
 
                 if (tileKind != TRACK_START)
