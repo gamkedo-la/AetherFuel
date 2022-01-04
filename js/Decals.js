@@ -86,6 +86,23 @@ function decalManager(canvas) {
 
         if (place_streetlights_automatically) {
             let ofs = 32; // distance from edge of track to place a light
+            let spacing = 256; // how far apart is each streetlight
+            let cols = Math.floor(this.tireTrackCanvas.width / spacing);
+            let rows = Math.floor(this.tireTrackCanvas.height / spacing);
+            // top and bottom row
+            for (let i=0; i<cols; i++) {
+                this.add(i*spacing,ofs,90*DEG2RAD,1.0,streetlightPic);
+                this.add(i*spacing,this.tireTrackCanvas.height-ofs,-90*DEG2RAD,1.0,streetlightPic);
+            }
+            // left and right sides
+            for (let i=0; i<rows; i++) {
+                this.add(ofs,i*spacing,0*DEG2RAD,1.0,streetlightPic);
+                this.add(this.tireTrackCanvas.width-ofs,i*spacing,180*DEG2RAD,1.0,streetlightPic);
+            }
+
+
+            // only in middle on each edge - works great
+            /*
             // top mid
             this.add(this.tireTrackCanvas.width/2,ofs,90*DEG2RAD,1.0,streetlightPic);
             // bottom mid
@@ -94,6 +111,7 @@ function decalManager(canvas) {
             this.add(ofs,this.tireTrackCanvas.height/2,0*DEG2RAD,1.0,streetlightPic);
             // right mid
             this.add(this.tireTrackCanvas.width-ofs,this.tireTrackCanvas.height/2,180*DEG2RAD,1.0,streetlightPic);
+            */
         }
 
 	};
