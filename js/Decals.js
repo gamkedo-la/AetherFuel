@@ -16,6 +16,8 @@
 function decalManager(canvas) {
 	
     const scatter_random_decals_everywhere = true; // experimental
+    const place_streetlights_automatically = true; // glowy lights
+    const DEG2RAD = Math.PI/180;
 
     console.log("Initializing decal manager...");
 
@@ -71,7 +73,7 @@ function decalManager(canvas) {
 	this.reset = function() {
         this.resize();
         this.tireTrackCTX.clearRect(0, 0, this.tireTrackCanvas.width, this.tireTrackCanvas.height);
-        
+
         if (scatter_random_decals_everywhere) {
             // FIXME - only spawn in certain regions
             // and only spawn depending on the level!!
@@ -82,9 +84,21 @@ function decalManager(canvas) {
             this.scatterMany(rubblePic,88,0,0,this.tireTrackCanvas.width,this.tireTrackCanvas.height);
         }
 
+        if (place_streetlights_automatically) {
+            let ofs = 32; // distance from edge of track to place a light
+            // top mid
+            this.add(this.tireTrackCanvas.width/2,ofs,90*DEG2RAD,1.0,streetlightPic);
+            // bottom mid
+            this.add(this.tireTrackCanvas.width/2,this.tireTrackCanvas.height-ofs,-90*DEG2RAD,1.0,streetlightPic);
+            // left mid
+            this.add(ofs,this.tireTrackCanvas.height/2,0*DEG2RAD,1.0,streetlightPic);
+            // right mid
+            this.add(this.tireTrackCanvas.width-ofs,this.tireTrackCanvas.height/2,180*DEG2RAD,1.0,streetlightPic);
+        }
+
 	};
   
-    this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000) {
+    this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000,alpha=0.2) {
         if (img==undefined) img = tireTrackPic;
         console.log("scattering "+num+" decals...");
         for (let n=0; n<num; n++) {
@@ -92,7 +106,6 @@ function decalManager(canvas) {
             let x = Math.round((Math.random()*(xmax-xmin))+xmin);
             let y = Math.round((Math.random()*(ymax-ymin))+ymin);
             let rot = Math.random()*Math.PI*2; // any rotation
-            let alpha = 0.2; // FIXME: how opaque should these be?
             this.add(x,y,rot,alpha,img);
         }
     }

@@ -1,4 +1,5 @@
 const USE_OFFSCREEN_TRACK_BUFFER = true; // optimization
+const SCATTER_DECALS_NEAR_WALLS = true; // add rocks on the floor near all wall tiles
 
 const TRACK_W = 40;
 const TRACK_H = 40;
@@ -148,6 +149,13 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
                 var tileKind = trackGrid[trackIdx];
 
                 if (tileKind == TRACK_ROAD){ continue; }
+
+                // grow grass or rubble on the ground near walls
+                if (tileKind == TRACK_WALL && SCATTER_DECALS_NEAR_WALLS) {
+                    decals.scatterMany(gravelPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
+                    decals.scatterMany(rocksPic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
+                    decals.scatterMany(rubblePic,8,drawTileX,drawTileY,drawTileX+TRACK_W,drawTileY+TRACK_H,0.5);
+                }
 
                 if (tileKind != TRACK_START)
                 {
