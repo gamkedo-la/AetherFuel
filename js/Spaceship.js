@@ -17,6 +17,8 @@ const MAX_SHIELD_LEVEL = 3;
 
 const SHIELD_RADIUS = 2/3 * 40;
 
+var maxLapsPassedByASpaceship = 0;
+
 function Spaceship(name)
 {
     this.name = name;
@@ -62,6 +64,9 @@ function Spaceship(name)
 
     this.decalPic = tireTrackPic;
     this.dualDecalDist = 0; // 0=draw ONE line, else draw two lines offset this many px
+
+    this.waypointForPosition = null;
+    this.distToWaypointForPosition = 100;
 }
 
 Spaceship.prototype.update = function()
@@ -79,6 +84,7 @@ Spaceship.prototype.move = function()
 
     this.decreaseSlidingDueToFriction();
     this.updatePosition();
+    this.getWaypointForPosition();
     this.checkIfCloseEnoughToHalfWaypoint();
     this.handleCollisionWithTracksAdvanced();
     this.checkIfCollidingWithOtherSpaceships();
@@ -158,6 +164,26 @@ Spaceship.prototype.getCurrentTrackType = function()
     this.currentTrackType = returnTrackTypeAtIJ(this.colIdx, this.rowIdx);
 }
 
+Spaceship.prototype.getWaypointForPosition = function()
+{
+    if (this.waypointForPosition == null) return;
+        
+    // Check if spaceship has crossed waypoint thickness
+    var dotProd = (this.x - this.waypointForPosition.x) * Math.cos(this.waypointForPosition.angle) +
+                  (this.y - this.waypointForPosition.y) * Math.sin(this.waypointForPosition.angle);
+
+    if (dotProd > 0)
+    {
+        this.waypointForPosition = this.waypointForPosition.next == null ? firstWaypoint : this.waypointForPosition.next;
+    }
+
+    // Update distance to waypoint for position
+    this.distToWaypointForPosition = distanceBetweenPointAndSegment(
+        this, 
+        {"x": this.waypointForPosition.leftX, "y": this.waypointForPosition.leftY},
+        {"x": this.waypointForPosition.rightX, "y": this.waypointForPosition.rightY});
+}
+
 Spaceship.prototype.launchAttack = function()
 {
     console.log(this.fire)
@@ -213,6 +239,8 @@ Spaceship.prototype.reset = function(whichPic)
 
     this.numAmmo = 0;
     this.shieldLevel = MAX_SHIELD_LEVEL;
+
+    this.waypointForPosition = firstWaypoint;
 
     let didWeFindTrackStart = false;
     for (var i = 0; i < trackNumRows ; i++)
@@ -302,6 +330,12 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
     {
         if (!this.isLap) {
             this.lapsPassed++;
+
+            if (maxLapsPassedByASpaceship < this.lapsPassed)
+            {
+                maxLapsPassedByASpaceship = this.lapsPassed;
+            }
+
             this.isLap = true;
             this.hasReachedHalfTrack = false;
             this.reloadWeapon();
@@ -445,4 +479,82 @@ function checkIfAllSpaceshipNamesAreUnique()
             idx++;
         }
     }
+}
+
+function getPlayerPosition()
+{
+    var playerPosition = 1;  // player start as being the leader
+    var opponentsOnTheSameLapAsPlayer = [];
+
+    // Check if player is leading in terms of laps passed
+    for (var i = 0 ; i < opponents.length ; i++)
+    {
+        var currentOpponent = opponents[i];
+
+        // If opponent has passed more laps, player loses a position
+        if (currentOpponent.lapsPassed > player.lapsPassed)
+        {
+            playerPosition++;
+        }
+        // If they are on the same lap we will need to compare their target waypoints
+        else if (currentOpponent.lapsPassed == player.lapsPassed)
+        {
+            opponentsOnTheSameLapAsPlayer.push(currentOpponent);
+        }
+    }
+
+    // If no opponent is on the same lap, then player position has been found
+    if (opponentsOnTheSameLapAsPlayer.length == 0)
+    {
+        console.log("no need to do further checks");
+        return playerPosition;
+    }
+
+    // Check which spaceships has the furthest waypoint
+    var tempWaypoint = firstWaypoint;
+    var opponentsWaypointFound = 0;
+
+    // Loop through all the waypoints
+    while (tempWaypoint != null)
+    {
+        // Is this the waypoint the player is currently aiming at?
+        var isPlayerAtThisWaypoint = player.waypointForPosition == tempWaypoint;
+
+        for (var i = 0; i < opponentsOnTheSameLapAsPlayer.length ; i++)
+        {
+            // Is the opponent aiming at this waypoint
+            var currentOpponent = opponentsOnTheSameLapAsPlayer[i];
+            var isOpponentAtThisWaypoint = currentOpponent.waypointForPosition == tempWaypoint;
+
+            // if the opponent is a this waypoint
+            if (isOpponentAtThisWaypoint)
+            {
+                opponentsWaypointFound++; // we found a waypoint corresponding to an opponent
+
+                // If the player and the opponent are at the same waypoint
+                if (isPlayerAtThisWaypoint)
+                {
+                    // the player loses a position if the opponent is closer to it
+                    if (player.distToWaypointForPosition > currentOpponent.distToWaypointForPosition)
+                    {
+                        playerPosition++;
+                    }  // end if (player.distToWaypointForPosition > ...)
+                }  // end if (isPlayerAtThisWaypoint)
+            }  // end if (isOpponentAtThisWaypoint)
+        }  // end for (opponentsOnTheSameLapAsPlayer)
+
+        // If we found the waypoint corresponding to the player
+        if (isPlayerAtThisWaypoint)
+        {
+            // If opponents are on the same lap and have not been found, this means they are in front of the player
+            playerPosition += opponentsOnTheSameLapAsPlayer.length - opponentsWaypointFound;
+
+            // No need to find the exact position of the other opponents
+            break;
+        }
+
+        tempWaypoint = tempWaypoint.next;
+    } // end while (tempWaypoint)
+
+    return playerPosition;
 }

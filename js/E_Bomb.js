@@ -125,6 +125,4 @@ function deleteExplodedEBombs ()
     {
         if (ebombsList[i].delete) ebombsList.splice(i, i+1);
     }
-
-    console.log(ebombsList.length);
 }

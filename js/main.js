@@ -17,6 +17,8 @@ var opponents = [new Opponent("Opponent 1", lightRiderPic),
 
 var allSpaceships = opponents.concat([player]);
 
+var playerPositionInRace = 1;
+
 var currentLevelIdx = 0;
 var currentLevel;
 var currentLevelCountDown = 0;
@@ -260,6 +262,8 @@ function gameUpdateAll()
         });
     }
 
+    playerPositionInRace = getPlayerPosition();
+
     // smokeManager.updatePuffsOfSmoke();
     bulletManager.updateBullets();
 
@@ -380,6 +384,19 @@ function drawUI()
     // Indicate lap number
     colorText(
         `Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        UI_OFFSET_X, offsetY,
+        'red', 20);
+
+    offsetY += 20 + UI_SPACING;
+
+    // Indicate lap number
+    var playerPositionText = " th";
+    if (playerPositionInRace == 1) playerPositionText = " st";
+    else if (playerPositionInRace == 2) playerPositionText = " nd";
+    else if (playerPositionInRace == 3) playerPositionText = " rd";
+
+    colorText(
+        playerPositionInRace + playerPositionText,
         UI_OFFSET_X, offsetY,
         'red', 20);
 }
