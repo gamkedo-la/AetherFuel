@@ -24,7 +24,7 @@ var currentLevelCountDown = 0;
 var decals;
 
 let puffOfSmoke;
-let smokeManager;
+// let smokeManager;
 let bulletManager;
 let testE_Bomb;
 
@@ -152,10 +152,10 @@ function loadLevel(whichLevel)
         opponent.reset(firstWaypoint);
     });
 
-    smokeManager = new SmokeManager();
+    // smokeManager = new SmokeManager();
     bulletManager = new BulletManager();
-    smokeManager.createPuffsOfSmokeOverTime();
-    //puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
+    // smokeManager.createPuffsOfSmokeOverTime();
+    // puffOfSmoke = new PuffOfSmoke(player.x, player.y + (player.pic.height)*0.45);
 
     miniMap.reset();
 
@@ -260,7 +260,7 @@ function gameUpdateAll()
         });
     }
 
-    smokeManager.updatePuffsOfSmoke();
+    // smokeManager.updatePuffsOfSmoke();
     bulletManager.updateBullets();
 
     if (debugFollowAI) camera.follow(opponents[0]);  
@@ -296,7 +296,7 @@ function gameDrawAll()
         opponent.draw();
     });
 
-    smokeManager.drawPuffsOfSmoke();
+    // smokeManager.drawPuffsOfSmoke();
     bulletManager.drawBullets();
     for (var i = 0 ; i < ebombsList.length ; i++)
     {
