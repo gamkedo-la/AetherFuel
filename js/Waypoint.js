@@ -1,4 +1,4 @@
-const MIN_DIST_BETWEEN_WAYPOINTS = 2 * TRACK_W;
+const MIN_DIST_BETWEEN_WAYPOINTS = 10;
 
 var currentWaypoint = null;
 var firstWaypoint = null;

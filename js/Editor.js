@@ -118,6 +118,7 @@ function Editor()
     this.deleteAllWaypoints = function()
     {
         firstWaypoint = null;
+        currentWaypoint = null;
     }
 
     this.createNewWaypoint = function()
