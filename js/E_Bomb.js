@@ -1,3 +1,6 @@
+const EBOMB_MIN_LIGHTNESS = 30;
+const EBOMB_MAX_LIGHTNESS = 90;
+
 var ebombsList = [];
 
 function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
@@ -13,9 +16,9 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
 	this.colIdx = Math.floor(this.x / TRACK_W);
     this.rowIdx = Math.floor(this.y / TRACK_H);
 
-	this.hue = 240;
-	this.saturation = 50;
-	this.lightness = 50;
+	this.hue = currentLevelIdx == LEVEL_ICE ? 0 : 240;
+	this.saturation = 100;
+	this.lightness = EBOMB_MIN_LIGHTNESS;
 	this.color = 'hsl(' + this.hue + ', ' + this.saturation + '%, ' + this.lightness + '%)';
 
 	this.size = 8;	
@@ -36,9 +39,9 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
         if (this.delete) return;
         
     	this.lightness += 4;
-    	if (this.lightness > 100)
+    	if (this.lightness > EBOMB_MAX_LIGHTNESS)
     	{
-    		this.lightness = 50;
+    		this.lightness = EBOMB_MIN_LIGHTNESS;
     	}
     	this.color = 'hsl(' + this.hue + ', ' + this.saturation + '%, ' + this.lightness + '%)';
 
@@ -65,9 +68,7 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
             var currentBombTarget = allSpaceships[i];
 
             if (currentBombTarget.checkIfHasShield())
-            {
-                console.log("ebomb aiming at " + currentBombTarget.name);
-                
+            {              
                 var distToBombTarget = distanceBetweenTwoPoints(this, currentBombTarget);
                 if (distToBombTarget < SHIELD_RADIUS)
                 {
