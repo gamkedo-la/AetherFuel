@@ -88,8 +88,20 @@ function Opponent(name, pic)
 
     this.checkIfOtherIsInFieldOfShoot = function(other)
     {
-        var angleToOther = this.ang - angleBetweenTwoPoints(this, other);
-        return Math.abs(angleToOther) < FIELD_OF_SHOOT;
+        var distToOther = distanceBetweenTwoPoints(this, other);
+
+        var thisToOther = {
+            "x": (other.x - this.x) / distToOther,
+            "y": (other.y - this.y) / distToOther
+        };
+
+        var thisDir = {"x": Math.cos(this.ang), "y": Math.sin(this.ang)};
+
+        var dotProd = computeDotProd(thisDir, thisToOther);
+
+        var angleToOther = Math.acos(dotProd);
+        
+        return angleToOther < FIELD_OF_SHOOT;
     }
 
     this.activateGas = function()
