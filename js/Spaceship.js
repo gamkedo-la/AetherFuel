@@ -507,7 +507,6 @@ function getPlayerPosition()
     // If no opponent is on the same lap, then player position has been found
     if (opponentsOnTheSameLapAsPlayer.length == 0)
     {
-        console.log("no need to do further checks");
         return playerPosition;
     }
 

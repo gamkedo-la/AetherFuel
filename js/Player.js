@@ -1,3 +1,5 @@
+const DEBUG_PLAYER = false;
+
 function Player(name)
 {
     Spaceship.call(this, name);
@@ -15,6 +17,13 @@ function Player(name)
     this.draw = function()
     {
         this.superDraw();
+        this.debugDraw();
+    }
+
+    this.debugDraw = function()
+    {
+        if (!DEBUG_PLAYER) return;
+
         colorCircle(this.x, this.y, 5, "gold");
 
         proj = projectPointToSegment(

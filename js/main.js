@@ -2,6 +2,7 @@ const FRAME_PER_SECOND = 30
 const UI_WIDTH = 200;
 const UI_SPACING = 50;
 const UI_OFFSET_X = 15;
+const UI_SHIELD_BAR_WIDTH = 100;
 
 var canvas, canvasContext, deltaTime;
 
@@ -358,13 +359,14 @@ function drawUI()
     // Draw Remaining ammo
     drawBitmapCenteredWithRotation(
         ebombPic,
-        UI_OFFSET_X + ebombPic.width / 2,
+        UI_OFFSET_X + SHIELD_RADIUS,  // ebombPic.width / 2,
         offsetY + ebombPic.height / 2,
         0, ebombPic.width, ebombPic.height);
 
     colorText(
         `${player.numAmmo}`,
-        4 * UI_OFFSET_X + ebombPic.width, offsetY + 30,
+        4 * UI_OFFSET_X + SHIELD_RADIUS * 2,  // ebombPic.width,
+        offsetY + 30,
         'red', 40);
     
     offsetY += ebombPic.height + UI_SPACING;
@@ -374,10 +376,10 @@ function drawUI()
         UI_OFFSET_X + SHIELD_RADIUS,
         offsetY + SHIELD_RADIUS, SHIELD_RADIUS, "red");
 
-    colorText(
-        `${player.shieldLevel}`,
-        4 * UI_OFFSET_X + SHIELD_RADIUS * 2, offsetY + SHIELD_RADIUS + 15,
-        'red', 40);
+    colorRect(2 * UI_OFFSET_X + SHIELD_RADIUS * 2, offsetY + SHIELD_RADIUS - 10, UI_SHIELD_BAR_WIDTH, 20, "grey");
+    
+    var shieldLevel = player.shieldLevel / MAX_SHIELD_LEVEL * UI_SHIELD_BAR_WIDTH;
+    colorRect(2 * UI_OFFSET_X + SHIELD_RADIUS * 2, offsetY + SHIELD_RADIUS - 10, shieldLevel, 20, "red");
     
     offsetY += SHIELD_RADIUS * 2 + UI_SPACING;
 
