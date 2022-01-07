@@ -186,12 +186,13 @@ Spaceship.prototype.getWaypointForPosition = function()
 
 Spaceship.prototype.launchAttack = function()
 {
-    console.log(this.fire)
     if (this.fire) return;
     if (this.stunned) return;
     if (this.numAmmo <= 0) return;
 
     this.fire = true;
+
+    console.log(this.name + " is shooting!!");
     
     switch(this.currentWeaponState) 
     {
@@ -199,8 +200,8 @@ Spaceship.prototype.launchAttack = function()
             bulletManager.createABullet();
             break;
         case 'E_Bomb':
-            let xSpeed = Math.cos(player.ang) * (EBOMB_SPEED + this.speed);
-            let ySpeed = Math.sin(player.ang) * (EBOMB_SPEED + this.speed);
+            let xSpeed = Math.cos(this.ang) * (EBOMB_SPEED + this.speed);
+            let ySpeed = Math.sin(this.ang) * (EBOMB_SPEED + this.speed);
 
             var ebombInstance = new E_Bomb(this.x,this.y, xSpeed,ySpeed, this.name)
             ebombsList.push(ebombInstance)
@@ -237,7 +238,7 @@ Spaceship.prototype.reset = function(whichPic)
     this.slideY = 0;
     this.fire = false;
 
-    this.numAmmo = 0;
+    this.numAmmo = 2;
     this.shieldLevel = MAX_SHIELD_LEVEL;
 
     this.waypointForPosition = firstWaypoint;

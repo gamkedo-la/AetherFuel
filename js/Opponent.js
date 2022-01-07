@@ -8,6 +8,10 @@ const TIME_FOR_BACKWARD_RECOVERY_MODE = 1000.0  // in milliseconds
 const MIN_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY = 200.0;  // in milliseconds
 const MAX_TIME_BEFORE_SELECTING_TARGET_IN_RECOVERY = 800.0;  // in milliseconds
 
+const MIN_TIME_SINCE_LAST_ATTACK = 1000.0;  // in milliseconds
+const MAX_TIME_SINCE_LAST_ATTACK = 3000.0;  // in milliseconds
+const FIELD_OF_SHOOT = 20.0 * Math.PI / 180;  // in rads
+
 function Opponent(name, pic)
 {
     Spaceship.call(this, name);
@@ -32,7 +36,61 @@ function Opponent(name, pic)
     this.maxDistToProbForWall = 3 * TRACK_W;
     this.maxAngleNumberToProbe = 32;
 
-    // this.targetSpeed; 
+    this.timeSinceLastAttack = 0.0;
+    this.timeToWaitBeforeAttacking = -1.0;
+
+    this.superUpdate = this.update;
+    this.update = function()
+    {
+        this.superUpdate();
+        this.launchAttackIfPossible();
+    }
+
+    this.launchAttackIfPossible = function()
+    {
+        // Scan to check if spaceship is in field of view
+        // Get angle between me and all other spaceships
+        for (var otherIdx = 0; otherIdx < allSpaceships.length; otherIdx++)
+        {
+            var other = allSpaceships[otherIdx];
+            if (other.name == this.name) continue;
+            
+            // If the angle is in the field of shoot
+            if (this.checkIfOtherIsInFieldOfShoot(other))
+            {
+                // Is it time to shoot
+                this.shootIfEnoughTimeHasPassed();
+            }
+        }
+
+        // Wait a minimum time before shooting again
+        this.timeSinceLastAttack += deltaTime;
+    }
+
+    this.shootIfEnoughTimeHasPassed = function()
+    {
+        if (this.timeSinceLastAttack < this.timeToWaitBeforeAttacking) return;
+
+        if (!this.fire)
+        {
+            this.launchAttack();
+            console.log("Time to shoot for " + this.name + " who has " + this.numAmmo + " bullets");
+        }
+        else
+        {
+            // The idea is to have the lauchAttack action for at least one frame 
+            this.timeSinceLastAttack = 0.0;
+            this.timeToWaitBeforeAttacking = randomFloatFromInterval(MIN_TIME_SINCE_LAST_ATTACK,
+                                                                     MAX_TIME_SINCE_LAST_ATTACK);
+            this.stopAttack();
+        }
+    }
+
+    this.checkIfOtherIsInFieldOfShoot = function(other)
+    {
+        var angleToOther = this.ang - angleBetweenTwoPoints(this, other);
+        return Math.abs(angleToOther) < FIELD_OF_SHOOT;
+    }
 
     this.activateGas = function()
     {
@@ -185,6 +243,9 @@ function Opponent(name, pic)
     this.reset = function(waypoint)
     {
         this.superReset(this.pic);
+        this.timeSinceLastAttack = 0.0;
+        this.timeToWaitBeforeAttacking = -1.0;
+
         this.currentWaypoint = waypoint;
         this.selectTarget();
     }
