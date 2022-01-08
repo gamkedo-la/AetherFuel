@@ -19,7 +19,7 @@ function decalManager(canvas) {
     const place_streetlights_automatically = true; // glowy lights
     const DEG2RAD = Math.PI/180;
 
-    console.log("Initializing decal manager...");
+    if (VERBOSE) console.log("Initializing decal manager...");
 
 	this.add = function(x,y,rot,alpha,img,decalCTX) {
 		this.decalCount++;
@@ -27,7 +27,7 @@ function decalManager(canvas) {
 		if (alpha > 1) alpha = 1;
 		if (alpha < 0) alpha = 0;
         if (img==undefined) img = tireTrackPic;
-		//console.log('decals:'+x+','+y+','+rot+' alpha:'+alpha);
+		//if (VERBOSE) console.log('decals:'+x+','+y+','+rot+' alpha:'+alpha);
 
         if (decalCTX==undefined) decalCTX = this.tireTrackCTX;
 		decalCTX.save();
@@ -67,7 +67,7 @@ function decalManager(canvas) {
 	this.resize = function() {
         this.tireTrackCanvas.width = TRACK_W * trackNumCols;
         this.tireTrackCanvas.height = TRACK_H * trackNumRows;
-        console.log("decals canvas resized to "+this.tireTrackCanvas.width+"x"+this.tireTrackCanvas.height);
+        if (VERBOSE) console.log("decals canvas resized to "+this.tireTrackCanvas.width+"x"+this.tireTrackCanvas.height);
 	};
 
 	this.reset = function() {
@@ -118,7 +118,7 @@ function decalManager(canvas) {
   
     this.scatterMany = function(img,num=1000,xmin=0,ymin=0,xmax=4000,ymax=4000,alpha=0.2,forceCTX) {
         if (img==undefined) img = tireTrackPic;
-        console.log("scattering "+num+" decals...");
+        if (VERBOSE) console.log("scattering "+num+" decals...");
         for (let n=0; n<num; n++) {
             // random decal placement in the box specified
             let x = Math.round((Math.random()*(xmax-xmin))+xmin);

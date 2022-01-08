@@ -74,7 +74,7 @@ function Opponent(name, pic)
         if (!this.fire)
         {
             this.launchAttack();
-            console.log("Time to shoot for " + this.name + " who has " + this.numAmmo + " bullets");
+            if (VERBOSE) console.log("Time to shoot for " + this.name + " who has " + this.numAmmo + " bullets");
         }
         else
         {
@@ -364,7 +364,7 @@ function Opponent(name, pic)
             // if there is no wall in this direction
             if (!this.checkIfWallInThisDirectionAtMaxProbDistAdvance(currentAngle))
             {
-                console.log(currentAngle);
+                if (VERBOSE) console.log(currentAngle);
                 this.target = {
                     "x": this.x + Math.cos(currentAngle) * this.maxDistToProbForWall,
                     "y": this.y + Math.sin(currentAngle) * this.maxDistToProbForWall
@@ -383,7 +383,7 @@ function Opponent(name, pic)
         this.holdReverse = false;
         this.holdTurnLeft = false;
         this.holdTurnRight = false;
-        console.log(this.name + " freezing");
+        if (VERBOSE) console.log(this.name + " freezing");
     }
 
     this.checkIfWallInThisDirectionAtMaxProbDistAdvance = function(angle)

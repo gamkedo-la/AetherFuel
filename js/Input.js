@@ -39,6 +39,8 @@ const KEY_N = 78;
 
 const KEY_ESC = 27;
 
+var didInteract = false;
+
 var mouseX = 0;
 var mouseY = 0;
 var mouseOnScreenX = 0;
@@ -97,21 +99,21 @@ function keyReleased(evt)
         {
             if (debugFreezeAI)
             {
-                console.log("Freeze all but one AI");
+                if (VERBOSE) console.log("Freeze all but one AI");
                 debugFreezeAI = false;
                 debugFreezeAIButOne = true;
                 opponents.forEach(function(opponent){opponent.freeze();});
             }
             else if (debugFreezeAIButOne)
             {
-                console.log("Release all AI");
+                if (VERBOSE) console.log("Release all AI");
                 debugFreezeAI = false;
                 debugFreezeAIButOne = false;
                 opponents.forEach(function(opponent){opponent.freeze();});
             }
             else
             {
-                console.log("Freeze all AI");
+                if (VERBOSE) console.log("Freeze all AI");
                 debugFreezeAI = true;
                 debugFreezeAIButOne = false;
                 opponents.forEach(function(opponent){opponent.freeze();});
@@ -144,6 +146,7 @@ function keyReleased(evt)
 
 function handleClick(evt)
 {
+    didInteract = true;
     if (!editorMode){ return; }
     editor.click();
 }

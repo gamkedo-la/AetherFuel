@@ -192,7 +192,7 @@ Spaceship.prototype.launchAttack = function()
 
     this.fire = true;
 
-    console.log(this.name + " is shooting!!");
+    if (VERBOSE) console.log(this.name + " is shooting!!");
     
     switch(this.currentWeaponState) 
     {
@@ -253,7 +253,7 @@ Spaceship.prototype.reset = function(whichPic)
             if (trackGrid[trackIdx] == TRACK_START)
             {
                 didWeFindTrackStart = true;
-                console.log(this.name + " didWeFindTrackStart: " + didWeFindTrackStart);
+                if (VERBOSE) console.log(this.name + " didWeFindTrackStart: " + didWeFindTrackStart);
 
                 setTrackTypeAtIJ(i, j, TRACK_ROAD);
                 this.startIdx = trackIdx;
@@ -270,7 +270,7 @@ Spaceship.prototype.reset = function(whichPic)
 
     if (!didWeFindTrackStart)
     {
-        console.log("NO START FOUND FOR " + this.name);
+        if (VERBOSE) console.log("NO START FOUND FOR " + this.name);
     }
 
     if (this.engineSound != null) this.engineSound.stop();
@@ -297,7 +297,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
     
             if (((trackX - this.x) * (trackX - this.x)) + ((trackY - this.y) * (trackY - this.y)) < TRACK_W * TRACK_W / 4) {
                 if (WALL_COLLISIONS_LEAVE_DECALS) {
-                    console.log("colliding with a wall! that left a mark!");
+                    if (VERBOSE) console.log("colliding with a wall! that left a mark!");
                     decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
                 }
                 this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
@@ -309,7 +309,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         }
         else {
             if (WALL_COLLISIONS_LEAVE_DECALS) {
-                console.log("colliding with a wall! that left a mark!");
+                if (VERBOSE) console.log("colliding with a wall! that left a mark!");
                 decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
             }
             this.x -= 1.5 * (this.speed * Math.cos(this.ang) + this.slideX);
@@ -346,7 +346,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             return;
         }
 
-        console.log(this.name + " wins!!!");
+        if (VERBOSE) console.log(this.name + " wins!!!");
 
         if (currentLevelIdx == levels.length - 1)
         {

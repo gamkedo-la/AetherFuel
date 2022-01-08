@@ -81,7 +81,7 @@ function BulletManager()
             {
                 arrayOfBullets.splice(i,1);
                 exploded = true;
-                console.log("bullet hit a wall!");
+                if (VERBOSE) console.log("bullet hit a wall!");
             }
 
             let bulletTrackIndex = getTrackIdxFromXY(arrayOfBullets[i].x, arrayOfBullets[i].y);
@@ -90,7 +90,7 @@ function BulletManager()
             {
                 arrayOfBullets.splice(i,1);
                 exploded = true;
-                console.log("bullet hit an opponent!");
+                if (VERBOSE) console.log("bullet hit an opponent!");
             }
             // if (arrayOfBullets[i].x > opponents[0].x && arrayOfBullets[i].x < opponents[0].x + TRACK_W
             //     && arrayOfBullets[i].y < opponents[0].y && arrayOfBullets[i].y > opponents[0].y + TRACK_H)
@@ -98,7 +98,7 @@ function BulletManager()
             //     arrayOfBullets.splice(i,1);
             // }  
 
-            console.log("opponents[0].y: " + opponents[0].y + " arrayOfBullets[0].y: " + arrayOfBullets[0].y);
+            if (VERBOSE) console.log("opponents[0].y: " + opponents[0].y + " arrayOfBullets[0].y: " + arrayOfBullets[0].y);
             // for (let j = 0; j < opponents.length; j++)
             // {
             //     if (arrayOfBullets[i].x > opponents[j].x && arrayOfBullets[i].x < opponents[j].x + TRACK_W
@@ -109,7 +109,7 @@ function BulletManager()
             // }//end of checking bullets colliding with opponents          
         
         if (exploded) {
-            console.log("bullet exploded: leaving a scroch mark on the ground");
+            if (VERBOSE) console.log("bullet exploded: leaving a scroch mark on the ground");
             decals.add(arrayOfBullets[i].x, arrayOfBullets[i].y, Math.random(Math.PI*2), 0.25, bombCraterPic);
         }
         

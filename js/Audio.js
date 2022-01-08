@@ -36,16 +36,16 @@ function AudioManager() {
 			musicBus.connect(masterBus);
 			masterBus.connect(audioCtx.destination);
 		} else {
-			console.log("Not Server: skipping WebAudioAPI");
+			if (VERBOSE) console.log("Not Server: skipping WebAudioAPI");
 		}
 
 		initialized = true;
-		console.log("Initialized Audio");
+		if (VERBOSE) console.log("Initialized Audio");
 	};
 
 	this.reset = function() {
 		if (!initialized) return;
-		//console.log("Reset Audio");
+		//if (VERBOSE) console.log("Reset Audio");
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 		 	currentSoundSources[i].stop();
@@ -55,7 +55,7 @@ function AudioManager() {
 
 	this.update = function() {
 		if (!initialized) return;
-		//console.log("Update Audio");
+		//if (VERBOSE) console.log("Update Audio");
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
@@ -163,11 +163,11 @@ function AudioManager() {
 //--//sound objects-------------------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
 		if (!initialized) return;
-		//console.log("Create Sound3D");
+		//if (VERBOSE) console.log("Create Sound3D");
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate, preservesPitch);
 		currentSoundSources.push(newSound);
-		//console.log(newSound);
+		//if (VERBOSE) console.log(newSound);
 		return newSound;
 	};
 
@@ -205,7 +205,7 @@ function AudioManager() {
 
 
 		this.update = function() {
-			//console.log("Update Sound");
+			//if (VERBOSE) console.log("Update Sound");
 
 			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
@@ -222,13 +222,13 @@ function AudioManager() {
 			audioFile.playbackRate *= clipBetween(Math.pow(2, (dopler/12)), 0.8, 1.2);
 			lastDistance = newDistance;
 
-			//console.log(dopler + " " + lastDistance + " " + audioFile.playbackRate);
+			//if (VERBOSE) console.log(dopler + " " + lastDistance + " " + audioFile.playbackRate);
 		}
 
 		this.play = function() {
-			console.log("Playing audio " + fileNameWithPath);
+			if (VERBOSE) console.log("Playing audio " + fileNameWithPath);
 			audioFile.currentTime = 0;
-			return audioFile.play();
+			return didInteract ? audioFile.play() : null;
 		}
 
 		this.stop = function() {
@@ -275,7 +275,7 @@ function AudioManager() {
 			pan *= panReduction;
 		}
 
-		//console.log("" + pan + " " + direction);
+		//if (VERBOSE) console.log("" + pan + " " + direction);
 
 		return pan;
 	};
@@ -306,7 +306,7 @@ function AudioManager() {
 			newVolume *= lerp(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
 
-		//console.log("" + newVolume + " " + distance);
+		//if (VERBOSE) console.log("" + newVolume + " " + distance);
 
 		return Math.pow(newVolume, 2);
 	};

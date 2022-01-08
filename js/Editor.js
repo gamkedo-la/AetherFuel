@@ -80,7 +80,7 @@ function Editor()
 
         if (this.isPlacingDecals) {
             this.decalData += mouseX+","+mouseY+",";
-            console.log("var decalData = ["+this.decalData+"];");
+            if (VERBOSE) console.log("var decalData = ["+this.decalData+"];");
             return;
         }
 
@@ -143,7 +143,7 @@ function Editor()
             currentWaypoint = newWaypoint;
             firstWaypoint = newWaypoint;
         }
-        console.log(currentWaypoint.percentageGasAppliedTime);
+        if (VERBOSE) console.log(currentWaypoint.percentageGasAppliedTime);
         this.isPlacingWaypoint = true;
     }
 
@@ -394,12 +394,12 @@ function Editor()
                 case KEY_UP_ARROW:
                     currentWaypoint.percentageGasAppliedTime += WAYPOINT_GAS_PERCENTAGE_INCREMENT;
                     currentWaypoint.percentageGasAppliedTime = clipBetween(currentWaypoint.percentageGasAppliedTime, 0.3, 1.0);
-                    console.log(currentWaypoint.percentageGasAppliedTime);
+                    if (VERBOSE) console.log(currentWaypoint.percentageGasAppliedTime);
                     break;
                 case KEY_DOWN_ARROW:
                     currentWaypoint.percentageGasAppliedTime -= WAYPOINT_GAS_PERCENTAGE_INCREMENT;
                     currentWaypoint.percentageGasAppliedTime = clipBetween(currentWaypoint.percentageGasAppliedTime, 0.3, 1.0);
-                    console.log(currentWaypoint.percentageGasAppliedTime);
+                    if (VERBOSE) console.log(currentWaypoint.percentageGasAppliedTime);
                     break;
 
                 case KEY_ESC:
@@ -447,7 +447,7 @@ function Editor()
 
             case KEY_NUM_ROW_8:
                 this.isPlacingDecals = !this.isPlacingDecals;
-                console.log("Decal Mode "+(this.isPlacingDecals?"ON":"OFF"));
+                if (VERBOSE) console.log("Decal Mode "+(this.isPlacingDecals?"ON":"OFF"));
                 break;
 
             case KEY_NUM_ROW_9:
@@ -470,7 +470,7 @@ function Editor()
                 currentLevel.track = trackGrid.slice();
                 currentLevel.firstWaypoint = firstWaypoint;
                 //currentLevel.decalData = decalData;
-                console.log(JSON.stringify(currentLevel));
+                if (VERBOSE) console.log(JSON.stringify(currentLevel));
                 break;
 
             case KEY_TAB:
@@ -519,7 +519,7 @@ function Editor()
 
             case KEY_N:
                 var newLevel = createNewLevel();
-                console.log(newLevel);
+                if (VERBOSE) console.log(newLevel);
                 levels.push(newLevel);
                 loadLevel(levels.length - 1);
                 break;

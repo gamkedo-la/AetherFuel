@@ -75,7 +75,7 @@ function drawBackGround()
         backGroundCanvas = document.createElement("canvas");
         backGroundCanvas.width = canvas.width;
         backGroundCanvas.height = canvas.height;
-        console.log("created track canvas sized "+backGroundCanvas.width+"x"+backGroundCanvas.height);
+        if (VERBOSE) console.log("created track canvas sized "+backGroundCanvas.width+"x"+backGroundCanvas.height);
     }
 
     var useImg = currentLevelIdx == LEVEL_ICE ? roadPix[LEVEL_ICE] : roadPix[LEVEL_SAND];
@@ -107,7 +107,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             trackCanvas = document.createElement("canvas");
             trackCanvas.width = TRACK_W * trackNumCols;
             trackCanvas.height = TRACK_H * trackNumRows;
-            console.log("created track canvas sized "+trackCanvas.width+"x"+trackCanvas.height);
+            if (VERBOSE) console.log("created track canvas sized "+trackCanvas.width+"x"+trackCanvas.height);
         }
 
         //FIXME? ensure we draw the ENTIRE track
@@ -127,7 +127,7 @@ function drawTracks(trackStartJ, trackEndJ, trackStartI, trackEndI)
             drawOnThis.fillRect(0,0,trackCanvas.width,trackCanvas.height);
             drawOnThis.fillStyle = "white";
             drawOnThis.globalAlpha = 1;
-            console.log("pre-rendering "+trackEndI+"x"+trackEndJ+"x2="+(trackEndI*trackEndJ*2)+" track tiles!");
+            if (VERBOSE) console.log("pre-rendering "+trackEndI+"x"+trackEndJ+"x2="+(trackEndI*trackEndJ*2)+" track tiles!");
         }
     }
 

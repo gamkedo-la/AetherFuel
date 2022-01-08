@@ -108,7 +108,7 @@ function E_Bomb(x,y, xSpeed,ySpeed, launcherName)
 
     this.leaveScorchMark = function()
     {
-        console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
+        if (VERBOSE) console.log("e_Bomb hit an opponent! leaving a scroch mark on the ground");
         decals.add(this.x-bombCraterPic.width/2, this.y-bombCraterPic.height/2,
                    Math.random(Math.PI*2), 0.5, bombCraterPic);
     }
