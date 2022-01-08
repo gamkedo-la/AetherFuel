@@ -3,7 +3,7 @@ const UI_WIDTH = 200;
 const UI_SPACING = 50;
 const UI_OFFSET_X = 15;
 const UI_SHIELD_BAR_WIDTH = 100;
-const VERBOSE = false;
+let VERBOSE = false;
 
 var canvas, canvasContext, deltaTime;
 

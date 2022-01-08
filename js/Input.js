@@ -36,6 +36,7 @@ const KEY_Q = 81;
 const KEY_R = 82;
 const KEY_T = 84;
 const KEY_N = 78;
+const KEY_V = 86; // toggle verbose flag
 
 const KEY_ESC = 27;
 
@@ -123,6 +124,9 @@ function keyReleased(evt)
             if (currentLevelCountDown < -deltaTime)  {    
                 paused = !paused;            
             }
+        }
+        else if (evt.keyCode == KEY_V) {
+            VERBOSE = !VERBOSE
         }
         else if (evt.keyCode == KEY_NUM_ROW_1) {
             debugFollowAI = !debugFollowAI;
