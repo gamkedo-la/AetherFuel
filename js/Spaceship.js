@@ -19,6 +19,33 @@ const SHIELD_RADIUS = 2/3 * 40;
 
 var maxLapsPassedByASpaceship = 0;
 
+
+function ShieldAnimation() {
+	let timer = 0;
+	let currentFrame = 0;
+	const frames = 6;
+	this.draw = function(x, y, angle) {
+		drawBitmapFromSpriteSheetCenteredWithRotation(
+			gravitonShieldSheet,
+			currentFrame,
+			56, 55,
+			x, y, angle,
+			56, 55,
+		);
+	};
+
+	this.update = function() {
+		timer += deltaTime;
+		if (timer > 40) {
+			timer = 0;
+			currentFrame += 1;
+			if (currentFrame > frames) {
+				currentFrame = 0;
+			}
+		}
+	};
+}
+
 function Spaceship(name)
 {
     this.name = name;
@@ -52,6 +79,7 @@ function Spaceship(name)
     this.numAmmo = 5;
 
     this.shieldLevel = MAX_SHIELD_LEVEL;
+	this.shieldAnimation = new ShieldAnimation();
 
     this.currentTrackType = undefined;
 
@@ -71,6 +99,9 @@ function Spaceship(name)
 
 Spaceship.prototype.update = function()
 {
+	if (this.checkIfHasShield()) {
+		this.shieldAnimation.update();
+	}
     this.move();
 }
 
@@ -392,7 +423,7 @@ Spaceship.prototype.draw = function()
 
         if (this.checkIfHasShield())
         {
-            colorCircleOutline(this.x, this.y, SHIELD_RADIUS, "red");
+			this.shieldAnimation.draw(this.x, this.y, this.ang);
         }
     }
 }
