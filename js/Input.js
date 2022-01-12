@@ -128,10 +128,10 @@ function keyReleased(evt)
         else if (evt.keyCode == KEY_V) {
             VERBOSE = !VERBOSE
         }
-        else if (evt.keyCode == KEY_NUM_ROW_1) {
-            if (debugAIMode) debugFollowAI = !debugFollowAI;
+        else if (evt.keyCode == KEY_NUM_ROW_1 && debugAIMode) {
+            debugFollowAI = !debugFollowAI;
         }
-        else if (evt.keyCode == KEY_NUM_ROW_2)
+        else if (evt.keyCode == KEY_NUM_ROW_2 && DEBUG_PLAYER)
         {
             player.speed = 0;
             player.slideX = 0;
@@ -141,6 +141,9 @@ function keyReleased(evt)
             debugQuarterRotNum++;
             if (debugQuarterRotNum == 4) debugQuarterRotNum = 0;
         }
+        else if (evt.keyCode == KEY_NUM_ROW_1) loadLevel(0);
+        else if (evt.keyCode == KEY_NUM_ROW_2) loadLevel(1);
+        else if (evt.keyCode == KEY_NUM_ROW_3) loadLevel(2);
     }
     else
     {

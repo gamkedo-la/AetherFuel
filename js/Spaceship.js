@@ -217,6 +217,7 @@ Spaceship.prototype.getWaypointForPosition = function()
 
 Spaceship.prototype.launchAttack = function()
 {
+    if (!countDown()) return;
     if (this.fire) return;
     if (this.stunned) return;
     if (this.numAmmo <= 0) return;

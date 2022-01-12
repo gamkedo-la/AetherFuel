@@ -377,7 +377,7 @@ function Editor()
     {
         if (!editorMode)
         {
-            if (keyCode == KEY_TAB)
+            if (keyCode == KEY_TAB && isEditorModeAccessible)
             {
                 editorMode = true;
                 trackGrid = JSON.parse(levels[currentLevelIdx]).track.slice();
@@ -470,7 +470,7 @@ function Editor()
                 currentLevel.track = trackGrid.slice();
                 currentLevel.firstWaypoint = firstWaypoint;
                 //currentLevel.decalData = decalData;
-                if (VERBOSE) console.log(JSON.stringify(currentLevel));
+                console.log(JSON.stringify(currentLevel));
                 break;
 
             case KEY_TAB:

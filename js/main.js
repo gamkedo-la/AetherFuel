@@ -46,6 +46,8 @@ var levelToTransitionTo = 0;
 var transitionAlpha = 0;
 var transitioningTime = 0;
 
+var isEditorModeAccessible = true;
+
 window.onload = function()
 {
     canvas = document.getElementById("gameCanvas");
@@ -369,14 +371,16 @@ function drawUI()
         4 * UI_OFFSET_X + SHIELD_RADIUS * 2,  // ebombPic.width,
         offsetY + 30,
         'red', 40);
+
+    colorText(
+        "Space Key",
+        UI_OFFSET_X,  // ebombPic.width,
+        offsetY + 60,
+        'red', 20);
     
-    offsetY += ebombPic.height + UI_SPACING;
+    offsetY += ebombPic.height + UI_SPACING + 20;
     
     // Draw Shield Level
-    // colorCircleOutline(
-    //     UI_OFFSET_X + SHIELD_RADIUS,
-    //     offsetY + SHIELD_RADIUS, SHIELD_RADIUS, "red");
-
     drawBitmapFromSpriteSheetCenteredWithRotation(
 			gravitonShieldSheet,
 			0,
