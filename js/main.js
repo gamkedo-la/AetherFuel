@@ -32,7 +32,7 @@ let puffOfSmoke;
 let bulletManager;
 let testE_Bomb;
 
-var debugAIMode = true;
+var debugAIMode = false;
 var debugFreezeAI = false;
 var debugFreezeAIButOne = false;
 var debugFollowAI = false;
@@ -373,9 +373,17 @@ function drawUI()
     offsetY += ebombPic.height + UI_SPACING;
     
     // Draw Shield Level
-    colorCircleOutline(
-        UI_OFFSET_X + SHIELD_RADIUS,
-        offsetY + SHIELD_RADIUS, SHIELD_RADIUS, "red");
+    // colorCircleOutline(
+    //     UI_OFFSET_X + SHIELD_RADIUS,
+    //     offsetY + SHIELD_RADIUS, SHIELD_RADIUS, "red");
+
+    drawBitmapFromSpriteSheetCenteredWithRotation(
+			gravitonShieldSheet,
+			0,
+			56, 55,
+			UI_OFFSET_X + SHIELD_RADIUS, offsetY + SHIELD_RADIUS, 0,
+			56, 55,
+    );
 
     colorRect(2 * UI_OFFSET_X + SHIELD_RADIUS * 2, offsetY + SHIELD_RADIUS - 10, UI_SHIELD_BAR_WIDTH, 20, "grey");
     

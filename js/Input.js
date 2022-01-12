@@ -96,7 +96,7 @@ function keyReleased(evt)
     {
         keySet(evt, player, false);
         
-        if (evt.keyCode == KEY_F)
+        if (evt.keyCode == KEY_F && debugAIMode)
         {
             if (debugFreezeAI)
             {
@@ -129,7 +129,7 @@ function keyReleased(evt)
             VERBOSE = !VERBOSE
         }
         else if (evt.keyCode == KEY_NUM_ROW_1) {
-            debugFollowAI = !debugFollowAI;
+            if (debugAIMode) debugFollowAI = !debugFollowAI;
         }
         else if (evt.keyCode == KEY_NUM_ROW_2)
         {
