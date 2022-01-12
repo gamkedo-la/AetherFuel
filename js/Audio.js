@@ -228,7 +228,7 @@ function AudioManager() {
 		this.play = function() {
 			if (VERBOSE) console.log("Playing audio " + fileNameWithPath);
 			audioFile.currentTime = 0;
-			return didInteract ? audioFile.play() : null;
+			return audioFile.play();
 		}
 
 		this.stop = function() {

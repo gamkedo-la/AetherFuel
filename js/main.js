@@ -46,7 +46,7 @@ var levelToTransitionTo = 0;
 var transitionAlpha = 0;
 var transitioningTime = 0;
 
-var isEditorModeAccessible = true;
+var isEditorModeAccessible = false;
 
 window.onload = function()
 {
@@ -57,8 +57,8 @@ window.onload = function()
 
     colorRect(0, 0, canvas.width, canvas.height, "black");
     colorText("Loading...", canvas.width / 2, canvas.height / 2, "white");
-    loadImages();
     AudioMan.init();
+    loadImages();
 
     // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
 }
@@ -129,6 +129,7 @@ function loadLevel(whichLevel)
     currentLevelIdx = whichLevel;
 
     AudioMan.reset();
+    AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)
 
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
