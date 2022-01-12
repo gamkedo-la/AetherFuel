@@ -5,6 +5,8 @@ var tireTrackPic = document.createElement("img");
 var neonLinePic = document.createElement("img");
 var waypointPic = document.createElement("img");
 var bombCraterPic = document.createElement("img");
+var stunnedLightriderSpriteSheet = document.createElement("img");
+var stunnedDarktravelerSpriteSheet = document.createElement("img");
 var stunnedOpponentSpriteSheet = document.createElement("img");
 var cracksPic = document.createElement("img");
 var gravelPic = document.createElement("img");
@@ -52,7 +54,9 @@ function loadImages()
         {varName: playerPic, theFile: "spaceship_40x40.png"},
 		{varName: darkTravelerPic, theFile: "darktraveler.png"},
 		{varName: lightRiderPic, theFile: "lightrider.png"},
-        {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/stunnedOpponentSheet.png"},
+        {varName: stunnedLightriderSpriteSheet, theFile: "stunnedOpponent/lightrider_stunned.png"},
+        {varName: stunnedDarktravelerSpriteSheet, theFile: "stunnedOpponent/darktraveler_stunned.png"},
+        {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/spaceship_stunned.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
         {varName: neonLinePic, theFile: "neonLine.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},

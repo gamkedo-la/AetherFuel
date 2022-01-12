@@ -14,8 +14,8 @@ var miniMap = new MiniMap();
 
 var paused = false;
 
-var opponents = [new Opponent("Opponent 1", lightRiderPic), 
-                 new Opponent("Opponent 2", darkTravelerPic)];
+var opponents = [new Opponent("Opponent 1", lightRiderPic, stunnedLightriderSpriteSheet), 
+                 new Opponent("Opponent 2", darkTravelerPic, stunnedDarktravelerSpriteSheet)];
 
 var allSpaceships = opponents.concat([player]);
 

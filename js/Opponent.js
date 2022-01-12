@@ -12,7 +12,7 @@ const MIN_TIME_SINCE_LAST_ATTACK = 1000.0;  // in milliseconds
 const MAX_TIME_SINCE_LAST_ATTACK = 3000.0;  // in milliseconds
 const FIELD_OF_SHOOT = 20.0 * Math.PI / 180;  // in rads
 
-function Opponent(name, pic)
+function Opponent(name, pic, stunnedPic)
 {
     Spaceship.call(this, name);
 
@@ -31,6 +31,7 @@ function Opponent(name, pic)
 
     this.timeSinceLastTargetSelection = 0.0;
 	this.pic = pic;
+    this.stunnedPic = stunnedPic;
     this.timeSinceLastBumpToWall = MIN_TIME_SINCE_LAST_BUMP_TO_WALL;
 
     this.maxDistToProbForWall = 3 * TRACK_W;

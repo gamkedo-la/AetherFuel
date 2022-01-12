@@ -12,7 +12,7 @@ const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
 const EBOMB_SPEED = 10;
 
-const MAX_NUM_AMMO = 5;
+const MAX_NUM_AMMO = 2;
 const MAX_SHIELD_LEVEL = 3;
 
 const SHIELD_RADIUS = 2/3 * 40;
@@ -76,7 +76,7 @@ function Spaceship(name)
     this.stunnedPic = stunnedOpponentSpriteSheet;
 
     this.fire = false;
-    this.numAmmo = 5;
+    this.numAmmo = 2;
 
     this.shieldLevel = MAX_SHIELD_LEVEL;
 	this.shieldAnimation = new ShieldAnimation();
