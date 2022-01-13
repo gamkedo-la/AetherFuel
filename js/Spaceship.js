@@ -36,7 +36,7 @@ function ShieldAnimation() {
 
 	this.update = function() {
 		timer += deltaTime;
-		if (timer > 40) {
+		if (timer > 100*(2/3)) {
 			timer = 0;
 			currentFrame += 1;
 			if (currentFrame >= frames) {
