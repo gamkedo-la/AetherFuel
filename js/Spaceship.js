@@ -39,7 +39,7 @@ function ShieldAnimation() {
 		if (timer > 40) {
 			timer = 0;
 			currentFrame += 1;
-			if (currentFrame > frames) {
+			if (currentFrame >= frames) {
 				currentFrame = 0;
 			}
 		}
