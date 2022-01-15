@@ -65,6 +65,8 @@ function Spaceship(name)
     this.slideX = 0;
     this.slideY = 0;
 
+    this.shouldLeaveCollisionDecal = true;
+
     this.currentWeaponState = 'E_Bomb';
     this.stunned = false;
     this.currentStunnedSheetIndex = 0;
@@ -123,7 +125,12 @@ Spaceship.prototype.move = function()
     if (decals)
     {
         // FIXME track alpha could check accel/turn state for skids
-        let tireTrackAlpha = 0.1;  // barely visible
+        let tireTrackAlpha = 0.025;  // barely visible
+
+        if (this.holdTurnLeft || this.holdTurnRight) tireTrackAlpha += 0.05; // Add some if you're turning
+        if (Math.abs(this.slideX) + Math.abs(this.slideY) > 0.5) tireTrackAlpha += 0.1; // Add a lot if you're sliding
+        if (this.holdGas || this.holdReverse) tireTrackAlpha += 0.025; // Add some more if you're accelerating
+
         if (this.dualDecalDist) { 
             let leftx = this.dualDecalDist * Math.cos(this.ang - Math.PI/2);
             let lefty = this.dualDecalDist * Math.sin(this.ang - Math.PI/2);
@@ -328,7 +335,9 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             var trackY = TRACK_H * Math.floor(currentTrackIndex / trackNumCols) + TRACK_H / 2;
     
             if (((trackX - this.x) * (trackX - this.x)) + ((trackY - this.y) * (trackY - this.y)) < TRACK_W * TRACK_W / 4) {
-                if (WALL_COLLISIONS_LEAVE_DECALS) {
+                if (WALL_COLLISIONS_LEAVE_DECALS && this.shouldLeaveCollisionDecal) {
+                    this.shouldLeaveCollisionDecal = false;
+                    setTimeout(() => { this.shouldLeaveCollisionDecal = true; }, 500);
                     if (VERBOSE) console.log("colliding with a wall! that left a mark!");
                     decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
                 }
@@ -340,7 +349,8 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             }
         }
         else {
-            if (WALL_COLLISIONS_LEAVE_DECALS) {
+            if (WALL_COLLISIONS_LEAVE_DECALS && this.shouldLeaveCollisionDecal) {
+                setTimeout(() => { this.shouldLeaveCollisionDecal = true; }, 500);
                 if (VERBOSE) console.log("colliding with a wall! that left a mark!");
                 decals.add(this.x-16,this.y-16,this.ang,0.5,bombCraterPic);
             }
