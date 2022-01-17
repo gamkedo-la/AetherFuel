@@ -46,7 +46,7 @@ var levelToTransitionTo = 0;
 var transitionAlpha = 0;
 var transitioningTime = 0;
 
-var isEditorModeAccessible = false;
+var isEditorModeAccessible = true;
 
 window.onload = function()
 {
@@ -188,7 +188,7 @@ function countDown(reset=false)
 
 function updateAll()
 {
-    if (!editorMode)
+    if (!editorMode && !menuMode)
     {
         if (!paused && !transitioning) {
             gameUpdateAll();
@@ -197,6 +197,11 @@ function updateAll()
         }
         gameDrawAll(); 
         AudioMan.update();
+    }
+    else if (menuMode)
+    {
+        // Menu stuff
+        mainMenu.draw();
     }
     else
     {

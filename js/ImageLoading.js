@@ -15,6 +15,7 @@ var rubblePic = document.createElement("img");
 var ebombPic = document.createElement("img");
 var streetlightPic = document.createElement("img");
 var gravitonShieldSheet = document.createElement("img");
+var levelOnePic = document.createElement("img");
 
 var trackPix = new Array();
 var roadPix = new Array();
@@ -68,6 +69,7 @@ function loadImages()
         {varName: ebombPic, theFile: "ebomb.png"},
 		{varName: streetlightPic, theFile: "streetlight.png"},
 		{varName: gravitonShieldSheet, theFile: "gravitonShieldSheet.png"},
+		{varName: levelOnePic, theFile: "level1.png"},
         {trackType: TRACK_ROAD, level: LEVEL_SAND, theFile: "sand.png"},
         {trackType: TRACK_ROAD, level: LEVEL_ICE, theFile: "ice2.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},

@@ -154,6 +154,7 @@ function keyReleased(evt)
 function handleClick(evt)
 {
     didInteract = true;
+    if (menuMode) mainMenu.handleMouseClick();
     if (!editorMode){ return; }
     editor.click();
 }
@@ -179,6 +180,10 @@ function updateMousePos(evt)
     {
         mouseX =  (mouseOnScreenX - (canvas.width + UI_WIDTH) / 2) / camera.zoom + camera.panX;
         mouseY = mouseOnScreenY / camera.zoom + camera.panY;
+    }
+    else if (menuMode)
+    {
+        mainMenu.handleMousePosition();
     }
     else
     {
