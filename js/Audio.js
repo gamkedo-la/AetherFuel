@@ -5,7 +5,7 @@ function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
 	const DROPOFF_MIN = 40;
-	const DROPOFF_MAX = 1200;
+	const DROPOFF_MAX = 1600;
 	const HEADSHADOW_REDUCTION = 0.5;
 	const DOPLER_SCALE = 8;
 
@@ -226,7 +226,7 @@ function AudioManager() {
 		}
 
 		this.play = function() {
-			if (VERBOSE) console.log("Playing audio " + fileNameWithPath);
+			//if (VERBOSE) console.log("Playing audio " + fileNameWithPath);
 			audioFile.currentTime = 0;
 			return audioFile.play();
 		}

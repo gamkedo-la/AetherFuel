@@ -147,7 +147,7 @@ function loadLevel(whichLevel)
     setHalfWayPoint();
 
     player.reset(playerPic);
-    player.engineSound.mixVolume *= 0.10;
+    player.engineSound.mixVolume *= 0.4;
     camera.initialize(player.x, player.y, -player.ang);
 
     var engineSounds = [

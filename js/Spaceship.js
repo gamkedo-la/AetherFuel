@@ -313,7 +313,7 @@ Spaceship.prototype.reset = function(whichPic)
     }
 
     if (this.engineSound != null) this.engineSound.stop();
-    this.engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 0.75);
+    this.engineSound = AudioMan.createSound3D(this.engineSoundFile, this, true, 1);
     this.engineSound.play();
 }
 
