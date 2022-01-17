@@ -18,23 +18,23 @@ function MainMenu()
     this.levelThreeX = 540;
     this.levelThreeY = 100;
 
-    this.isLevelOneSelected = false;
-    this.isLevelTwoSelected = false;
-    this.isLevelThreeSelected = false;
+    this.isMouseOnLevelOne = false;
+    this.isMouseOnLevelTwo = false;
+    this.isMouseOnLevelThree = false;
 
     this.draw = function()
     {
         clearScreen("black");
 
-        this.levelOneColor = this.isLevelOneSelected ? "magenta" : "LightBlue";
+        this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
         colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
         colorText("Level 1", 50, 215, "black", 50);
 
-        this.levelTwoColor = this.isLevelTwoSelected ? "magenta" : "LightBlue";
+        this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
         colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
         colorText("Level 2", 315, 215, "black", 50);
 
-        this.levelThreeColor = this.isLevelThreeSelected ? "magenta" : "LightBlue";
+        this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
         colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
         colorText("Level 3", 580, 215, "black", 50);
     }
@@ -46,54 +46,53 @@ function MainMenu()
         if (mouseOnScreenX > this.levelOneX && mouseOnScreenX < this.levelOneX + this.levelButtonWidth &&
             mouseOnScreenY > this.levelOneY && mouseOnScreenY < this.levelOneY + this.levelButtonHeight)
         {
-            this.isLevelOneSelected = true;
+            this.isMouseOnLevelOne = true;
         }
-        else if (this.isLevelOneSelected)
+        else if (this.isMouseOnLevelOne)
         {
-            this.isLevelOneSelected = false;
+            this.isMouseOnLevelOne = false;
         }
 
         if (mouseOnScreenX > this.levelTwoX && mouseOnScreenX < this.levelTwoX + this.levelButtonWidth &&
             mouseOnScreenY > this.levelTwoY && mouseOnScreenY < this.levelTwoY + this.levelButtonHeight)
         {
-            this.isLevelTwoSelected = true;
+            this.isMouseOnLevelTwo = true;
         }
-        else if (this.isLevelTwoSelected)
+        else if (this.isMouseOnLevelTwo)
         {
-            this.isLevelTwoSelected = false;
+            this.isMouseOnLevelTwo = false;
         }
         
 
         if (mouseOnScreenX > this.levelThreeX && mouseOnScreenX < this.levelThreeX + this.levelButtonWidth &&
             mouseOnScreenY > this.levelThreeY && mouseOnScreenY < this.levelThreeY + this.levelButtonHeight)
         {
-            this.isLevelThreeSelected = true;
+            this.isMouseOnLevelThree = true;
         }
-        else if (this.isLevelThreeSelected)
+        else if (this.isMouseOnLevelThree)
         {
-            this.isLevelThreeSelected = false;
+            this.isMouseOnLevelThree = false;
         }
     }
 
     this.handleMouseClick = function()
     {
-        if (this.isLevelOneSelected)
+        if (this.isMouseOnLevelOne)
         {
             menuMode = false;
-            this.isLevelOneSelected = false;
+            this.isMouseOnLevelOne = false;
             loadLevel(0);
         }
-        else if (this.isLevelTwoSelected)
+        else if (this.isMouseOnLevelTwo)
         {
             menuMode = false;
-            this.isLevelTwoSelected = false;
+            this.isMouseOnLevelTwo = false;
             loadLevel(1);
         }
-        
-        else if (this.isLevelThreeSelected)
+        else if (this.isMouseOnLevelThree)
         {
             menuMode = false;
-            this.isLevelThreeSelected = false;
+            this.isMouseOnLevelThree = false;
             loadLevel(2);
         }
     }

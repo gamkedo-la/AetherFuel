@@ -188,15 +188,12 @@ function countDown(reset=false)
 
 function updateAll()
 {
-    if (!editorMode && !menuMode)
+    if (editorMode)
     {
-        if (!paused && !transitioning) {
-            gameUpdateAll();
-        } else if (transitioning) {
-            transitionToLevel(levelToTransitionTo)
-        }
-        gameDrawAll(); 
-        AudioMan.update();
+        
+        countDown(true);
+        editorMoveAll()
+        editorDrawAll();
     }
     else if (menuMode)
     {
@@ -205,9 +202,13 @@ function updateAll()
     }
     else
     {
-        countDown(true);
-        editorMoveAll()
-        editorDrawAll();
+        if (!paused && !transitioning) {
+            gameUpdateAll();
+        } else if (transitioning) {
+            transitionToLevel(levelToTransitionTo)
+        }
+        gameDrawAll(); 
+        AudioMan.update();
     }
 }
 
