@@ -8,7 +8,7 @@ let VERBOSE = false;
 var canvas, canvasContext, deltaTime;
 
 var camera = new Camera();
-var player = new Player("Player");
+var player = new Player("Player", playerPic, stunnedOpponentSpriteSheet);
 var editor = new Editor();
 var miniMap = new MiniMap();
 

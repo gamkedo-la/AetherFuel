@@ -1,8 +1,8 @@
 const DEBUG_PLAYER = false;
 
-function Player(name)
+function Player(name, pic, stunnedPic)
 {
-    Spaceship.call(this, name);
+    Spaceship.call(this, name, pic, stunnedPic);
 
     this.setupInput = function(upKey, rightKey, downKey, leftKey, spaceKey)
     {

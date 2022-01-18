@@ -14,7 +14,7 @@ const FIELD_OF_SHOOT = 20.0 * Math.PI / 180;  // in rads
 
 function Opponent(name, pic, stunnedPic)
 {
-    Spaceship.call(this, name);
+    Spaceship.call(this, name, pic, stunnedPic);
 
     this.decalPic = neonLinePic;
     this.dualDecalDist = 20; // how far apart are the two trails?
@@ -255,7 +255,7 @@ function Opponent(name, pic, stunnedPic)
     this.superReset = this.reset;
     this.reset = function(waypoint)
     {
-        this.superReset(this.pic);
+        this.superReset();
         this.timeSinceLastAttack = 0.0;
         this.timeToWaitBeforeAttacking = -1.0;
 
