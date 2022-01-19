@@ -389,16 +389,18 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 
         if (VERBOSE) console.log(this.name + " wins!!!");
 
-        if (currentLevelIdx == levels.length - 1)
-        {
-            currentLevelIdx = 0;
-        }
-        else
-        {
-            currentLevelIdx++;
-        }
+        // if (currentLevelIdx == levels.length - 1)
+        // {
+        //     currentLevelIdx = 0;
+        // }
+        // else
+        // {
+        //     currentLevelIdx++;
+        // }
         
-        transitionToLevel(currentLevelIdx);
+        // transitionToLevel(currentLevelIdx);
+        AudioMan.reset();
+        endRaceMenu.setActive(true);
     }
     else 
     {

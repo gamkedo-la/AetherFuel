@@ -49,6 +49,27 @@ function MainMenu()
 
     this.hasSelectedLevel = false;
 
+    this.load = function()
+    {
+        menuMode = true;
+        endRaceMenu.setActive(false);
+
+        this.isMouseOnLevelOne = false;
+        this.isMouseOnLevelTwo = false;
+        this.isMouseOnLevelThree = false;
+
+        this.isMouseOnSpaceshipOne = false;
+        this.isMouseOnSpaceshipTwo = false;
+        this.isMouseOnSpaceshipThree = false;
+
+        this.isSpaceshipOneSelected = false;
+        this.isSpaceshipTwoSelected = false;
+        this.isSpaceshipThreeSelected = false;
+
+        this.isMouseOnPlayButton = false;
+        this.hasSelectedLevel = false;
+    }
+
     this.draw = function()
     {
         clearScreen("black");

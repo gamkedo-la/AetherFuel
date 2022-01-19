@@ -126,6 +126,8 @@ function transitionToLevel(whichLevel)
 
 function loadLevel(whichLevel)
 {
+    if (VERBOSE) console.log("loading " + whichLevel);
+    
     currentLevelIdx = whichLevel;
 
     AudioMan.reset();
@@ -199,6 +201,10 @@ function updateAll()
     {
         // Menu stuff
         mainMenu.draw();
+    }
+    else if (endRaceMenu.isActive)
+    {
+        endRaceMenu.draw();
     }
     else
     {
