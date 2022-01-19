@@ -59,10 +59,10 @@ function colorCircleOutline(centerX, centerY, radius, strokeColor)
     canvasContext.stroke();
 }
 
-function colorText(showWords, textX, textY, fillColor, size=30)
+function colorText(showWords, textX, textY, fillColor, size=30, myStyle="myFont")
 {
     canvasContext.fillStyle = fillColor;
-    canvasContext.font = size + "px Arial";
+    canvasContext.font = size + "px " + myStyle;
     canvasContext.fillText(showWords, textX, textY, 1000);
 }
 

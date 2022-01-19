@@ -78,15 +78,15 @@ function MainMenu()
         {
             this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
             colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-            colorText("Level 1", 50, 215, "black", 50);
+            colorText("Level 1", 50, 215, "black", 30, "myFont");
 
             this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
             colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
-            colorText("Level 2", 315, 215, "black", 50);
+            colorText("Level 2", 315, 215, "black", 30);
 
             this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
             colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
-            colorText("Level 3", 580, 215, "black", 50);
+            colorText("Level 3", 580, 215, "black", 30);
         }
         else 
         {
