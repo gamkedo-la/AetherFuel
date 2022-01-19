@@ -1,6 +1,7 @@
 var playerPic = document.createElement("img");
 var darkTravelerPic = document.createElement("img");
 var lightRiderPic = document.createElement("img");
+var elDoradoPic = document.createElement("img");
 var tireTrackPic = document.createElement("img");
 var neonLinePic = document.createElement("img");
 var waypointPic = document.createElement("img");
@@ -55,6 +56,7 @@ function loadImages()
         {varName: playerPic, theFile: "spaceship_40x40.png"},
 		{varName: darkTravelerPic, theFile: "darktraveler.png"},
 		{varName: lightRiderPic, theFile: "lightrider.png"},
+        {varName: elDoradoPic, theFile: "el-dorado.png"},
         {varName: stunnedLightriderSpriteSheet, theFile: "stunnedOpponent/lightrider_stunned.png"},
         {varName: stunnedDarktravelerSpriteSheet, theFile: "stunnedOpponent/darktraveler_stunned.png"},
         {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/spaceship_stunned.png"},
