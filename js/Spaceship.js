@@ -46,7 +46,7 @@ function ShieldAnimation() {
 	};
 }
 
-function Spaceship(name)
+function Spaceship(name, pic, stunnedPic)
 {
     this.name = name;
 
@@ -59,7 +59,6 @@ function Spaceship(name)
     this.lapsPassed = 0;
     this.isLap = false;
     this.hasReachedHalfTrack = false;
-    this.pic;
     this.startIdx = 0;
 
     this.slideX = 0;
@@ -75,7 +74,9 @@ function Spaceship(name)
     this.minStunnedSheetIndex = 0;
     this.maxStunnedSheetIndex = 2;
     this.stunnedSheetDirection = 1;
-    this.stunnedPic = stunnedOpponentSpriteSheet;
+    this.stunnedPic = stunnedPic;
+
+    this.pic = pic
 
     this.fire = false;
     this.numAmmo = 2;
@@ -265,10 +266,8 @@ Spaceship.prototype.reloadWeapon = function()
     this.numAmmo = MAX_NUM_AMMO;
 }
 
-Spaceship.prototype.reset = function(whichPic)
+Spaceship.prototype.reset = function()
 {
-    this.pic = whichPic;
-
     this.ang = -Math.PI / 2;
     this.speed = 0;
     this.lapsPassed = 0;
@@ -390,16 +389,18 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
 
         if (VERBOSE) console.log(this.name + " wins!!!");
 
-        if (currentLevelIdx == levels.length - 1)
-        {
-            currentLevelIdx = 0;
-        }
-        else
-        {
-            currentLevelIdx++;
-        }
+        // if (currentLevelIdx == levels.length - 1)
+        // {
+        //     currentLevelIdx = 0;
+        // }
+        // else
+        // {
+        //     currentLevelIdx++;
+        // }
         
-        transitionToLevel(currentLevelIdx);
+        // transitionToLevel(currentLevelIdx);
+        AudioMan.reset();
+        endRaceMenu.setActive(true);
     }
     else 
     {

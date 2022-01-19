@@ -8,7 +8,7 @@ let VERBOSE = false;
 var canvas, canvasContext, deltaTime;
 
 var camera = new Camera();
-var player = new Player("Player");
+var player = new Player("Player", playerPic, stunnedOpponentSpriteSheet);
 var editor = new Editor();
 var miniMap = new MiniMap();
 
@@ -48,6 +48,8 @@ var transitioningTime = 0;
 
 var isEditorModeAccessible = true;
 
+var myFont = new FontFace("myFont", 'url(Fonts/Dream-MMA.ttf)');
+
 window.onload = function()
 {
     canvas = document.getElementById("gameCanvas");
@@ -56,8 +58,18 @@ window.onload = function()
     canvasContext.imageSmoothingEnabled = true;
 
     colorRect(0, 0, canvas.width, canvas.height, "black");
-    colorText("Loading...", canvas.width / 2, canvas.height / 2, "white");
+    colorText("Loading...", canvas.width / 2, canvas.height / 2, "white", "Arial");
+
     AudioMan.init();
+
+    myFont.load().then(function(font){
+        // with canvas, if this is ommited won't work
+        document.fonts.add(font);  
+        document.body.style.fontFamily = 'myFont, Arial';    
+    }).catch(function(error) {
+        // error occurred
+    });  
+
     loadImages();
 
     // document.addEventListener("mouseup", function() {AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)});
@@ -126,6 +138,8 @@ function transitionToLevel(whichLevel)
 
 function loadLevel(whichLevel)
 {
+    if (VERBOSE) console.log("loading " + whichLevel);
+    
     currentLevelIdx = whichLevel;
 
     AudioMan.reset();
@@ -199,6 +213,10 @@ function updateAll()
     {
         // Menu stuff
         mainMenu.draw();
+    }
+    else if (endRaceMenu.isActive)
+    {
+        endRaceMenu.draw();
     }
     else
     {

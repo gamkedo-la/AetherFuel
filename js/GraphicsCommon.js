@@ -1,4 +1,4 @@
-function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle, width, height)
+function drawBitmapCenteredWithRotation(bitmap, xPos, yPos, angle, width=null, height=null)
 {
     canvasContext.save();
     canvasContext.translate(xPos, yPos);
@@ -37,6 +37,12 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor)
     canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
+function strokeRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor)
+{
+    canvasContext.strokeStyle = fillColor;
+    canvasContext.strokeRect(topLeftX, topLeftY, boxWidth, boxHeight);
+}
+
 function colorCircle(centerX, centerY, radius, fillColor)
 {
     canvasContext.fillStyle = fillColor;
@@ -53,10 +59,10 @@ function colorCircleOutline(centerX, centerY, radius, strokeColor)
     canvasContext.stroke();
 }
 
-function colorText(showWords, textX, textY, fillColor, size=30)
+function colorText(showWords, textX, textY, fillColor, size=30, myStyle="myFont")
 {
     canvasContext.fillStyle = fillColor;
-    canvasContext.font = size + "px Arial";
+    canvasContext.font = size + "px " + myStyle;
     canvasContext.fillText(showWords, textX, textY, 1000);
 }
 

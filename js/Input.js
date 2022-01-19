@@ -154,9 +154,10 @@ function keyReleased(evt)
 function handleClick(evt)
 {
     didInteract = true;
+    
     if (menuMode) mainMenu.handleMouseClick();
-    if (!editorMode){ return; }
-    editor.click();
+    else if (endRaceMenu.isActive) endRaceMenu.handleMouseClick();
+    else if (editorMode) editor.click();
 }
 
 function handleClickReleased(evt)
@@ -184,6 +185,10 @@ function updateMousePos(evt)
     else if (menuMode)
     {
         mainMenu.handleMousePosition();
+    }
+    else if (endRaceMenu.isActive)
+    {
+        endRaceMenu.handleMousePosition();
     }
     else
     {
