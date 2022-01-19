@@ -297,30 +297,30 @@ function Editor()
         canvasContext.globalAlpha = 0.75;
         colorRect(0, offsetY, 175, 40, "red");
         canvasContext.globalAlpha = 1.0;
-        colorText("EDITOR", 5, offsetY + 30, "black");
+        colorText("editor", 5, offsetY + 30, "black");
 
         // and some edit mode help because I keep forgetting
         var hx=5,hy= offsetY + 40,hs=17;
         
         colorRect(0, hy, 175, hs*16+5, "rgba(0,0,0,0.33)");
-        colorText("Mouse Wheel - Zoom", hx, hy+=hs, "white", 16);
-        colorText("TAB to Return", hx, hy+=hs, "white", 16);
-        colorText("0 - Starting Line", hx, hy+=hs, "white", 16);
-        colorText("1 - Road", hx, hy+=hs, "white", 16);
-        colorText("2 - Wall", hx, hy+=hs, "white", 16);
-        colorText("3 - Finish line", hx, hy+=hs, "white", 16);
-        colorText("4 - Sand With E_Bomb", hx, hy+=hs, "white", 16);
-        colorText("5 - Tree", hx, hy+=hs, "white", 16);
-        colorText("8 - Decal Paint", hx, hy+=hs, "white", 16);
-        colorText("9 - Waypoint", hx, hy+=hs, "white", 16);
-        colorText("R - Resize", hx, hy+=hs, "white", 16);
-        colorText("Z - Mirror Map", hx, hy+=hs, "white", 16);
-        colorText("X - Fill Map", hx, hy+=hs, "white", 16);
-        colorText("C - Corners", hx, hy+=hs, "white", 16);
-        colorText("E - Export", hx, hy+=hs, "white", 16);
-        colorText("Q - Delete All Waypoints", hx, hy+=hs, "white", 16);
-        colorText("T - Load a Level", hx, hy+=hs, "white", 16);
-        colorText("N - Create a new Level", hx, hy+=hs, "white", 16);
+        colorText("mouse wheel - zoom", hx, hy+=hs, "white", 16);
+        colorText("tab to return", hx, hy+=hs, "white", 16);
+        colorText("0 - starting line", hx, hy+=hs, "white", 16);
+        colorText("1 - road", hx, hy+=hs, "white", 16);
+        colorText("2 - wall", hx, hy+=hs, "white", 16);
+        colorText("3 - finish line", hx, hy+=hs, "white", 16);
+        colorText("4 - sand eith e_bomb", hx, hy+=hs, "white", 16);
+        colorText("5 - tree", hx, hy+=hs, "white", 16);
+        colorText("8 - decal paint", hx, hy+=hs, "white", 16);
+        colorText("9 - waypoint", hx, hy+=hs, "white", 16);
+        colorText("r - resize", hx, hy+=hs, "white", 16);
+        colorText("z - mirror map", hx, hy+=hs, "white", 16);
+        colorText("x - fill map", hx, hy+=hs, "white", 16);
+        colorText("c - corners", hx, hy+=hs, "white", 16);
+        colorText("w - export", hx, hy+=hs, "white", 16);
+        colorText("q - delete all waypoints", hx, hy+=hs, "white", 16);
+        colorText("t - load a level", hx, hy+=hs, "white", 16);
+        colorText("n - new level", hx, hy+=hs, "white", 16);
     }
 
     // erases the entire map and fills it with a single tile

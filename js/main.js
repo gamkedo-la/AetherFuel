@@ -344,14 +344,14 @@ function gameDrawAll()
     // Count Down
     if (currentLevelCountDown > -deltaTime)
     {
-        var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "GO!";        
+        var countDownText = currentLevelCountDown > 0 ? Math.ceil(currentLevelCountDown / deltaTime) : "go";        
         var countDownTextXPos = canvas.width / 2 + (currentLevelCountDown > 0 ? 0 : -35);
         var countDownTextYPos = canvas.height / 2;
         colorText(countDownText, countDownTextXPos, countDownTextYPos, 'red', 70);
     }
     else if (paused)
     {
-        colorText("PAUSED", canvas.width / 2 - 98, canvas.height / 2, 'red', 70);
+        colorText("paused", canvas.width / 2 - 98, canvas.height / 2, 'red', 70);
     }
 
     // Debug mouse position
@@ -398,7 +398,7 @@ function drawUI()
         'red', 40);
 
     colorText(
-        "Space Key",
+        "space key",
         UI_OFFSET_X,  // ebombPic.width,
         offsetY + 60,
         'red', 20);
@@ -423,7 +423,7 @@ function drawUI()
 
     // Indicate lap number
     colorText(
-        `Lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        `lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
         UI_OFFSET_X, offsetY,
         'red', 20);
 

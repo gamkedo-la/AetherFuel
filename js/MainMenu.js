@@ -78,19 +78,19 @@ function MainMenu()
         {
             this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
             colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-            colorText("Level 1", 50, 215, "black", 30, "myFont");
+            colorText("level 1", 50, 215, "black", 30, "myFont");
 
             this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
             colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
-            colorText("Level 2", 315, 215, "black", 30);
+            colorText("level 2", 315, 215, "black", 30);
 
             this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
             colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
-            colorText("Level 3", 580, 215, "black", 30);
+            colorText("level 3", 580, 215, "black", 30);
         }
         else 
         {
-            colorText("Select your ship!", 50, 200, "red", 50);
+            colorText("select your ship", 50, 200, "red", 50);
 
             drawBitmapCenteredWithRotation(lightRiderPicLarge, this.spaceshipOneX, this.spaceshipOneY, -Math.PI/2, lightRiderPicLarge.width, lightRiderPicLarge.height);
             if (this.isMouseOnSpaceshipOne || this.isSpaceshipOneSelected){
@@ -120,7 +120,7 @@ function MainMenu()
             {
                 var playButtonColor = this.isMouseOnPlayButton ? "magenta" : "LightBlue";
                 colorRect(this.playButtonX, this.playButtonY, this.playButtonWidth, this.playButtonHeight, playButtonColor);
-                colorText("GO!", 350, this.playButtonY + 70, "black", 50);
+                colorText("go", 350, this.playButtonY + 70, "black", 50);
             }
         }
     }
