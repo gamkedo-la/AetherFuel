@@ -1,5 +1,7 @@
 function EndRaceMenu()
 {
+    this.bgScroll = 0
+
     this.isActive = false;
 
     this.replayButtonX = 250
@@ -20,10 +22,16 @@ function EndRaceMenu()
     this.draw = function()
     {
         if (!this.isActive) return;
-        drawBitmapCenteredWithRotation(spaceBackGroundMenu, 
-            spaceBackGroundMenu.width / 2,
-            spaceBackGroundMenu.height / 2, 0,
-            spaceBackGroundMenu.width, spaceBackGroundMenu.height);
+        
+        this.bgScroll++;
+
+        var wrappedScroll = this.bgScroll % spaceBackGroundMenu.height;
+
+        canvasContext.drawImage(spaceBackGroundMenu, 0, wrappedScroll, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll,
+            0, 0, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll);
+        
+        canvasContext.drawImage(spaceBackGroundMenu, 0, spaceBackGroundMenu.height-wrappedScroll);    
+
 
         var playerPositionText = playerPositionInRace + "th";
         if (playerPositionInRace == 1) playerPositionText = playerPositionInRace + "st";

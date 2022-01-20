@@ -2,6 +2,8 @@ var menuMode = true;
 
 function MainMenu()
 {
+    this.bgScroll = 0.0;
+
     this.levelOneColor = "LightBlue";
     this.levelTwoColor = "LightBlue";
     this.levelThreeColor = "LightBlue";
@@ -72,16 +74,25 @@ function MainMenu()
 
     this.draw = function()
     {
-        drawBitmapCenteredWithRotation(spaceBackGroundMenu, 
-                                       spaceBackGroundMenu.width / 2,
-                                       spaceBackGroundMenu.height / 2, 0,
-                                       spaceBackGroundMenu.width, spaceBackGroundMenu.height);
+        this.bgScroll++;
+
+        var wrappedScroll = this.bgScroll % spaceBackGroundMenu.height;
+
+        canvasContext.drawImage(spaceBackGroundMenu, 0, wrappedScroll, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll,
+            0, 0, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll);
+        
+        canvasContext.drawImage(spaceBackGroundMenu, 0, spaceBackGroundMenu.height-wrappedScroll);    
 
         if (!this.hasSelectedLevel)
         {
             this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
             colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-            colorText("level 1", 50, 215, "black", 30, "myFont");
+            colorTextCenter("level 1",
+                            this.levelOneX + this.levelButtonWidth/2, 
+                            this.levelOneY + this.levelButtonHeight/2,
+                            "black", 30, "myFont");
+
+            // colorText("level 1", 50, 215, "black", 30, "myFont");
 
             this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
             colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);

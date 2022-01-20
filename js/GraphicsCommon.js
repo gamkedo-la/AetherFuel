@@ -66,6 +66,16 @@ function colorText(showWords, textX, textY, fillColor, size=30, myStyle="myFont"
     canvasContext.fillText(showWords, textX, textY, 1000);
 }
 
+function colorTextCenter(showWords, textX, textY, fillColor, size=30, myStyle="myFont")
+{
+    var wasAlign = canvasContext.textAlign;
+    canvasContext.textAlign = "center";
+
+    // var metrics = measureText(showWords);
+    colorText(showWords, textX, textY, fillColor, size, myStyle);
+    canvasContext.textAlign = wasAlign;
+}
+
 function lineBetweenTwoPoints(x1, y1, x2, y2, color)
 {
     canvasContext.strokeStyle = color;
