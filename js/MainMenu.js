@@ -1,5 +1,22 @@
 var menuMode = true;
 
+const CREDITS_X = 200;
+const CREDITS_Y = 360;
+const CREDITS_H = 14; // font size and line height
+const CREDITS_RGBA = "rgba(30,80,255,1.0)";
+const CREDITS = [ // note: this font is missing glyphs
+    "A HomeTeam GameDev Game",
+    "",
+    "Credits",
+    "",
+    "asdf - asdf asdf asdf asdf asdf",
+    "asdf - asdf asdf asdf asdf asdf",
+    "asdf - asdf asdf asdf asdf asdf",
+    "asdf - asdf asdf asdf asdf asdf",
+    "asdf - asdf asdf asdf asdf asdf",
+    "asdf - asdf asdf asdf asdf asdf"];
+
+
 function MainMenu()
 {
     this.bgScroll = 0.0;
@@ -98,6 +115,12 @@ function MainMenu()
             this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
             colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
             colorText("level 3", 580, 215, "black", 30);
+
+            // CREDITS
+            for (let y=CREDITS_Y,n=0; n<CREDITS.length; n++) {
+                colorText(CREDITS[n].toLowerCase(),CREDITS_X,y+=CREDITS_H,CREDITS_RGBA,CREDITS_H);
+            }
+
         }
         else 
         {
