@@ -72,7 +72,10 @@ function MainMenu()
 
     this.draw = function()
     {
-        clearScreen("black");
+        drawBitmapCenteredWithRotation(spaceBackGroundMenu, 
+                                       spaceBackGroundMenu.width / 2,
+                                       spaceBackGroundMenu.height / 2, 0,
+                                       spaceBackGroundMenu.width, spaceBackGroundMenu.height);
 
         if (!this.hasSelectedLevel)
         {

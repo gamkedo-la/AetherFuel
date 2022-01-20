@@ -20,7 +20,10 @@ function EndRaceMenu()
     this.draw = function()
     {
         if (!this.isActive) return;
-        clearScreen("black");
+        drawBitmapCenteredWithRotation(spaceBackGroundMenu, 
+            spaceBackGroundMenu.width / 2,
+            spaceBackGroundMenu.height / 2, 0,
+            spaceBackGroundMenu.width, spaceBackGroundMenu.height);
 
         var playerPositionText = playerPositionInRace + "th";
         if (playerPositionInRace == 1) playerPositionText = playerPositionInRace + "st";
