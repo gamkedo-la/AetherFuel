@@ -74,30 +74,27 @@ function MainMenu()
 
     this.draw = function()
     {
+        // draw the space background
         this.bgScroll++;
-
         var wrappedScroll = this.bgScroll % spaceBackGroundMenu.height;
-
         canvasContext.drawImage(spaceBackGroundMenu, 0, wrappedScroll, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll,
             0, 0, spaceBackGroundMenu.width, spaceBackGroundMenu.height - wrappedScroll);
-        
         canvasContext.drawImage(spaceBackGroundMenu, 0, spaceBackGroundMenu.height-wrappedScroll);    
 
+        // draw the logo
+        canvasContext.drawImage(logoPic,0,0);
+
+        // draw the level/ship select menus
         if (!this.hasSelectedLevel)
         {
             this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
             colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-            colorTextCenter("level 1",
-                            this.levelOneX + this.levelButtonWidth/2, 
-                            this.levelOneY + this.levelButtonHeight/2,
+            colorTextCenter("level 1",this.levelOneX + this.levelButtonWidth/2, 
+                            215,//this.levelOneY + this.levelButtonHeight/2,
                             "black", 30, "myFont");
-
-            // colorText("level 1", 50, 215, "black", 30, "myFont");
-
             this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
             colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
             colorText("level 2", 315, 215, "black", 30);
-
             this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
             colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
             colorText("level 3", 580, 215, "black", 30);
