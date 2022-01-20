@@ -27,15 +27,15 @@ function EndRaceMenu()
         else if (playerPositionInRace == 2) playerPositionText = playerPositionInRace + "nd";
         else if (playerPositionInRace == 3) playerPositionText = playerPositionInRace + "rd";
 
-        colorText("You were " + playerPositionText, 110, 200, "red", 50);
+        colorText("you were " + playerPositionText, 110, 200, "red", 50);
 
         var replayButtonColor = this.isMouseOnReplayButton ? "magenta" : "LightBlue";
         colorRect(this.replayButtonX, this.replayButtonY, this.replayButtonWidth, this.replayButtonHeight, replayButtonColor);
-        colorText("Replay", 320, this.replayButtonY + 65, "black", 40);
+        colorText("replay", 320, this.replayButtonY + 65, "black", 40);
 
         var menuButtonColor = this.isMouseOnMenuButton ? "magenta" : "LightBlue";
         colorRect(this.menuButtonX, this.menuButtonY, this.menuButtonWidth, this.menuButtonHeight, menuButtonColor);
-        colorText("Menu", 330, this.menuButtonY + 65, "black", 40);
+        colorText("menu", 330, this.menuButtonY + 65, "black", 40);
     }
 
     this.setActive = function(value)
