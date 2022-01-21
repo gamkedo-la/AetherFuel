@@ -1,20 +1,7 @@
 var menuMode = true;
+var showCredits = false;
 
-const CREDITS_X = 200;
-const CREDITS_Y = 410;
-const CREDITS_H = 14; // font size and line height
 const CREDITS_RGBA = "rgba(30,80,255,1.0)";
-const CREDITS = [ // note: this font is missing glyphs
-    "A HomeTeam GameDev Game",
-    "",
-    "Credits",
-    "",
-    "asdf - asdf asdf asdf asdf asdf",
-    "asdf - asdf asdf asdf asdf asdf",
-    "asdf - asdf asdf asdf asdf asdf",
-    "asdf - asdf asdf asdf asdf asdf",
-    "asdf - asdf asdf asdf asdf asdf",
-    "asdf - asdf asdf asdf asdf asdf"];
 
 
 function MainMenu()
@@ -106,23 +93,23 @@ function MainMenu()
         // draw the level/ship select menus
         if (!this.hasSelectedLevel)
         {
-            this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
-            colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-            colorTextCenter("level 1",this.levelOneX + this.levelButtonWidth/2, 
-                            215,//this.levelOneY + this.levelButtonHeight/2,
-                            "black", 30, "myFont");
-            this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
-            colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
-            colorText("level 2", 315, 215, "black", 30);
-            this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
-            colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
-            colorText("level 3", 580, 215, "black", 30);
+            if(showCredits) {
+                drawCredits();
+            } else {
+                this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
+                colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
+                colorTextCenter("level 1",this.levelOneX + this.levelButtonWidth/2, 
+                                215,//this.levelOneY + this.levelButtonHeight/2,
+                                "black", 30, "myFont");
+                this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
+                colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
+                colorText("level 2", 315, 215, "black", 30);
+                this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
+                colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
+                colorText("level 3", 580, 215, "black", 30);
 
-            // CREDITS
-            for (let y=CREDITS_Y,n=0; n<CREDITS.length; n++) {
-                colorText(CREDITS[n].toLowerCase(),CREDITS_X,y+=CREDITS_H,CREDITS_RGBA,CREDITS_H);
+                colorText("Press C to show credits".toLowerCase(),20,canvas.height-20,CREDITS_RGBA);
             }
-
         }
         else 
         {
@@ -326,3 +313,81 @@ function MainMenu()
 }
 
 var mainMenu = new MainMenu();
+
+function drawCredits() {
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
+    canvasContext.fillStyle = 'cyan';
+
+    var lineX = 20;
+    var lineY = 20;
+    var creditsSize = 17;
+    var lineSkip = creditsSize+5;
+    canvasContext.font = creditsSize+"px Helvetica";
+    for(var i=0;i<creditsList.length;i++) {
+        canvasContext.fillText(creditsList[i], lineX, lineY+=lineSkip);
+    }
+}
+
+var creditsList = [
+"Ian Cherabier: Project lead, core gameplay, AI waypoint system, main track editor functionality, minimap, main level design, core collision system, real-time spatial debugging visualizations, asset integration, surface backgrounds, calculating relative vehicle places, menu with scrolling background image, custom font selection",
+"Michael \"Misha\" Fewkes: Audio manager, dynamic doppler sounds, relative sound source panning, engine sounds, sound mixing",
+"Stebs: Background music, stun bomb functionality and track pickup, smoke trail, player shots, stun effect animation, sounds (e-bomb, pickup), waypoint authoring improvements, spiral level track",
+"Gonzalo Delgado: Light rider and dark traveler ships, graviton shield animation, e-bomb art, palm tree sprite",
+"Christer \"McFunkypants\" Kaitila: Track cached rendering optimization, decal system, assorted decal effects authoring, light trails, track editor UI buttons, streetlights and rubble decorations, font fix, credit renderer",
+"Randy Tan Shaoxian: Speed-based zoom, countdown at start, lap indicator, laps as part of level data, pause toggle",
+"H Trayford: Level fade transition effect, decal optimization, circle-circle collision support, debugging cleanup",
+"Ashleigh M.: El Dorado comet slider art",
+"Tyler Funk: Camera rotation interpolatation",
+" ",
+"Game developed by members of HomeTeamGameDev.com Apollo Group",
+" ",
+"- Press C or click anywhere to return -"
+];
+
+function lineWrapCredits() { // note: gets calling immediately after definition!
+  const newCut = [];
+  var maxLineChar = 95;
+  var findEnd;
+
+  for(let i = 0; i < creditsList.length; i++) {
+    const currentLine = creditsList[i];
+    for(let j = 0; j < currentLine.length; j++) {
+      /*const aChar = currentLine[j];
+      if(aChar === ":") {
+        if(i !== 0) {
+          newCut.push("\n");
+        }
+
+        newCut.push(currentLine.substring(0, j + 1));
+        newCut.push(currentLine.substring(j + 2, currentLine.length));
+        break;
+      } else*/ if(j === currentLine.length - 1) {
+        if((i === 0) || (i >= creditsList.length - 2)) {
+          newCut.push(currentLine);
+        } else {
+          newCut.push(currentLine.substring(0, currentLine.length));
+        }
+      }
+    }
+  }
+
+  const newerCut = [];
+  for(var i=0;i<newCut.length;i++) {
+    while(newCut[i].length > 0) {
+      findEnd = maxLineChar;
+      if(newCut[i].length > maxLineChar) {
+        for(var ii=findEnd;ii>0;ii--) {
+          if(newCut[i].charAt(ii) == " ") {
+            findEnd=ii;
+            break;
+          }
+        }
+      }
+      newerCut.push(newCut[i].substring(0, findEnd));
+      newCut[i] = newCut[i].substring(findEnd, newCut[i].length);
+    }
+  }
+
+  creditsList = newerCut;
+}
+lineWrapCredits(); // note: calling immediately as part of init, outside the function

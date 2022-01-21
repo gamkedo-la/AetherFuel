@@ -92,6 +92,12 @@ function keyPressed(evt)
 
 function keyReleased(evt)
 {   
+    if(menuMode) {
+        if (evt.keyCode == KEY_C) {
+            showCredits = !showCredits;
+        }
+        return;
+    }
     if (!editorMode)
     {
         keySet(evt, player, false);
@@ -162,6 +168,13 @@ function handleClick(evt)
 
 function handleClickReleased(evt)
 {
+    if(menuMode) {
+        if(showCredits) {
+            showCredits = !showCredits;
+        }
+        return;
+    }
+
     if (!editorMode){ return; }
     editor.releaseClick();
 }
