@@ -22,6 +22,7 @@ var gravitonShieldSheet = document.createElement("img");
 var levelOnePic = document.createElement("img");
 var spaceBackGroundMenu = document.createElement("img");
 var logoPic = document.createElement("img");
+var uiPic = document.createElement("img");
 
 var trackPix = new Array();
 var roadPix = new Array();
@@ -81,7 +82,8 @@ function loadImages()
 		{varName: gravitonShieldSheet, theFile: "gravitonShieldSheet.png"},
 		{varName: levelOnePic, theFile: "level1.png"},
 		{varName: spaceBackGroundMenu, theFile: "space_background_menu.png"},
-        {varName: logoPic, theFile: "aether-fuel-logo.png"},
+        {varName: logoPic, theFile: "logo.png"},
+        {varName: uiPic, theFile: "UI_Back.png"},
         {trackType: TRACK_ROAD, level: LEVEL_SAND, theFile: "sand.png"},
         {trackType: TRACK_ROAD, level: LEVEL_ICE, theFile: "ice2.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},

@@ -1,7 +1,7 @@
 var menuMode = true;
 
 const CREDITS_X = 200;
-const CREDITS_Y = 360;
+const CREDITS_Y = 410;
 const CREDITS_H = 14; // font size and line height
 const CREDITS_RGBA = "rgba(30,80,255,1.0)";
 const CREDITS = [ // note: this font is missing glyphs
@@ -29,13 +29,13 @@ function MainMenu()
     this.levelButtonHeight = 200;
 
     this.levelOneX = 10;
-    this.levelOneY = 100;
+    this.levelOneY = 150;
 
     this.levelTwoX = 275;
-    this.levelTwoY = 100;
+    this.levelTwoY = 150;
 
     this.levelThreeX = 540;
-    this.levelThreeY = 100;
+    this.levelThreeY = 150;
 
     this.spaceshipOneX = 200;
     this.spaceshipOneY = 350;
@@ -99,7 +99,9 @@ function MainMenu()
         canvasContext.drawImage(spaceBackGroundMenu, 0, spaceBackGroundMenu.height-wrappedScroll);    
 
         // draw the logo
-        canvasContext.drawImage(logoPic,0,0);
+        drawBitmapCenteredWithRotation(logoPic, canvas.width / 2, logoPic.height / 2 + 20);
+        drawBitmapCenteredWithRotation(lightRiderPicLarge, lightRiderPicLarge.width / 2 + 50, logoPic.height / 2 + 20, 0);
+        drawBitmapCenteredWithRotation(darkTravelerPicLarge, canvas.width - darkTravelerPicLarge.width / 2 - 50, logoPic.height / 2 + 20, Math.PI);
 
         // draw the level/ship select menus
         if (!this.hasSelectedLevel)
