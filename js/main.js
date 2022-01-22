@@ -430,8 +430,8 @@ function drawUI()
     canvasContext.drawImage(trackPix[TRACK_GOAL], UI_OFFSET_X, offsetY,)
     colorText(
         `${player.lapsPassed + 1} / ${currentLevel.laps}`,
-        UI_OFFSET_X + TRACK_W + 20, offsetY + 33,
-        'red', 40);
+        UI_OFFSET_X + TRACK_W + 20, offsetY + 30,
+        'red', 30);
 
     offsetY += 70 + UI_SPACING;
 

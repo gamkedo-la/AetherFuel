@@ -62,7 +62,7 @@ function Camera()
 
         if (!editorMode)
         {
-            canvasContext.translate(0, canvas.height * 0.95);
+            canvasContext.translate(0, canvas.height * 0.85);
         }
         
         canvasContext.scale(this.zoom, this.zoom);
