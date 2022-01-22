@@ -16,13 +16,13 @@ function MainMenu()
     this.levelButtonHeight = 200;
 
     this.levelOneX = 10;
-    this.levelOneY = 150;
+    this.levelOneY = 220;
 
     this.levelTwoX = 275;
-    this.levelTwoY = 150;
+    this.levelTwoY = 220;
 
     this.levelThreeX = 540;
-    this.levelThreeY = 150;
+    this.levelThreeY = 220;
 
     this.spaceshipOneX = 200;
     this.spaceshipOneY = 350;
@@ -95,29 +95,50 @@ function MainMenu()
         {
             if(showCredits) {
                 drawCredits();
-            } else {
-                this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
-                colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
-                colorTextCenter("level 1",this.levelOneX + this.levelButtonWidth/2, 
-                                this.levelOneY + this.levelButtonHeight/2,
-                                "black", 30, "myFont");
-                this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
-                colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
-                colorTextCenter("level 2",this.levelTwoX + this.levelButtonWidth/2, 
-                                this.levelOneY + this.levelButtonHeight/2,
-                                "black", 30, "myFont");
-                this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
-                colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
-                colorTextCenter("level 3",this.levelThreeX + this.levelButtonWidth/2, 
-                                this.levelOneY + this.levelButtonHeight/2,
-                                "black", 30, "myFont");
+            } else
+            {                
+                canvasContext.drawImage(levelOnePic, this.levelOneX, this.levelOneY);
+                if (this.isMouseOnLevelOne)
+                {
+                    canvasContext.globalAlpha = 0.3;
+                    colorRect(this.levelOneX, this.levelOneY, levelOnePic.width, levelOnePic.height, "white");
+                    canvasContext.globalAlpha = 1.0;
+
+                    colorTextCenter("almod comet", this.levelOneX + levelOnePic.width/2, 
+                                    this.levelOneY + levelOnePic.height + 50,
+                                    "lightGrey", 20, "myFont");
+                }
+
+                canvasContext.drawImage(levelTwoPic, this.levelTwoX, this.levelTwoY);
+                if (this.isMouseOnLevelTwo)
+                {
+                    canvasContext.globalAlpha = 0.3;
+                    colorRect(this.levelTwoX, this.levelTwoY, levelTwoPic.width, levelTwoPic.height, "white");
+                    canvasContext.globalAlpha = 1.0;
+
+                    colorTextCenter("erimia planet", this.levelTwoX + levelTwoPic.width/2, 
+                                    this.levelTwoY + levelTwoPic.height + 50,
+                                    "lightGrey", 20, "myFont");
+                }
+
+                canvasContext.drawImage(levelThreePic, this.levelThreeX, this.levelThreeY);
+                if (this.isMouseOnLevelThree)
+                {
+                    canvasContext.globalAlpha = 0.3;
+                    colorRect(this.levelThreeX, this.levelThreeY, levelThreePic.width, levelThreePic.height, "white");
+                    canvasContext.globalAlpha = 1.0;
+
+                    colorTextCenter("dasim system", this.levelThreeX + levelThreePic.width/2, 
+                                    this.levelThreeY + levelThreePic.height + 50,
+                                    "lightGrey", 20, "myFont");
+                }
 
                 colorText("Press C to show credits".toLowerCase(),20,canvas.height-20,CREDITS_RGBA);
             }
         }
         else 
         {
-            colorText("select your ship", 50, 200, "red", 50);
+            colorText("select your ship", 50, 240, "red", 50);
 
             drawBitmapCenteredWithRotation(lightRiderPicLarge, this.spaceshipOneX, this.spaceshipOneY, -Math.PI/2, lightRiderPicLarge.width, lightRiderPicLarge.height);
             if (this.isMouseOnSpaceshipOne || this.isSpaceshipOneSelected){
@@ -238,6 +259,8 @@ function MainMenu()
 
     this.handleMouseClick = function()
     {
+        if (showCredits) return;
+        
         if (!this.hasSelectedLevel)
         {
             if (this.isMouseOnLevelOne)

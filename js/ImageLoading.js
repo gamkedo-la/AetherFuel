@@ -20,6 +20,8 @@ var ebombPic = document.createElement("img");
 var streetlightPic = document.createElement("img");
 var gravitonShieldSheet = document.createElement("img");
 var levelOnePic = document.createElement("img");
+var levelTwoPic = document.createElement("img");
+var levelThreePic = document.createElement("img");
 var spaceBackGroundMenu = document.createElement("img");
 var logoPic = document.createElement("img");
 var uiPic = document.createElement("img");
@@ -81,6 +83,8 @@ function loadImages()
 		{varName: streetlightPic, theFile: "streetlight.png"},
 		{varName: gravitonShieldSheet, theFile: "gravitonShieldSheet.png"},
 		{varName: levelOnePic, theFile: "level1.png"},
+		{varName: levelTwoPic, theFile: "level2.png"},
+		{varName: levelThreePic, theFile: "level3.png"},
 		{varName: spaceBackGroundMenu, theFile: "space_background_menu.png"},
         {varName: logoPic, theFile: "logo.png"},
         {varName: uiPic, theFile: "UI_Back.png"},
