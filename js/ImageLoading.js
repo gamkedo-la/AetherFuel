@@ -85,6 +85,7 @@ function loadImages()
         {varName: logoPic, theFile: "logo.png"},
         {varName: uiPic, theFile: "UI_Back.png"},
         {trackType: TRACK_ROAD, level: LEVEL_SAND, theFile: "sand.png"},
+        {trackType: TRACK_ROAD, level: LEVEL_MUD, theFile: "mud.png"},
         {trackType: TRACK_ROAD, level: LEVEL_ICE, theFile: "ice2.png"},
         {trackType: TRACK_WALL, theFile: "TrackWall2.png"},
         {trackType: TRACK_TREE, theFile: "palm.png"},

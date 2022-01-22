@@ -1,3 +1,4 @@
+const LEVEL_MUD = 2;
 const LEVEL_SAND = 1;
 const LEVEL_ICE = 0;
 

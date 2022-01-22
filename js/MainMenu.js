@@ -99,14 +99,18 @@ function MainMenu()
                 this.levelOneColor = this.isMouseOnLevelOne ? "magenta" : "LightBlue";
                 colorRect(this.levelOneX, this.levelOneY, this.levelButtonWidth, this.levelButtonHeight, this.levelOneColor);
                 colorTextCenter("level 1",this.levelOneX + this.levelButtonWidth/2, 
-                                215,//this.levelOneY + this.levelButtonHeight/2,
+                                this.levelOneY + this.levelButtonHeight/2,
                                 "black", 30, "myFont");
                 this.levelTwoColor = this.isMouseOnLevelTwo ? "magenta" : "LightBlue";
                 colorRect(this.levelTwoX, this.levelTwoY, this.levelButtonWidth, this.levelButtonHeight, this.levelTwoColor);
-                colorText("level 2", 315, 215, "black", 30);
+                colorTextCenter("level 2",this.levelTwoX + this.levelButtonWidth/2, 
+                                this.levelOneY + this.levelButtonHeight/2,
+                                "black", 30, "myFont");
                 this.levelThreeColor = this.isMouseOnLevelThree ? "magenta" : "LightBlue";
                 colorRect(this.levelThreeX, this.levelThreeY, this.levelButtonWidth, this.levelButtonHeight, this.levelThreeColor);
-                colorText("level 3", 580, 215, "black", 30);
+                colorTextCenter("level 3",this.levelThreeX + this.levelButtonWidth/2, 
+                                this.levelOneY + this.levelButtonHeight/2,
+                                "black", 30, "myFont");
 
                 colorText("Press C to show credits".toLowerCase(),20,canvas.height-20,CREDITS_RGBA);
             }
@@ -143,7 +147,9 @@ function MainMenu()
             {
                 var playButtonColor = this.isMouseOnPlayButton ? "magenta" : "LightBlue";
                 colorRect(this.playButtonX, this.playButtonY, this.playButtonWidth, this.playButtonHeight, playButtonColor);
-                colorText("go", 350, this.playButtonY + 70, "black", 50);
+                colorTextCenter("go", this.playButtonX + this.playButtonWidth/2, 
+                                this.playButtonY + this.playButtonHeight/2 + 15,
+                                "black", 50, "myFont");
             }
         }
     }
