@@ -1,6 +1,7 @@
 const WALL_COLLISIONS_LEAVE_DECALS = true;
 const SHIP_WALL_COLLISION_CIRCLES = true;
 const GROUND_SPEED_DECAY_MULT = 0.94;
+const GROUND_SPEED_DECAY_TREES_MULT = 0.7;
 const GAS_POWER = 1.0;
 const REVERSE_POWER = 0.8;
 const TURN_SPEED = 0.1;
@@ -327,7 +328,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
     let currentTrackIndex = getTrackIdxFromXY(this.x, this.y);
     if (currentTrackIndex < -1) { return; }
 
-    if (this.currentTrackType == TRACK_WALL || this.currentTrackType == TRACK_TREE)
+    if (this.currentTrackType == TRACK_WALL)
     {
         if (SHIP_WALL_COLLISION_CIRCLES) {
             var trackX = TRACK_W * (currentTrackIndex % trackNumCols) + TRACK_W / 2;
@@ -359,6 +360,10 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             this.slideX = 0;
             this.slideY = 0;
         }
+    }
+    else if (this.currentTrackType == TRACK_TREE)
+    {
+        this.speed *= GROUND_SPEED_DECAY_TREES_MULT;
     }
     else if (this.currentTrackType == TRACK_SAND_WITH_E_BOMB)
     {
