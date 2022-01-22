@@ -143,7 +143,7 @@ function loadLevel(whichLevel)
     currentLevelIdx = whichLevel;
 
     AudioMan.reset();
-    AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.25)
+    AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.4)
 
     var levelData = levels[whichLevel];
     currentLevel = JSON.parse(levelData);
@@ -166,7 +166,10 @@ function loadLevel(whichLevel)
 
     var engineSounds = [
     "Audio/engine_01.wav",
-    "Audio/engine_02.wav",]
+    "Audio/engine_02.wav",
+    "Audio/engine_03.wav",
+    "Audio/engine_04.wav",
+    "Audio/engine_05.wav",]
 
     opponents.forEach(function(opponent) {
         opponent.engineSoundFile = engineSounds[Math.floor(Math.random() * engineSounds.length)];
