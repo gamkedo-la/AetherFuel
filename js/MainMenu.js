@@ -334,8 +334,8 @@ function MainMenu()
                     opponents[1].pic = darkTravelerPic;
                     opponents[1].stunnedPic = stunnedDarktravelerSpriteSheet;
                 }
-                menuMode = false;
-                loadLevel(currentLevelIdx);
+
+                transitionToLevel(currentLevelIdx);
             }
         }
     }

@@ -41,6 +41,7 @@ var debugDeactivateZoom = false;
 // Variables to control level-to-level transitions
 var didFadeOut = false;
 var transitioning = false;
+var transitioningToEndRace = false;
 var transitionRate = 750; // 1000 = 1 second full fade & 1 more second to full restore
 var levelToTransitionTo = 0;
 var transitionAlpha = 0;
@@ -115,10 +116,14 @@ function transitionToLevel(whichLevel)
                 transitionAlpha = 1;
                 didFadeOut = true;
                 loadLevel(levelToTransitionTo);
+                menuMode = false;
+                endRaceMenu.setActive(false);
             }
         } else {
             didFadeOut = true;
             loadLevel(levelToTransitionTo);
+            menuMode = false;
+            endRaceMenu.setActive(false);
         }
     } else if (transitionAlpha >= 0.05) {
         transitionAlpha = Math.sin(transitioningTime / transitionRate);
@@ -131,6 +136,43 @@ function transitionToLevel(whichLevel)
         }
     } else {
         transitioning = false;
+        didFadeOut = false;
+        levelToTransitionTo = 0;
+        transitioningTime = 0;
+    }
+}
+
+function transitionToEndRaceScreen()
+{
+    transitioningToEndRace = true;
+
+    transitioningTime += deltaTime;
+
+    if (!didFadeOut) {
+        if (transitionAlpha <= 0.95) {
+            transitionAlpha = Math.sin(transitioningTime / transitionRate);
+            if (transitionAlpha > 1) {
+                transitionAlpha = 1;
+                didFadeOut = true;
+                endRaceMenu.setActive(true);
+            }
+        } else {
+            didFadeOut = true;
+            endRaceMenu.setActive(true);
+        }
+    }
+    else if (transitionAlpha >= 0.95) {
+        transitionAlpha = Math.sin(transitioningTime / transitionRate);
+        if (transitionAlpha <= 0.9) {
+            transitionAlpha = 0;
+            didFadeOut = false;
+            transitioningToEndRace = false;
+            levelToTransitionTo = 0;
+            transitioningTime = 0;
+        }
+    } else {
+        transitionAlpha = 0;
+        transitioningToEndRace = false;
         didFadeOut = false;
         levelToTransitionTo = 0;
         transitioningTime = 0;
@@ -217,10 +259,14 @@ function updateAll()
     {
         // Menu stuff
         mainMenu.draw();
+        if (transitioning) transitionToLevel(levelToTransitionTo)
     }
     else if (endRaceMenu.isActive)
     {
         endRaceMenu.draw();
+        
+        if (transitioning) transitionToLevel(levelToTransitionTo);
+        if (transitioningToEndRace) transitionToEndRaceScreen();
     }
     else
     {
@@ -229,8 +275,19 @@ function updateAll()
         } else if (transitioning) {
             transitionToLevel(levelToTransitionTo)
         }
+        
+        if (transitioningToEndRace) {
+            transitionToEndRaceScreen();
+        }
         gameDrawAll(); 
         AudioMan.update();
+    }
+
+    if (transitioning || transitioningToEndRace) {
+        canvasContext.save();
+        canvasContext.globalAlpha = transitionAlpha;
+        clearScreen();
+        canvasContext.restore();
     }
 }
 
@@ -363,13 +420,6 @@ function gameDrawAll()
         colorText(mouseX.toFixed(2) + " , " + mouseY.toFixed(2), miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 100, "red", 30);
         colorText(mouseTileI + " , " + mouseTileJ, miniMap.x + 5, miniMap.y + miniMapCanvas.height * miniMap.scale + 150, "red", 30);
     }
-
-    if (transitioning) {
-        canvasContext.save();
-        canvasContext.globalAlpha = transitionAlpha;
-        clearScreen();
-        canvasContext.restore();
-    }
 }
 
 function clearScreen(color="black")
@@ -428,8 +478,10 @@ function drawUI()
     // Indicate lap number
     colorRect(UI_OFFSET_X - 2, offsetY - 2, TRACK_W + 4, TRACK_H + 4, "lightGrey")
     canvasContext.drawImage(trackPix[TRACK_GOAL], UI_OFFSET_X, offsetY,)
+
+    var lapsDisplay = Math.min(player.lapsPassed, currentLevel.laps - 1);
     colorText(
-        `${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        `${lapsDisplay + 1} / ${currentLevel.laps}`,
         UI_OFFSET_X + TRACK_W + 20, offsetY + 30,
         'red', 30);
 

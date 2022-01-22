@@ -19,6 +19,8 @@ function EndRaceMenu()
     this.isMouseOnReplayButton = false;
     this.isMouseOnMenuButton = false;
 
+    this.isTransitioning = false;
+
     this.draw = function()
     {
         if (!this.isActive) return;
@@ -57,7 +59,7 @@ function EndRaceMenu()
 
     this.handleMousePosition = function()
     {
-        if (!this.isActive) return;
+        if (!this.isActive || transitioning) return;
 
         if (mouseOnScreenX > this.replayButtonX && mouseOnScreenX < this.replayButtonX + this.replayButtonWidth &&
             mouseOnScreenY > this.replayButtonY && mouseOnScreenY < this.replayButtonY + this.replayButtonHeight)
@@ -82,7 +84,7 @@ function EndRaceMenu()
 
     this.handleMouseClick = function()
     {
-        if(!this.isActive) return;
+        if(!this.isActive || transitioning) return;
 
         if (this.isMouseOnMenuButton)
         {
@@ -90,8 +92,7 @@ function EndRaceMenu()
         }
         else if (this.isMouseOnReplayButton)
         {
-            this.setActive(false);
-            loadLevel(currentLevelIdx);
+            transitionToLevel(currentLevelIdx);
         }
     }
 

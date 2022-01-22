@@ -402,9 +402,8 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
             this.holdTurnRight = false;
         }
         else{
-            // transitionToLevel(currentLevelIdx);
             AudioMan.reset();
-            endRaceMenu.setActive(true);
+            transitionToEndRaceScreen()
         }
     }
     else 
