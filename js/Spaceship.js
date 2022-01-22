@@ -12,7 +12,7 @@ const MIN_DIST_BETWEEN_SPACESHIPS = 30;
 
 const EBOMB_SPEED = 10;
 
-const MAX_NUM_AMMO = 5;
+const MAX_NUM_AMMO = 15;
 const MAX_SHIELD_LEVEL = 3;
 
 const SHIELD_RADIUS = 2/3 * 40;
@@ -79,7 +79,7 @@ function Spaceship(name, pic, stunnedPic)
     this.pic = pic
 
     this.fire = false;
-    this.numAmmo = 2;
+    this.numAmmo = MAX_NUM_AMMO;
 
     this.shieldLevel = MAX_SHIELD_LEVEL;
 	this.shieldAnimation = new ShieldAnimation();
@@ -276,7 +276,7 @@ Spaceship.prototype.reset = function()
     this.slideY = 0;
     this.fire = false;
 
-    this.numAmmo = 2;
+    this.numAmmo = MAX_NUM_AMMO;
     this.shieldLevel = MAX_SHIELD_LEVEL;
 
     this.waypointForPosition = firstWaypoint;

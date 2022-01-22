@@ -397,7 +397,7 @@ function drawUI()
 
     colorText(
         `${player.numAmmo}`,
-        4 * UI_OFFSET_X + SHIELD_RADIUS * 2,  // ebombPic.width,
+        2 * UI_OFFSET_X + SHIELD_RADIUS * 2,  // ebombPic.width,
         offsetY + 30,
         'red', 40);
 
@@ -414,7 +414,7 @@ function drawUI()
 			gravitonShieldSheet,
 			0,
 			56, 55,
-			UI_OFFSET_X + SHIELD_RADIUS, offsetY + SHIELD_RADIUS, 0,
+			UI_OFFSET_X + SHIELD_RADIUS / 2 + 5, offsetY + SHIELD_RADIUS, 0,
 			56, 55,
     );
 
@@ -426,12 +426,14 @@ function drawUI()
     offsetY += SHIELD_RADIUS * 2 + UI_SPACING;
 
     // Indicate lap number
+    colorRect(UI_OFFSET_X - 2, offsetY - 2, TRACK_W + 4, TRACK_H + 4, "lightGrey")
+    canvasContext.drawImage(trackPix[TRACK_GOAL], UI_OFFSET_X, offsetY,)
     colorText(
-        `lap ${player.lapsPassed + 1} / ${currentLevel.laps}`,
-        UI_OFFSET_X, offsetY,
-        'red', 20);
+        `${player.lapsPassed + 1} / ${currentLevel.laps}`,
+        UI_OFFSET_X + TRACK_W + 20, offsetY + 33,
+        'red', 40);
 
-    offsetY += 20 + UI_SPACING;
+    offsetY += 70 + UI_SPACING;
 
     // Indicate lap number
     var playerPositionText = " th";
@@ -442,5 +444,5 @@ function drawUI()
     colorText(
         playerPositionInRace + playerPositionText,
         UI_OFFSET_X, offsetY,
-        'red', 20);
+        'red', 40);
 }
