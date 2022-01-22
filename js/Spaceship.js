@@ -392,21 +392,20 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         if (this.lapsPassed < currentLevel.laps) {
             return;
         }
-
-        if (VERBOSE) console.log(this.name + " wins!!!");
-
-        // if (currentLevelIdx == levels.length - 1)
-        // {
-        //     currentLevelIdx = 0;
-        // }
-        // else
-        // {
-        //     currentLevelIdx++;
-        // }
         
-        // transitionToLevel(currentLevelIdx);
-        AudioMan.reset();
-        endRaceMenu.setActive(true);
+        if (this.name.toLowerCase() != "player")
+        {
+            this.stopRunning = true;
+            this.holdGas = false;
+            this.holdReverse = false;
+            this.holdTurnLeft = false;
+            this.holdTurnRight = false;
+        }
+        else{
+            // transitionToLevel(currentLevelIdx);
+            AudioMan.reset();
+            endRaceMenu.setActive(true);
+        }
     }
     else 
     {
@@ -542,7 +541,7 @@ function getPlayerPosition()
         var currentOpponent = opponents[i];
 
         // If opponent has passed more laps, player loses a position
-        if (currentOpponent.lapsPassed > player.lapsPassed)
+        if (currentOpponent.lapsPassed > player.lapsPassed || currentOpponent.stopRunning)
         {
             playerPosition++;
         }

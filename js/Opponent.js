@@ -40,10 +40,14 @@ function Opponent(name, pic, stunnedPic)
     this.timeSinceLastAttack = 0.0;
     this.timeToWaitBeforeAttacking = -1.0;
 
+    this.stopRunning = false;
+
     this.superUpdate = this.update;
     this.update = function()
     {
         this.superUpdate();
+
+        if (this.stopRunning) return;
         this.launchAttackIfPossible();
     }
 
@@ -256,6 +260,7 @@ function Opponent(name, pic, stunnedPic)
     this.reset = function(waypoint)
     {
         this.superReset();
+        this.stopRunning = false;
         this.timeSinceLastAttack = 0.0;
         this.timeToWaitBeforeAttacking = -1.0;
 
@@ -483,13 +488,16 @@ function Opponent(name, pic, stunnedPic)
     this.superMove = this.move;
     this.move = function ()
     {
-        if (!debugFreezeAI)
+        if (!debugFreezeAI && !this.stopRunning)
         {
             this.activateGas();
             this.steerWheels();
         }
 
         this.superMove();
+
+        if (this.stopRunning) return;
+
         this.checkIfCloseEnoughToCurrentWaypoint();
         this.updateTimeSinceLastWaypointChange();
         this.handleRecoveryModeIfNecessary();
