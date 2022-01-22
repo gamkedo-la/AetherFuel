@@ -147,9 +147,9 @@ function keyReleased(evt)
             debugQuarterRotNum++;
             if (debugQuarterRotNum == 4) debugQuarterRotNum = 0;
         }
-        else if (evt.keyCode == KEY_NUM_ROW_1) loadLevel(0);
-        else if (evt.keyCode == KEY_NUM_ROW_2) loadLevel(1);
-        else if (evt.keyCode == KEY_NUM_ROW_3) loadLevel(2);
+        else if (evt.keyCode == KEY_NUM_ROW_1 && DEBUG_PLAYER) loadLevel(0);
+        else if (evt.keyCode == KEY_NUM_ROW_2 && DEBUG_PLAYER) loadLevel(1);
+        else if (evt.keyCode == KEY_NUM_ROW_3 && DEBUG_PLAYER) loadLevel(2);
     }
     else
     {

@@ -46,7 +46,7 @@ var levelToTransitionTo = 0;
 var transitionAlpha = 0;
 var transitioningTime = 0;
 
-var isEditorModeAccessible = true;
+var isEditorModeAccessible = false;
 
 var myFont = new FontFace("myFont", 'url(Fonts/Dream-MMA.ttf)');
 
@@ -96,7 +96,8 @@ function imageLoadingDoneSoStartGame()
     checkIfAllSpaceshipNamesAreUnique()
     allSpaceships.forEach(function(spaceship){ console.log(spaceship.name); });
 
-    loadLevel(currentLevelIdx);
+    // loadLevel(currentLevelIdx);
+    AudioMan.playMusic("Audio/aetherFuel140bpm.wav", 0.4)
 
     decals = new decalManager(canvas);
 }
