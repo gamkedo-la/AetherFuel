@@ -377,6 +377,7 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
     {
         if (!this.isLap) {
             this.lapsPassed++;
+            this.waypointForPosition = firstWaypoint;
 
             if (maxLapsPassedByASpaceship < this.lapsPassed)
             {
