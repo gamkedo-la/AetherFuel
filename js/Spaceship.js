@@ -61,6 +61,7 @@ function Spaceship(name, pic, stunnedPic)
     this.isLap = false;
     this.hasReachedHalfTrack = false;
     this.startIdx = 0;
+    this.hasFinished = false;
 
     this.slideX = 0;
     this.slideY = 0;
@@ -276,6 +277,7 @@ Spaceship.prototype.reset = function()
     this.slideX = 0;
     this.slideY = 0;
     this.fire = false;
+    this.hasFinished = false;
 
     this.numAmmo = MAX_NUM_AMMO;
     this.shieldLevel = MAX_SHIELD_LEVEL;
@@ -392,6 +394,8 @@ Spaceship.prototype.handleCollisionWithTracksAdvanced = function()
         if (this.lapsPassed < currentLevel.laps) {
             return;
         }
+
+        this.hasFinished = true;
         
         if (this.name.toLowerCase() != "player")
         {
@@ -531,6 +535,8 @@ function checkIfAllSpaceshipNamesAreUnique()
 
 function getPlayerPosition()
 {
+    if (player.hasFinished) return playerPositionInRace;
+
     var playerPosition = 1;  // player start as being the leader
     var opponentsOnTheSameLapAsPlayer = [];
 
