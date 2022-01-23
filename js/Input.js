@@ -57,19 +57,19 @@ function keySet(keyEvt, player, setTo)
 {
     if (editorMode){ return; }
     
-    if (keyEvt.keyCode == player.controlKeyLeft)
+    if (keyEvt.keyCode == player.controlKeyLeft || keyEvt.keyCode == KEY_LEFT_ARROW)
     {
         player.holdTurnLeft = setTo;
     }
-    if (keyEvt.keyCode == player.controlKeyUp)
+    if (keyEvt.keyCode == player.controlKeyUp || keyEvt.keyCode == KEY_UP_ARROW)
     {
         player.holdGas = setTo;
     }
-    if (keyEvt.keyCode == player.controlKeyRight)
+    if (keyEvt.keyCode == player.controlKeyRight || keyEvt.keyCode == KEY_RIGHT_ARROW)
     {
         player.holdTurnRight = setTo;
     }
-    if (keyEvt.keyCode == player.controlKeyDown)
+    if (keyEvt.keyCode == player.controlKeyDown || keyEvt.keyCode == KEY_DOWN_ARROW)
     {
         player.holdReverse = setTo;
     }
