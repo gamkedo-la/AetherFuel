@@ -61,7 +61,7 @@ function loadImageForRoadCode(levelCode, filename)
 function loadImages()
 {
     var imageList = [
-        {varName: playerPic, theFile: "spaceship_40x40.png"},
+        {varName: playerPic, theFile: "el-dorado.png"},
 		{varName: darkTravelerPic, theFile: "darktraveler.png"},
 		{varName: lightRiderPic, theFile: "lightrider.png"},
         {varName: elDoradoPic, theFile: "el-dorado.png"},
