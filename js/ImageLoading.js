@@ -70,7 +70,7 @@ function loadImages()
 		{varName: playerPicLarge, theFile: "spaceship_large.png"},
         {varName: stunnedLightriderSpriteSheet, theFile: "stunnedOpponent/lightrider_stunned.png"},
         {varName: stunnedDarktravelerSpriteSheet, theFile: "stunnedOpponent/darktraveler_stunned.png"},
-        {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/spaceship_stunned.png"},
+        {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/el-dorado_stunned.png"},
         {varName: tireTrackPic, theFile: "tireTracks.png"},
         {varName: neonLinePic, theFile: "neonLine.png"},
         {varName: waypointPic, theFile: "Waypoint.png"},
