@@ -366,7 +366,7 @@ var creditsList = [
 "Randy Tan Shaoxian: Speed-based zoom, countdown at start, lap indicator, laps as part of level data, pause toggle",
 "H Trayford: Level fade transition effect, decal optimization, circle-circle collision support, debugging cleanup",
 "Ashleigh M.: El Dorado comet slider art",
-"Tyler Funk: Camera rotation interpolatation",
+"Tyler Funk: Camera rotation interpolation",
 "Klaim (A. Joël Lamotte): Playtest and feedback",
 "Luis Montaña: Playtest and feedback",
 "Rodrigo Bonzerr Lopez: Playtest and feedback",

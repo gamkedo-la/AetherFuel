@@ -67,7 +67,7 @@ function loadImages()
         {varName: elDoradoPic, theFile: "el-dorado.png"},
 		{varName: lightRiderPicLarge, theFile: "lightrider_large.png"},
 		{varName: darkTravelerPicLarge, theFile: "darktraveler_large.png"},
-		{varName: playerPicLarge, theFile: "spaceship_large.png"},
+		{varName: playerPicLarge, theFile: "el-dorado_large.png"},
         {varName: stunnedLightriderSpriteSheet, theFile: "stunnedOpponent/lightrider_stunned.png"},
         {varName: stunnedDarktravelerSpriteSheet, theFile: "stunnedOpponent/darktraveler_stunned.png"},
         {varName: stunnedOpponentSpriteSheet, theFile: "stunnedOpponent/el-dorado_stunned.png"},
